@@ -5,13 +5,15 @@ const { reactToClient } = require('../util/response');
 function login(req, res, next) {
     const loginInfo = req.body;
     userDao.loginDao(loginInfo, function(err, data) {
-        reactToClient(res, err, data)
+        if (err) return res.status(200).send(err)
+        res.status(200).send(data)
     })
 }
 function register(req, res, next) {
     const registerInfo = req.body;
-    userDao.registerDao(registerInfo, function(err, result) {
-        reactToClient(res, err, data)
+    userDao.registerDao(registerInfo, function(err, data) {
+        if (err) return res.status(200).send(err)
+        res.status(200).send(data)
     })
 }
 function passport(req, res) {

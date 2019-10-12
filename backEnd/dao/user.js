@@ -13,6 +13,8 @@ class userDao {
         }).then((dataValue) => {
             if ( dataValue ) {//找到user，进行密码校验  
                 // Load hash from your password DB.
+                console.log(user.password)
+                console.log(dataValue.password)
                 bcrypt.compare(user.password, dataValue.password, function (err, res) {// res == true
                     if (res) {
                         const rule = {
@@ -61,10 +63,10 @@ class userDao {
                         admin
                             .save()//保存实例（数据）到数据库
                             .then((val) => {
-                                success(false, {msg: '注册成功'})
+                                success(false, {msg: '注册成功', success: true})
                             })
                             .catch((err) => {
-                                sequelize.close();
+                                throw err
                             });
                     });
                 });

@@ -3,7 +3,8 @@ const { User } = require('../model/User');
 const { sequelize } = require('../core/db');
 const bcrypt = require('bcrypt');
 const saltRounds = 10;
-const jwt = require('jsonwebtoken');
+const { generateToken } = require('../util/generateToken');
+
 class userDao {
     static loginDao(user, success) {
         User.findOne({
@@ -11,37 +12,22 @@ class userDao {
                 account: user.account
             }
         }).then((dataValue) => {
-            if ( dataValue ) {//找到user，进行密码校验  
+            if (dataValue) {//找到user，进行密码校验  
                 // Load hash from your password DB.
-                console.log(user.password)
-                console.log(dataValue.password)
-                bcrypt.compare(user.password, dataValue.password, function (err, res) {// res == true
-                    if (res) {
-                        const rule = {
-                            account: dataValue.account,
-                            id: dataValue.id,
-                            identity: dataValue.identity
-                        }
-                        jwt.sign(rule, 'secret', {expiresIn: '2 days'}, function (err, token) {
-                            if ( !err ) {
-                                success(false, {
-                                    msg: 'confirmed successful', 
-                                    success: true,
-                                    token: 'Bearer ' + token
-                                })
-                            } else {
-                                throw err;
-                            }
-                            
-                        });
-                    } else { 
-                        success(new global.errs.ParaException('密码或账号错误，请重新输入'))
-                    }
-                });
+                if (bcrypt.compareSync(user.password, dataValue.password)) {
+                    let token = generateToken(dataValue.id, dataValue.account);
+                    success(false, {
+                        msg: '登录成功',
+                        success: true,
+                        token: 'Bearer ' + token
+                    })
+                } else {
+                    success(new global.errs.ParaException('密码或账号错误，请重新输入'))
+                }
             } else {
-                success(new global.errs.ParaException('未注册账号，请先注册'));
+                success(new global.errs.ParaException('账号不存在，请先注册'));
             }
-        }).catch( err => { console.log(err) })
+        }).catch(err => { console.log(err) })
     }
     static registerDao(user, success) {
         User.findOne({
@@ -50,28 +36,22 @@ class userDao {
             }
         }).then((dataValue) => {
             const admin = new User();//一个实例就是一行数据
-            if ( dataValue ) {//若数据库中存在账号，不允许重名
+            if (dataValue) {//若数据库中存在账号，不允许重名
                 success(new global.errs.Existed('账号已存在，请重新注册'));
             } else {
                 admin.account = user.account;
-                admin.identity = user.identity;
-                bcrypt.genSalt(saltRounds, function (err, salt) {
-                    bcrypt.hash(user.password, salt, function (err, hash) {
-                        // Store hash in your password DB.
-                        if (err) { throw err }
-                        admin.password = hash;
-                        admin
-                            .save()//保存实例（数据）到数据库
-                            .then((val) => {
-                                success(false, {msg: '注册成功', success: true})
-                            })
-                            .catch((err) => {
-                                throw err
-                            });
-                    });
+                bcrypt.hash(user.password, saltRounds).then((hash) => {
+                    admin.password = hash;
+                    admin
+                        .save()//保存实例（数据）到数据库
+                        .then((val) => {
+                            success(false, { msg: '注册成功', success: true })
+                        }).catch((err) => {
+                            throw err
+                        });
                 });
             }
-        }).catch( err => { console.log(err)})
+        }).catch(err => { console.log(err) })
     }
 }
 module.exports = {

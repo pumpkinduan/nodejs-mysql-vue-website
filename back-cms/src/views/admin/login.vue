@@ -11,12 +11,11 @@
           <el-input type="password" v-model="loginForm.pwd" autocomplete="off"></el-input>
         </el-form-item>
 
-        <el-form-item label="记住密码">
+        <!-- <el-form-item label="记住密码">
           <el-switch v-model="isRemember"></el-switch>
-        </el-form-item>
+        </el-form-item> -->
 
         <el-form-item>
-          <el-button type="primary" @click="registerForm">注册</el-button>
           <el-button type="success" @click="submitForm">登录</el-button>
         </el-form-item>
       </el-form>
@@ -26,10 +25,12 @@
 
 <script>
 import validator from "@/util/validateInfo.js";
+import jwtDecode from 'jwt-decode';
+import { mapActions } from 'vuex';
 export default {
   mounted() {
-    this.loginForm.account = localStorage.getItem('account');
-    this.loginForm.pwd = localStorage.getItem('password');
+    this.loginForm.account = localStorage.getItem("account");
+    this.loginForm.pwd = localStorage.getItem("password");
   },
   data() {
     const validateAccount = (rule, value, callback) => {
@@ -53,7 +54,7 @@ export default {
         if (validator.validatePwd(value)) {
           callback();
         } else {
-           callback(new Error("密码长度在6-18个字符之间"));
+          callback(new Error("密码长度在6-18个字符之间"));
         }
       }
     };
@@ -62,52 +63,63 @@ export default {
         pwd: "",
         account: ""
       },
-      isRemember: false,
+      // isRemember: false,
       rules: {
-        pwd: [{ validator: validatePwd, trigger: "blur" }],
-        account: [{ validator: validateAccount, trigger: "blur" }]
+        pwd: [{ validator: validatePwd, trigger: "blur", required: true }],
+        account: [
+          { validator: validateAccount, trigger: "blur", required: true }
+        ]
       }
     };
   },
   methods: {
-    registerForm() {
-      //向后台发送注册信息
-      const data = {
-        account: this.loginForm.account,
-        password: this.loginForm.pwd
-      };
-      this.axios.post("/api/user/register", data).then(res => {
-        if ( res.data && res.data.success ) {
-          alert("注册成功");
-        } else {
-          alert(res.data.msg);
-          this.loginForm.account = '';
-          this.loginForm.pwd = '';
-        }
-      }).catch( err => {console.log(err)});
-    },
+    ...mapActions([
+      'set_admin', //this.set_admin() --> this.$store.dispatch('set_admin')
+      'set_authenticated'
+    ]),
     submitForm() {
-      const data = {
-        account: this.loginForm.account,
-        password: this.loginForm.pwd
-      };
-      this.axios.post("/api/user/login", data).then( (res) => {
-        const data = res.data;
-        if ( data && data.success ) {
-          if (this.isRemember) {//保存账号密码和token到localStorage
-              localStorage.setItem('account', this.loginForm.account);
-              localStorage.setItem('password', this.loginForm.pwd);
-              localStorage.setItem('token', data.token);
+      //密码校验
+      let { account, pwd } = this.loginForm;
+      if (!account && !pwd) {
+        return this.$message({
+          message: "请输入账号",
+          showClose: true
+        });
+      }
+      if (!account) {
+        return this.$message({
+          message: "请输入账号",
+          showClose: true
+        });
+      } else if (!pwd) {
+        return this.$message({
+          message: "请输入密码",
+          showClose: true
+        });
+      }
+      this.axios
+        .post("/api/user/login", { account: account, password: pwd })
+        .then(
+          res => {
+            const data = res.data;
+            if (data && data.success) {
+              if ( data.token ) {
+                localStorage.setItem('token', data.token);
+                const decoded = jwtDecode(data.token);
+                this.set_admin(decoded);
+                this.set_authenticated(true);//表示登录成功
+              } else {
+                this.set_authenticated(false);
+              }
+              this.$router.push({ name: "home" });
+            }
+          },
+          err => {
+            this.loginForm.account = "";
+            this.loginForm.pwd = "";
+            throw err;
           }
-          this.$router.push('home');
-        } else {
-          alert(data.msg);
-          this.loginForm.account = '';
-          this.loginForm.pwd = '';
-        }
-      }, (err) => {
-        throw err
-      });
+        );
     }
   }
 };
@@ -143,13 +155,6 @@ export default {
   margin-left: 15px;
 }
 .el-form-item:last-child button:first-child {
-  float: left;
-}
-.el-form-item:last-child button:last-child {
-  float: right;
-}
-.admin-login .container .propmt .el-form-item__label::before {
-  content: "*";
-  color: #f40;
+  width: 100%;
 }
 </style>

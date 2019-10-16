@@ -1,10 +1,12 @@
 import Vue from 'vue'
 import Router from 'vue-router'
 import Home from './views/Home.vue'
-import Login from './views/login'
+import Login from './views/admin/login'
+import Register from './views/admin/register'
+import Error from './views/notFound.vue'
 Vue.use(Router)
 
-export default new Router({
+const router = new Router({
   mode: 'history',
   base: process.env.BASE_URL,
   routes: [
@@ -17,6 +19,25 @@ export default new Router({
       path: '/login',//登录
       name: 'login',
       component: Login
+    },
+    {
+      path: '/register',//注册
+      name: 'register',
+      component: Register
+    },
+    {//捕获404页面，该路由须放置在最后，当其他路由为匹配到时将捕获404
+      path: '*',
+      name: 'error',
+      component: Error
     }
   ]
 })
+//全局路由守卫，须先登录后访问主页面
+router.beforeEach( (to, from, next) => {
+  if ( to.path == '/login' || to.path == '/register') {
+    next();
+  } else {
+    localStorage.getItem('token') ? next() : next('/login');
+  }
+}) 
+export default router

@@ -5,25 +5,22 @@ const { reactToClient } = require('../util/response');
 function login(req, res, next) {
     const loginInfo = req.body;
     userDao.loginDao(loginInfo, function(err, data) {
-        if (err) return res.status(200).send(err)
-        res.status(200).send(data)
+        reactToClient(res, err, data)
     })
 }
 function register(req, res, next) {
     const registerInfo = req.body;
     userDao.registerDao(registerInfo, function(err, data) {
-        if (err) return res.status(200).send(err)
-        res.status(200).send(data)
+        reactToClient(res, err, data)
     })
 }
-function passport(req, res) {
+function auth(req, res) {//返回用户认证成功的用户信息
     res.status(200).send({
         account: req.user.account,
-        id: req.user.id,
-        identity: req.user.identity
+        id: req.user.id
     })
 }
 map.set('user/login', login);
 map.set('user/register', register);
-map.set('user/passport', passport);
+map.set('user/auth', auth);
 module.exports = map;

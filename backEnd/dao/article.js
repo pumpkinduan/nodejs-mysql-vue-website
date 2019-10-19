@@ -2,28 +2,30 @@ const { Article } = require('../model/Article');
 const { sequelize } = require('../core/db');
 
 class ArticleDao {
-    static createArticle(article_add, success) {//创建文章
+    static createArticle(info, success) {//创建文章
         Article.findOne({
             where: {
-                title: article_add.title
+                title: info.title
             }
         }).then((val) => {
             if (val) {
                 success(new global.errs.Existed('不可重复创建'))
             } else {
                 const article = new Article();
-                article.title = article_add.title;
-                article.author = article_add.author
-                article.tag = article_add.tag
-                article.content = article_add.content
-                article.total_char = article_add.total_char
-                article.article_id = article_add.article_id
+                article.title = info.title;
+                article.author = info.author;
+                article.cover = info.cover;
+                article.tag = info.tag;
+                article.content = info.content;
+                article.total_char = info.total_char;
+                article.article_id = info.article_id;
+                article.browse = info.browse;
                 article.save().then((res) => {
                     success(false, { msg: '添加成功', success: true })
-                }).catch(err => { throw err; })
+                }).catch(err => {console.log(err); })
             }
         }).catch(err => { 
-            new global.errs.HttpException()
+            success(new global.errs.HttpException());
             throw err;
          })
     }
@@ -48,7 +50,7 @@ class ArticleDao {
                 success(new global.errs.NotFound('数据为空'))
             }
         }).catch(err => { 
-            new global.errs.HttpException()
+            success(new global.errs.HttpException());
             throw err;
          })
     }
@@ -68,7 +70,7 @@ class ArticleDao {
                 success(new global.errs.NotFound('数据为空'))
             }
         }).catch(err => { 
-            new global.errs.HttpException()
+            success(new global.errs.HttpException());
             throw err;
          })
     }
@@ -86,7 +88,7 @@ class ArticleDao {
                 success(new global.errs.NotFound('数据为空'))
             }
         }).catch(err => { 
-            new global.errs.HttpException()
+            success(new global.errs.HttpException());
             throw err;
          })
     }
@@ -101,9 +103,10 @@ class ArticleDao {
                     'title': article_updated.title,
                     'content': article_updated.content,
                     'total_char': article_updated.total_char,
-                    'tag': article_updated.total_char.tag,
-                    'author': article_updated.total_char,
-                    'article_id': article_updated.article_id
+                    'tag': article_updated.tag,
+                    'author': article_updated.author,
+                    'browse': article_updated.browse,
+                    'cover': article_updated.cover
                 }).then(res => {
                     success(false, { msg: '更新成功', success: true });
                 })
@@ -111,7 +114,7 @@ class ArticleDao {
                 success(new global.errs.NotFound('数据为空'))
             }
         }).catch(err => { 
-            new global.errs.HttpException();
+            success(new global.errs.HttpException());
             throw err;
          })
     }

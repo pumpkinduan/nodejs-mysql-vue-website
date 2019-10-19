@@ -124,11 +124,10 @@ export default {
 .admin-register {
   width: 100%;
   height: 100%;
-  background-color: #f1f1f1;
 }
 .admin-register .container {
   width: 400px;
-  height: 300px;
+  height: 350px;
   background-color: rgba(0, 154, 97, 0.25);
   padding: 30px 50px 20px 20px;
   border-radius: 8px;

@@ -1,25 +1,11 @@
-/**
- * @ 文章数据库模型
- **/
+//单独的用于存放文章中的图片地址的数据表
 const { Sequelize, Model } = require('sequelize');
 const { sequelize } = require('../core/db');
 const moment = require('moment');
-class Article extends Model { }
-Article.init({
-    title: Sequelize.STRING(32),
-    author: Sequelize.STRING(16),
-    tag: Sequelize.STRING(16),
-    content: Sequelize.TEXT,
-    cover: Sequelize.STRING,//文章封面
-    browse: {
-        type: Sequelize.INTEGER,
-        defaultValue: 0
-    },
-    total_char: Sequelize.INTEGER,
-    article_id: {
-        type: Sequelize.INTEGER,
-        unique: true
-    },
+class ArticleImgs extends Model { }
+ArticleImgs.init({
+    path: Sequelize.STRING,
+    article_id:Sequelize.INTEGER,
     created_at: {
         type: Sequelize.DATE,
         get() {
@@ -34,8 +20,8 @@ Article.init({
     }
 }, {
     sequelize,
-    tableName: 'Article'
+    tableName: 'ArticleImgs'
 })
 module.exports = {
-    Article
+    ArticleImgs
 }

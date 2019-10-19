@@ -14,7 +14,7 @@ fieldset, lengend, button, input, textarea, /* form elements 表单元素 */
 th, td, div, header ,main, footer{ /* table elements 表格元素 */
     margin: 0;
     padding: 0;
-    color: #666;
+    box-sizing: border-box;
 }
 
 html,body {
@@ -93,4 +93,7 @@ hr {
 }
 .center {
     text-align: center;
+}
+img {
+    vertical-align: middle;
 }

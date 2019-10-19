@@ -4,6 +4,9 @@ import Home from './views/Home.vue'
 import Login from './views/admin/login'
 import Register from './views/admin/register'
 import Error from './views/notFound.vue'
+import PublishArticle from "./views/article/PublishArticle";
+import ArticleList from "./views/article/ArticleList";
+import EditArticle from "./views/article/EditArticle";
 Vue.use(Router)
 
 const router = new Router({
@@ -13,7 +16,21 @@ const router = new Router({
     {
       path: '/',
       name: 'home',//主页面
-      component: Home
+      component: Home,
+      children: [
+        {
+          path: 'publishArticle',
+          component: PublishArticle
+        },
+        {
+          path: 'articleList',
+          component: ArticleList
+        },
+        {
+          path: 'editArticle',
+          component: EditArticle
+        }
+      ]
     },
     {
       path: '/login',//登录
@@ -33,11 +50,11 @@ const router = new Router({
   ]
 })
 //全局路由守卫，须先登录后访问主页面
-router.beforeEach( (to, from, next) => {
-  if ( to.path == '/login' || to.path == '/register') {
+router.beforeEach((to, from, next) => {
+  if (to.path == '/login' || to.path == '/register') {
     next();
   } else {
-    localStorage.getItem('token') ? next() : next('/login');
+    localStorage.getItem('token') && localStorage.getItem('isAuthenticated') ? next() : next('/login');
   }
-}) 
+})
 export default router

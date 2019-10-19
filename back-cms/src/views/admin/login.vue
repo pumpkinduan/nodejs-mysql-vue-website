@@ -129,7 +129,6 @@ export default {
 .admin-login {
   width: 100%;
   height: 100%;
-  background-color: #f1f1f1;
 }
 .admin-login .container {
   width: 400px;

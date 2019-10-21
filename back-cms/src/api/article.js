@@ -6,8 +6,8 @@ export default {
     updateArticle(params, id) {
         return axios.put("/api/article/update/" + id, params);
     },
-    getLists() {
-        return axios.get("/api/article/list");
+    getLists(params) {
+        return axios.get("/api/article/list", {params});
     },
     deleteArticle(id) {
         return axios.delete("/api/article/delete/" + id);

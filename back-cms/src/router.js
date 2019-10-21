@@ -7,6 +7,9 @@ import Error from './views/notFound.vue'
 import PublishArticle from "./views/article/PublishArticle";
 import ArticleList from "./views/article/ArticleList";
 import EditArticle from "./views/article/EditArticle";
+import PublishQuotation from "./views/quotation/PublishQuotation";
+import EditQuotation from "./views/quotation/EditQuotation";
+import QuotationList from "./views/quotation/QuotationList";
 Vue.use(Router)
 
 const router = new Router({
@@ -20,15 +23,33 @@ const router = new Router({
       children: [
         {
           path: 'publishArticle',
+          name: 'PublishArticle',
           component: PublishArticle
         },
         {
           path: 'articleList',
+          name: 'ArticleList',
           component: ArticleList
         },
         {
           path: 'editArticle',
+          name: 'EditArticle',
           component: EditArticle
+        },
+        {
+          path: 'publishQuotation',
+          name: 'PublishQuotation',
+          component: PublishQuotation
+        },
+        {
+          path: 'editQuotation',
+          name: 'EditQuotation',
+          component: EditQuotation
+        },
+        {
+          path: 'quotationList',
+          name: 'QuotationList',
+          component: QuotationList
         }
       ]
     },
@@ -42,8 +63,8 @@ const router = new Router({
       name: 'register',
       component: Register
     },
-    {//捕获404页面，该路由须放置在最后，当其他路由为匹配到时将捕获404
-      path: '*',
+    {//捕获404页面，该路由须放置在最后，当其他路由未匹配到时将捕获404
+      path: '/*',
       name: 'error',
       component: Error
     }

@@ -1,27 +1,25 @@
 <template>
-  <div class="edit-article">
-    <el-table
-      :data="tableData.filter(data => !search || data.title.toLowerCase().includes(search.toLowerCase()))"
-      style="width: 100%"
-      align="center"
-    >
-      <el-table-column
+  <div class="edit-quotation">
+    <el-table :data="tableData" style="width: 100%" align="center">
+         <el-table-column
         align="center"
         :label="value"
         :prop="attr"
-        min-width="100"
+        :min-width="attr == 'content' ? 180 : 100"
         fixed
         v-for="(value, attr, index) in labels"
         :key="index"
       >
       </el-table-column>
-      <el-table-column align="center" min-width="180" fixed="right">
-        <template slot="header" slot-scope="scope">
-          <el-input v-model="search" placeholder="输入关键字搜索" />
-        </template>
+      <el-table-column align="center" min-width="160" fixed="right">
         <template slot-scope="scope">
           <el-button type="info" @click="handleEdit(scope.$index, scope.row)">编辑</el-button>
           <el-button type="danger" @click="handleDelete(scope.$index, scope.row)">删除</el-button>
+        </template>
+      </el-table-column>
+      <el-table-column min-width="160" fixed="right">
+        <template slot="header" slot-scope="scope">
+          <el-input v-model="search" placeholder="输入关键字搜索" />
         </template>
       </el-table-column>
     </el-table>
@@ -33,16 +31,16 @@
       :pager-count="pageBtns"
       @current-change="getCurrentItem"
     ></el-pagination>
-    <el-dialog title="文章列表" :visible.sync="dialogFormVisible">
-      <el-form :model="editLists">
+    <el-dialog title="每日一句" :visible.sync="dialogFormVisible">
+      <el-form :model="editQuotations">
         <el-form-item :label="v" label-width="80px" v-for="(v, i) in labels" :key="i">
-          <el-input v-model="editLists[i]" autocomplete="off"></el-input>
+          <el-input v-model="editQuotations[i]" autocomplete="off"></el-input>
         </el-form-item>
       </el-form>
       <div slot="footer" class="dialog-footer">
         <el-button type="primary" @click="dialogFormVisible = false">确定</el-button>
         <el-button @click="dialogFormVisible = false">取消</el-button>
-        <el-button @click="resetDialog('editLists')">重置</el-button>
+        <el-button @click="resetDialog('addLists')">重置</el-button>
       </div>
     </el-dialog>
     <div class="wrapper">
@@ -55,7 +53,7 @@
 import Quill from "quill";
 import "quill/dist/quill.core.css";
 import "quill/dist/quill.snow.css";
-import api from "@/api/article.js";
+import api from "@/api/quotation.js";
 export default {
   created() {
     api
@@ -105,45 +103,60 @@ export default {
   },
   data() {
     return {
+      id: "",
       search: "",
       dialogFormVisible: false,
-      labels: {
+      editQuotations: {}, //待编辑的数据行
+      labels: { 
+        q_id: "id",
         author: "作者",
-        cover: "封面",
-        title: "标题",
-        tag: "标签",
-        total_char: "字数",
-        browse: "访问量"
+        content: "内容",
       },
-      editLists: {},//待编辑的数据行
+      cacheData: new Map(),
       tableData: [],
-      id: "",
-      cacheData: new Map(), //缓存条目数据
       amount: 0, //总条数-
       pageSize: 5, //每页的条数
       pageBtns: 5 //页码按钮显示数量
     };
   },
+
   methods: {
     submit() {
       const data = {};
-      Object.assign(data, this.editLists, {
+      Object.assign(data, this.editQuotations, {
         content: this.quill.root.innerHTML
       });
-      if (!this.quill.getText().trim()) return;
-      api.updateArticle(data, this.id).then(res => {
-        this.quill.root.innerHTML = "";
-        this.$message.success(res.data.msg);
-      });
+      if (!this.quill.getText().trim()) {
+        return this.$message.error("内容不能为空");
+      }
+      api
+        .updateQuotation(this.id, data)
+        .then(res => {
+          this.quill.root.innerHTML = ""; //清空编辑器;
+          this.$message({
+            message: res.data.msg,
+            duration: 1000
+          });
+        })
+        .catch(err => {
+          console.log(err);
+        });
+    },
+    handleEdit(index, row) {
+      this.dialogFormVisible = true;
+      this.editQuotations = row;
+      this.id = row.q_id;
+      this.quill.root.innerHTML = row.content;
     },
     handleDelete(index, row) {
-      this.$confirm("此操作将永久删除该文章, 是否继续?", "提示", {
+      this.dialogFormVisible = true;
+      this.$confirm("此操作将永久删除该条语录, 是否继续?", "提示", {
         confirmButtonText: "确定",
         cancelButtonText: "取消",
         type: "warning"
       })
         .then(() => {
-          api.deleteArticle(row.article_id).then(res => {
+          api.deleteQuotation(row.article_id).then(res => {
             if (res.data && res.data.success) {
               this.$message.success(res.data.msg);
               this.tableData.splice(index, 1); //删除纪录
@@ -157,20 +170,9 @@ export default {
           });
         });
     },
-    handleEdit(index, row) {
-      this.id = row.article_id;
-      this.dialogFormVisible = true; //显示填写框
-      this.editLists = this.tableData[index]; //将点击编辑按钮的那行数据与editLists对应
-      api.getDetail(row.article_id).then(res => {
-        //获取文章详情内容，进行编辑
-        if (res.data && res.data.data) {
-          this.quill.root.innerHTML = res.data.data.content; //显示文章内容
-        }
-      });
-    },
     resetDialog() {
-      for (var i in this.editLists) {
-        this.editLists[i] = "";
+      for (var i in this.addLists) {
+        this.addLists[i] = "";
       }
     },
     getCurrentItem(page) {
@@ -196,12 +198,12 @@ export default {
 };
 </script>
 <style scoped>
-.edit-article {
+.edit-quotation {
   height: 70%;
 }
 .wrapper {
   height: 100%;
-  margin: 20px 0;
+  margin: 25px 0;
 }
 .wrapper #editor {
   height: calc(100% - 42px) !important;

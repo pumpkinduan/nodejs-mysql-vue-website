@@ -38,8 +38,6 @@ axios.interceptors.response.use((response) => {
     if (status == 401) {
         Message.error('登录失败,token已经失效');
         localStorage.removeItem('token');
-        // localStorage.removeItem('account');
-        // localStorage.removeItem('password');
         window.location = '/login';
     } else if (status == 400) {
         if (err.response.data.msg == "账号不存在，请先注册") {

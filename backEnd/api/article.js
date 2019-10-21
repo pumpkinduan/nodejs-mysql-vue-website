@@ -12,7 +12,7 @@ function _create(req, res, next) {
 
 //获取文章列表
 function _list(req, res, next) {
-    const {page, desc} = req.params;
+    const {page, desc} = req.query;
     const data = ArticleDao.getArticleList(page, desc, (err, data) => {
         reactToClient(res, err, data)
     });

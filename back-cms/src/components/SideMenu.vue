@@ -24,7 +24,7 @@
                 <router-link
                   v-for="(c_item, c_index) in f_item.children"
                   :key="c_index"
-                  :to="c_item.path"
+                  :to="{name: c_item.component}"
                 >
                   <el-menu-item :index="c_index">{{ c_item.name }}</el-menu-item>
                 </router-link>
@@ -52,15 +52,15 @@ export default {
           children: [
             {
               name: "文章编辑",
-              path: "/editArticle"
+              component: "EditArticle"
             },
             {
               name: "文章发布",
-              path: "/publishArticle"
+              component: "PublishArticle"
             },
             {
-              name: "文章列表",
-              path: "/articleList"
+              name: "文章信息",
+              component: "ArticleList"
             }
           ]
         },
@@ -70,15 +70,15 @@ export default {
           children: [
             {
               name: "语录编辑",
-              path: "/editQutation"
+              component: "EditQuotation"
             },
             {
               name: "语录发布",
-              path: "/publishQutation"
+              component: "PublishQuotation"
             },
             {
-              name: "语录详情",
-              path: "/qutations"
+              name: "语录数据",
+              component: "QuotationList"
             }
           ]
         }

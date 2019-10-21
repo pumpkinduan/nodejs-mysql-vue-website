@@ -98,7 +98,7 @@ export default {
         });
       }
       this.axios
-        .post("/api/user/login", { account: account, password: pwd })
+        .post("/user/login", { account: account, password: pwd })
         .then(
           res => {
             const data = res.data;

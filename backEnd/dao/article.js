@@ -5,7 +5,7 @@ class ArticleDao {
     static createArticle(info, success) {//创建文章
         Article.findOne({
             where: {
-                title: info.title
+                article_id: info.article_id
             }
         }).then((val) => {
             if (val) {
@@ -22,12 +22,12 @@ class ArticleDao {
                 article.browse = info.browse;
                 article.save().then((res) => {
                     success(false, { msg: '添加成功', success: true })
-                }).catch(err => {console.log(err); })
+                }).catch(err => { success(new global.errs.HttpException()); console.log(err); })
             }
-        }).catch(err => { 
-            success(new global.errs.HttpException());
-            throw err;
-         })
+        }).catch(err => {
+            success(new global.errs.ParaException());
+            console.log(err);
+        })
     }
     static getArticleList(page = 1, desc = "created_at", success) {//获取文章列表
         const pageSize = 5; //每页的文章数量
@@ -49,10 +49,10 @@ class ArticleDao {
             } else {
                 success(new global.errs.NotFound('数据为空'))
             }
-        }).catch(err => { 
+        }).catch(err => {
             success(new global.errs.HttpException());
             throw err;
-         })
+        })
     }
     static getArticleDetailById(id, success) {//获取文章详情
         Article.findOne({
@@ -69,10 +69,10 @@ class ArticleDao {
             } else {
                 success(new global.errs.NotFound('数据为空'))
             }
-        }).catch(err => { 
+        }).catch(err => {
             success(new global.errs.HttpException());
             throw err;
-         })
+        })
     }
     static deleteArticleById(id, success) {//删除文章
         Article.findOne({
@@ -87,10 +87,9 @@ class ArticleDao {
             } else {
                 success(new global.errs.NotFound('数据为空'))
             }
-        }).catch(err => { 
+        }).catch(err => {
             success(new global.errs.HttpException());
-            throw err;
-         })
+        })
     }
     static updateArticleById(id, article_updated, success) {//更新文章
         Article.findOne({
@@ -113,10 +112,10 @@ class ArticleDao {
             } else {
                 success(new global.errs.NotFound('数据为空'))
             }
-        }).catch(err => { 
+        }).catch(err => {
             success(new global.errs.HttpException());
             throw err;
-         })
+        })
     }
 }
 module.exports = {

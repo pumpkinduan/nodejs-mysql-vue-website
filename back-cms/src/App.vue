@@ -7,6 +7,7 @@
 import jwtDecode from 'jwt-decode';
 import { mapActions } from 'vuex';
 export default {
+  name: 'home',
   methods: {
     ...mapActions([
       'set_admin', //this.set_admin() --> this.$store.dispatch('set_admin')

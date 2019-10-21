@@ -1,5 +1,5 @@
 <template>
-  <div class="article-list">
+  <div class="quotation-list">
     <el-table
       :data="tableData.filter(data => !search || data.title.toLowerCase().includes(search.toLowerCase()))"
       style="width: 100%"
@@ -13,8 +13,7 @@
         :fixed="attr == 'created_at'"
         v-for="(value, attr, index) in labels"
         :key="index"
-        :sortable="attr == 'created_at' || attr == 'total_char' || attr=='browse'"
-        :sort-method="attr == 'total_char' ? sortByAmount : attr == 'browse' ? sortByBrowse : null"
+        :sortable="attr == 'created_at'"
       ></el-table-column>
       <el-table-column min-width="160" fixed="right">
         <template slot="header" slot-scope="scope">
@@ -34,7 +33,7 @@
 </template>
 
 <script>
-import api from "@/api/article.js";
+import api from "@/api/quotation.js";
 export default {
   created() {
     api
@@ -59,29 +58,14 @@ export default {
       amount: 0, //总条数-
       pageSize: 5, //每页的条数
       pageBtns: 5, //页码按钮显示数量
-      labels: {
-        created_at: "日期",
-        article_id: "id",
-        total_char: "字数",
-        browse: "访问量",
+       labels: {
+        q_id: "id",
         author: "作者",
-        tag: "标签",
-        cover: "封面",
-        title: "标题"
+        content: "内容"
       }
     };
   },
   methods: {
-    sortByBrowse(list1, list2) {
-      var browse1 = parseInt(list1.browse);
-      var browse2 = parseInt(list2.browse);
-      return browse1 - browse2;
-    },
-    sortByAmount(list1, list2) {
-      var total1 = parseInt(list1.total_char);
-      var total2 = parseInt(list2.total_char);
-      return total1 - total2;
-    },
     getCurrentItem(page) {
       //获取当前页的数据
       if (this.cacheData.has(page)) {
@@ -106,7 +90,7 @@ export default {
 </script>
 
 <style scoped>
-.article-list {
+.quotation-list {
   height: 70%;
 }
 .el-pagination {

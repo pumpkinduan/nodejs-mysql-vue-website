@@ -97,7 +97,7 @@ export default {
       }
       //向后台发送注册信息
       this.axios
-        .post("/api/user/register", { account, password: pwd })
+        .post("/user/register", { account, password: pwd })
         .then(res => {
           if (res.data && res.data.success) {
             this.$message({

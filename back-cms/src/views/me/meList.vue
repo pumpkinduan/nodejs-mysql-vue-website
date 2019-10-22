@@ -1,7 +1,7 @@
 <template>
-  <div class="quotation-list">
-    <List 
-       :labels="labels"
+  <div class="me-list">
+  <List 
+        :labels="labels"
         :tableData="tableData"
         :amount="amount"
         :pageSize="pageSize"
@@ -13,11 +13,11 @@
 </template>
 
 <script>
-import api from "@/api/quotation.js";
+import api from "@/api/me.js";
 import List from "@/components/List";
 export default {
   components: {
-    List
+      List
   },
   created() {
     api
@@ -41,9 +41,8 @@ export default {
       amount: 0, //总条数-
       pageSize: 5, //每页的条数
       pageBtns: 5, //页码按钮显示数量
-       labels: {
-        q_id: "id",
-        author: "作者",
+      labels: {
+        cover: "封面",
         content: "内容"
       }
     };
@@ -73,4 +72,5 @@ export default {
 </script>
 
 <style scoped>
+
 </style>

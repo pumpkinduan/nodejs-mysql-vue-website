@@ -5,11 +5,14 @@ import Login from './views/admin/login'
 import Register from './views/admin/register'
 import Error from './views/notFound.vue'
 import PublishArticle from "./views/article/PublishArticle";
-import ArticleList from "./views/article/ArticleList";
+import ArticleList from "./views/article/articleList";
 import EditArticle from "./views/article/EditArticle";
 import PublishQuotation from "./views/quotation/PublishQuotation";
 import EditQuotation from "./views/quotation/EditQuotation";
-import QuotationList from "./views/quotation/QuotationList";
+import QuotationList from "./views/quotation/quotationList";
+import PublishMe from "./views/me/PublishMe";
+import EditMe from "./views/me/EditMe";
+import MeList from "./views/me/meList";
 Vue.use(Router)
 
 const router = new Router({
@@ -50,6 +53,21 @@ const router = new Router({
           path: 'quotationList',
           name: 'QuotationList',
           component: QuotationList
+        },
+        {
+          path: 'publishMe',
+          name: 'PublishMe',
+          component: PublishMe
+        },
+        {
+          path: 'editMe',
+          name: 'EditMe',
+          component: EditMe
+        },
+        {
+          path: 'meList',
+          name: 'MeList',
+          component: MeList
         }
       ]
     },

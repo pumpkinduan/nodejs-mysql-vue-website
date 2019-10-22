@@ -81,11 +81,28 @@ export default {
               component: "QuotationList"
             }
           ]
+        },
+        {
+          icon: "el-icon-basketball",
+          name: "关于我",
+          children: [
+            {
+              name: "编辑信息",
+              component: "EditMe"
+            },
+            {
+              name: "发布信息",
+              component: "PublishMe"
+            },
+            {
+              name: "我的介绍",
+              component: "MeList"
+            }
+          ]
         }
       ]
     };
-  },
-  methods: {}
+  }
 };
 </script>
 

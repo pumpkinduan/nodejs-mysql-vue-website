@@ -57,7 +57,7 @@ class quotationDao {
                 q_id: id
             }
         }).then(quotation => {
-            if (quotation) { //data为Article的实例
+            if (quotation) {
                 quotation.update({
                     'author': info.author,
                     'content': info.content,

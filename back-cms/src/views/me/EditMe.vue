@@ -1,6 +1,6 @@
 <template>
-  <div class="edit-quotation">
-   <Edit
+  <div class="edit-me">
+    <Edit
        ref="edit"
       :labels="labels"
       :tableData="tableData"
@@ -19,7 +19,7 @@
   </div>
 </template>
 <script>
-import api from "@/api/quotation.js";
+import api from "@/api/me.js";
 import Edit from "@/components/Edit";
 export default {
   components: {
@@ -45,24 +45,23 @@ export default {
       id: "",
       search: "",
       dialogFormVisible: false,
-      editLists: {}, //待编辑的数据行
-      labels: { 
-        q_id: "id",
-        author: "作者",
-        content: "内容",
+      editLists: {},
+      labels: {
+        cover: "封面",
+        content: "内容"
       },
       cacheData: new Map(),
       tableData: [],
-      amount: 0, //总条数-
-      pageSize: 5, //每页的条数
-      pageBtns: 5 //页码按钮显示数量
+      amount: 0,
+      pageSize: 5,
+      pageBtns: 5
     };
   },
 
   methods: {
     submit(data) {
       api
-        .updateQuotation(this.id, data)
+        .updateMe(this.id, data)
         .then(res => {
           this.$refs.edit.quill.root.innerHTML = ""; //清空编辑器;
           this.$message({
@@ -76,8 +75,8 @@ export default {
     },
     handleEdit(index, row) {
       this.dialogFormVisible = true;
-      this.editQuotations = row;
-      this.id = row.q_id;
+      this.editLists = row;
+      this.id = row.id;
       this.$refs.edit.quill.root.innerHTML = row.content;
     },
     handleDelete(index, row) {
@@ -87,7 +86,7 @@ export default {
         type: "warning"
       })
         .then(() => {
-          api.deleteQuotation(row.q_id).then(res => {
+          api.deleteMe(row.id).then(res => {
             if (res.data && res.data.success) {
               this.$message.success(res.data.msg);
               this.tableData.splice(index, 1); //删除纪录
@@ -129,7 +128,7 @@ export default {
 };
 </script>
 <style scoped>
-.edit-quotation {
+.edit-me {
   height: 70%;
 }
 </style>

@@ -1,32 +1,30 @@
 <template>
-  <div class="publish-quotation">
-  <Publish
+  <div class="publish-me">
+    <Publish
       ref="publish"
       :labels="labels"
       :tableData="tableData"
       @submit="submit"
       @resetDialog="resetDialog"
-      title="每日一句"
+      title="关于我"
     />
   </div>
 </template>
 <script>
+import api from "@/api/me.js";
 import Publish from "@/components/Publish";
-import api from "@/api/quotation.js";
 export default {
-    components: {
+   components: {
     Publish
   },
   data() {
     return {
       labels: {
-        q_id: "id",
-        author: "作者",
+        cover: "封面"
       },
       tableData: [
         {
-          author: "",
-          q_id: "",
+          cover: ""
         }
       ]
     };
@@ -35,10 +33,11 @@ export default {
   methods: {
     submit(data) {
       api
-        .publishQuotation(data)
+        .publishMe(data)
         .then(res => {
-          this.$refs.publish.quill.root.innerHTML = ""; 
+          this.$refs.publish.quill.root.innerHTML = ""; //清空编辑器;
           for (var i in this.tableData[0]) {
+            //置空tableData
             this.tableData[0][i] = "";
           }
           this.$message({
@@ -59,14 +58,7 @@ export default {
 };
 </script>
 <style scoped>
-.publish-quotation {
+.publish-me {
   height: 70%;
-}
-.wrapper {
-  height: 100%;
-  margin: 25px 0;
-}
-.wrapper #editor {
-  height: calc(100% - 42px) !important;
 }
 </style>

@@ -97,7 +97,7 @@ class ArticleDao {
                 article_id: id
             }
         }).then(article => {
-            if (article) { //data为Article的实例
+            if (article) {
                 article.update({
                     'title': article_updated.title,
                     'content': article_updated.content,

@@ -1,15 +1,15 @@
 import axios from 'axios';
 export default {
     publishQuotation(data) {
-        return axios.post("/quotation/create", data);
+        return axios.post("/api/quotation/create", data);
     },
     deleteQuotation(id) {
-        return axios.delete("/quotation/delete/" + id);
+        return axios.delete("/api/quotation/delete/" + id);
     },
     getLists(params) {
-        return axios.get("/quotation/list", {params});
+        return axios.get("/api/quotation/list", {params});
     },
     updateQuotation(id, data) {
-        return axios.get("/quotation/update/" + id, {data});
+        return axios.get("/api/quotation/update/" + id, {data});
     }
 }

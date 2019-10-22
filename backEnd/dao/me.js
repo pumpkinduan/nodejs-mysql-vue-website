@@ -1,6 +1,6 @@
 const { Me } = require('../model/me');
 class meDao {
-    static createAboutMe(info, success) {
+    static createMe(info, success) {
         Me.findOne({
             where: {
                 content: info.content
@@ -24,7 +24,7 @@ class meDao {
             }
         })
     }
-    static exactAboutMe(success) {
+    static getLatestMe(success) {
         Me.findAndCountAll({
             limit: 1,
             order: [[
@@ -43,7 +43,69 @@ class meDao {
                 success(new global.errs.NotFound());
             }
         })
-
+    }
+    static updateMe(id, info, success) {
+        Me.findByPk(id).then( me => {
+            if ( me && info ) {
+                me.update({
+                    'content': info.content,
+                    'cover': info.cover
+                }).then(res => {
+                    console.log(res)
+                    success(false, { msg: '更新成功', success: true });
+                })
+            } else {
+                success(new global.errs.NotFound('所请求的资源不存在'));
+            }
+        }).catch( err => {
+            console.log(err);
+            success(new global.errs.HttpException());
+        })
+    }
+    static deleteOneMe(id, success) {
+        Me.findOne( {
+            where: {
+                id
+            }
+        }).then( (me) => {
+                if (me) {
+                    me.destroy().then(res => {
+                        success(false, {
+                            msg: '删除成功',
+                            success: true
+                        })
+                    }) 
+                } else {
+                    success(new global.errs.NotFound('数据不存在'))
+                }
+        } ).catch( err => {
+            console.log(err)
+        })
+    }
+    static getMeList(page = 1, desc = "created_at", success) {//获取quotation列表
+        const pageSize = 5; //每页的quotation数量
+        Me.findAndCountAll({
+            //分页
+            limit: pageSize,
+            offset: pageSize * (page - 1),
+            order: [[desc, 'DESC']] //按照quotation创建的时间倒序查找
+        }).then((me) => {
+            if (me && me.rows.length !== 0) {
+                success(false, {
+                    data: me.rows,
+                    meta: {
+                        count: me.count,
+                        pageSize: pageSize,
+                        success: true
+                    }
+                })
+            } else {
+                success(new global.errs.NotFound('数据为空'))
+            }
+        }).catch(err => {
+            success(new global.errs.HttpException());
+            throw err;
+        })
     }
 }
 module.exports = {

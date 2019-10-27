@@ -1,19 +1,30 @@
 <template>
-    <header class="clearfix">
-      <div class="inner-header clearfix">
-        <h1 class="logo fl">
-          <img src="@/assets/image/南瓜.jpg" width="60px">
-        </h1>
-        <ul class="fr nav">
-          <router-link v-for="(item, index) in navLinks" :key="index" :to="{name: item.component}">
-            <li>
-              <i :class="['iconfont', item.class]"></i>
-              <span>{{item.name}}</span>
-            </li>
-          </router-link>
+  <header class="clearfix">
+    <h1 class="fl">
+      <router-link to="/">
+        <img src="../assets/image/南瓜.jpg" style="width: 5em;" />
+      </router-link>
+    </h1>
+    <span class="fl logo orange">pumpkin</span>
+    <nav id="nav-btn" class="fr" @click="show = true;">
+      <ul>
+        <li>
+          <a href="#menu"></a>
+        </li>
+      </ul>
+    </nav>
+    <transition name="menu">
+      <section class="menu" v-show="show">
+        <i class="iconfont icon-weibiaoti34 close" @click.stop="show = false"></i>
+        <ul>
+          <li v-for="(item, prop, index) in navLinks" :key="index">
+            <i :class="item.class"></i>
+            <router-link :to="{name: item.component}">{{item.name}}</router-link>
+          </li>
         </ul>
-      </div>
-    </header>
+      </section>
+    </transition>
+  </header>
 </template>
   <script>
 export default {
@@ -21,78 +32,153 @@ export default {
     return {
       navLinks: [
         {
-          class: "icon-shouye",
+          class: "iconfont icon-shouye",
           component: "home",
           name: "首页"
         },
         {
-          class: "icon-xingxing1",
+          class: "iconfont icon-xingxing1",
           component: "home",
           name: "作品集"
         },
         {
-          class: "icon-faxian",
-          component: "home",
-          name: "旅游"
+          class: "iconfont icon-biaoqian3",
+          component: "blog",
+          name: "博客"
         },
         {
-          class: "icon-nangua",
-          component: "home",
-          name: "美食"
-        },
-        {
-          class: "icon-biaoqian3",
-          component: "home",
-          name: "标签"
-        },
-        {
-          class: "icon-liuyan",
+          class: "iconfont icon-liuyan",
           component: "home",
           name: "留言板"
         },
         {
-          class: "icon-sousuo",
-          component: "home",
-          name: "搜索"
+          class: "iconfont icon-guanyuwo",
+          component: "me",
+          name: "关于我"
         }
-      ]
+      ],
+      show: false
     };
+  },
+  method: {
+    hideMenu() {}
   }
 };
 </script>
 <style scoped>
+/* ----头部样式开始---- */
 header {
-    position: sticky;
-    top: 0;
-    z-index: 999;
+  position: sticky;
+  top: 0;
+  z-index: 999;
+  width: 100%;
+  padding: 1.2rem 3rem;
+  border-bottom: 1px solid #ccc;
+  box-shadow: 0 0 1px 1px #ddd;
+  background-color: #fff;
+  margin-bottom: 1.2rem;
+}
+header .logo {
+  font-style: italic;
+  color: orange;
+  font-size: 1.5rem;
+  display:inline-block;
+  line-height: 5rem;
+}
+header nav ul li a {
+  display: inline-block;
+  width: 5rem;
+  height: 5rem;
+  position: relative;
+}
+header nav ul li a:before,
+header nav ul li a:after {
+  content: "";
+  display: block;
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  top: 0;
+  right: 0;
+  background-size: 50%;
+  background-position: center;
+  background-repeat: no-repeat;
+  transition: opacity 0.3s;
+}
+header nav ul li a:before {
+  content: "";
+  opacity: 1;
+  background-image: url('data:image/svg+xml;utf8,<svg version="1.1" xmlns="http://www.w3.org/2000/svg" width="80" height="80" viewbox="0 0 80 80"><line x1="0" x2="80" y1="20" y2="20" stroke="gray" stroke-width="8" stroke-linecap="round"/><line x1="0" x2="80" y1="40" y2="40" stroke-linecap="round" stroke="gray" stroke-width="8"/><line x1="0" x2="80" y1="60" y2="60" stroke-linecap="round" stroke="gray" stroke-width="8"/></svg>');
+}
+header nav ul li a:after {
+  content: "";
+  opacity: 0;
+  background-image: url('data:image/svg+xml;utf8,<svg version="1.1" xmlns="http://www.w3.org/2000/svg" width="80" height="80" viewbox="0 0 80 80"><line x1="0" x2="80" y1="20" y2="20" stroke="orange" stroke-width="8" stroke-linecap="round"/><line x1="0" x2="80" y1="40" y2="40"  stroke="orange" stroke-width="8"/><line x1="0" x2="80" y1="60" y2="60" stroke="orange" stroke-width="8"/></svg>');
+}
+header nav ul li a:hover:after {
+  opacity: 1;
+}
+/* ----头部样式结束---- */
+
+/* ----右侧菜单栏开始---- */
+.menu {
+  width: 18rem;
+  height: 100vh;
+  position: fixed;
+  top: 0;
+  right: 0;
+  background-color: #666;
+  padding: 2rem 1.5rem 2.5rem 2rem;
+  color: #fff;
+  font-weight: 300;
+  /* 当设置为绝对定位元素且设置了transform时，该元素变得好像不完全脱离文档流了，使得网页出现了滚动条，待解？*/
+  /* 而fixed定位则不会出现上述情况 */
+  /* position: absolute; */
+  /* transform: translateX(100%); */
+}
+@media screen and (max-width: 768px) {
+  .menu {
     width: 100%;
-    background-color: #fff;
-    border-bottom: 1px solid #eee;
-    box-shadow: 0 0 1px 1px #ddd;
+  }
 }
-header .inner-header {
-    width: 70%;
-    margin: 0 auto;
-    padding: 20px 0;
+.menu .close {
+  font-size: 2rem;
+  position: absolute;
+  top: 1rem;
+  right: 5px;
+  cursor: pointer;
 }
-header .inner-header .nav {
-    margin-top: 7px;
+.menu .close:hover {
+  color: pink;
 }
-header .inner-header .nav li {
-    float: left;
-    padding: 15px 16px;
-    vertical-align: middle;
-    font-size: 16px;
-    color: rgb(54, 53, 53);
-    transition: all 0.3s;
+.menu ul li {
+  border-top: 1px solid hsla(0, 7%, 15%, 0.17);
+  padding: 1.5rem 0;
 }
-header .inner-header .nav li span {
-    margin-left: 3px;
+.menu ul li:first-child {
+  border: none;
 }
-
-header .inner-header .nav li:hover {
-    border-radius: 10px 18px;
-    background-color: #ff000c0d;
+.menu ul li:hover a,
+.menu ul li:hover i {
+  color: orange;
 }
-
+.menu i,
+.menu a {
+  color: #ccc;
+  transition: color 0.3s;
+  margin-right: 5px; 
+}
+/* 菜单栏的动画 */
+.menu-enter, .menu-leave-to {
+  opacity: 0;
+  transform: translateX(100%);
+}
+.menu-enter-active, .menu-leave-active {
+  transition: all .5s;
+}
+.menu-enter-to {
+  transform: translateX(0%);
+  opacity: 1;
+}
+/* ----右侧菜单栏结束---- */
 </style>

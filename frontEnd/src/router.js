@@ -11,16 +11,6 @@ export default new Router({
       name: 'home',
       component: Home,
       children: []
-    },
-    {
-      path: '/eidtEveDay',
-      name: 'eidtEveDay',
-      component: () => import('@/views/EditEveryDay.vue')
-    },
-    {
-      path: '/editTechBlog',
-      name: 'editTechBlog',
-      component: () => import('@/views/EditTechBlog.vue')
     }
   ]
 })

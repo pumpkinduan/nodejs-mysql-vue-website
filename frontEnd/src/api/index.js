@@ -4,7 +4,6 @@ export default {
         return axios.get('/api/quotation/exact');
     },
     getArticleList(params) {
-        console.log("params" + params)
         return axios.get('/api/article/list', {
             params: {
                 page: params

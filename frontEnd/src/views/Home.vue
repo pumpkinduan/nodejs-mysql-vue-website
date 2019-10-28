@@ -2,9 +2,9 @@
   <div class="home">
     <Header />
     <main class="clearfix">
-      <Quotation ref="quotation" />
+      <Quotation ref="quotation" @sendGap="sendGap" />
       <div class="wrap">
-        <Waterfall :cards="cards" ref="waterfall" @loadData="loadData">
+        <Waterfall :cards="cards" ref="waterfall" @loadData="loadData" :gap="gap">
           <template slot-scope="{data}">
             <ArticleCard :title="data.title" :tag="data.tag" :info="info" />
           </template>
@@ -30,6 +30,7 @@ export default {
   data() {
     return {
       cards: [],
+      gap: 300,
       page: 1,
       info:
         "Lorem ipsum Sed eiusmod esse aliqua sed inwfwawfawfwafwafwafwafwfawawf"
@@ -39,6 +40,9 @@ export default {
     this.getData();
   },
   methods: {
+    sendGap(gap) {
+      this.gap = gap;
+    },
     getData(page) {
       api
         .getArticleList(page)
@@ -46,6 +50,7 @@ export default {
           this.cards = result.data.data;
         })
         .catch(err => {
+          this.cards = []; //数据为空
           console.log(err);
         });
     },
@@ -62,8 +67,8 @@ export default {
   height: 100%;
 }
 .home main {
-  width: calc(100% - 2rem);
-  margin: 0 1rem;
+  width: 100%;
+  padding: 0 3rem;
   position: relative;
 }
 .wrap {

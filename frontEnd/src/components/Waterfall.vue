@@ -1,20 +1,29 @@
 <template>
-  <div class="waterfall-container" ref="waterfall_container" style="margin: 0 2rem;">
+  <div class="waterfall-container" ref="waterfall_container">
     <div
       class="waterfall-item"
-      :style="{width: `${width}px`, transition: 'all .4s', 'padding-right': `${gutter}px`}"
+      :style="{width: `${width}px`, transition: 'all .4s', 'padding': `0 ${gutter/2}px`}"
       ref="waterfall_item"
       v-for="(item, index) in lists"
       :key="index"
     >
       <slot :data="item"></slot>
     </div>
+    <Loading />
+    <footer class="loading-end" v-show="noData">爷啊，油库里面没油喽!!!</footer>
   </div>
 </template>
 
 <script>
+import Loading from "@/components/Loading";
+import {debounce} from "@/lib/debounce.js";
+import {throttle} from "@/lib/throttle.js";
 export default {
+  components: {
+    Loading
+  },
   props: {
+    gap: Number,
     gutter: {
       type: Number,
       default: 32
@@ -36,24 +45,26 @@ export default {
       width: 240,
       loadPage: 1,
       canLoad: true,
+      noData: false,
       lists: this.cards
     };
   },
   watch: {
     cards(newVal, oldVal) {
-      console.log('updateds')
-      this.lists.push(...newVal)
-      this.canLoad = true;
-      // if (newVal.length !== this.oldVal) {
-      //   this.canLoad = true;
-      // }
+      if (newVal.length < 1) {
+        this.$nextTick(() => {
+          this.noData = true;
+        });
+      } else {
+        this.lists.push(...newVal);
+        this.canLoad = true;
+      }
     }
   },
   updated() {
     this.setPostion();
   },
   mounted() {
-    console.log(this.lists)
     this.init();
   },
   computed: {
@@ -64,20 +75,17 @@ export default {
   },
   methods: {
     init() {
-      window.onresize = () => {
-        setTimeout(() => {
-          this.setPostion();
-        }, 300);
-      };
-      window.onscroll = () => {
-        if (this.isloadedMore() && this.canLoad) {
-          this.canLoad = false;
-          setTimeout(() => {
-            console.log("load");
-            this.$emit("loadData", this.loadPage);
-          }, 300);
+      let _self = this;
+      window.onresize = debounce(function() {
+        _self.setPostion();
+      }, 300);
+      window.onscroll = throttle(function() {
+        if (_self.isloadedMore() && _self.canLoad) {
+          _self.canLoad = false;
+          _self.loadPage++;
+          _self.$emit("loadData", _self.loadPage);
         }
-      };
+      }, 300);
     },
     setPostion() {
       //避免累加
@@ -93,7 +101,7 @@ export default {
           //计算并收集卡片的水平偏移量
           leftX.push(i * width);
           if (i == 0 || i == 1) {
-            heightArr.push(368); //第一行元素垂直方向排列的偏移量
+            heightArr.push(this.gap + gutter); //第一行元素垂直方向排列的偏移量
           } else {
             heightArr.push(0);
           }
@@ -138,16 +146,8 @@ export default {
     },
     isloadedMore() {
       const { heightArr } = this;
-      const heightMax = Math.max.apply(null, heightArr);
-      // const heightMinIndex = heightArr.indexOf(heightMin);
-      // const itemHeight = this.$refs.waterfall_item[heightMinIndex].offsetHeight;
-      // console.log("itemHeight" + heightMax)
-      // console.log("document.documentElement.scrollTop "+(window.innerHeight + document.documentElement.scrollTop))
-      // console.log(heightArr)
-      if (
-        heightMax <
-        window.innerHeight + document.documentElement.scrollTop
-      ) {
+      const heightMin = Math.min.apply(null, heightArr);
+      if (heightMin < window.innerHeight + document.documentElement.scrollTop) {
         return true;
       }
     }
@@ -158,6 +158,7 @@ export default {
 <style scoped>
 .waterfall-container {
   position: relative;
+  margin-bottom: 2rem;
 }
 .waterfall-item {
   width: 25% !important;
@@ -166,6 +167,29 @@ export default {
   right: 0;
   opacity: 0;
 }
+.loading-end {
+  width: 100%;
+  text-align: center;
+  position: absolute;
+  font-size: 1.6rem;
+  font-weight: 800;
+  color: #66666657;
+  bottom: -1rem;
+  left: 0;
+}
+@keyframes bounce {
+  0%,
+  10%,
+  100% {
+    top: 0;
+    transform: scale(1);
+  }
+  5% {
+    top: 20px;
+    transform: scale(2);
+  }
+}
+/* ---loading 动画--- */
 @media screen and (max-width: 1200px) {
   .waterfall-item {
     width: 33.33% !important;

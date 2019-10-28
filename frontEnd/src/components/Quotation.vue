@@ -1,7 +1,7 @@
 <template>
   <div class="wrapper">
-    <section class="quotation fl">
-      <el-carousel :interval="1000000" arrow="never" height="240px">
+    <section class="quotation fl" ref="quotation">
+      <el-carousel :interval="2000" arrow="never" height="300px">
         <el-carousel-item v-for="(item, index) in quotations" :key="index">
           <h1 class="clearfix">
             <span class="created-at fl">{{item.created_at}}</span>
@@ -22,6 +22,9 @@ export default {
       flag: false
     };
   },
+  mounted() {
+    this.$emit('sendGap', this.$refs.quotation.offsetHeight);
+  },
   created() {
     api
       .getQuotationList()
@@ -41,12 +44,12 @@ export default {
 .wrapper {
   position: relative;
   width: 50%;
-    padding: 0 2rem;
+  padding: 0 1rem;
 }
 .quotation {
-  overflow: hidden;
   width: 100%;
-  padding: 5rem 2rem 1rem 2rem;
+   font-size: 1rem;
+  padding: 4rem 2rem 1rem 2rem;
   background-color: rgba(0, 0, 0, 0.85);
 }
 .quotation .el-carousel {
@@ -64,7 +67,7 @@ export default {
   font-weight: 500;
   color: #fff;
   line-height: 24px;
-  font-size: 1rem;
+  font-size: 1em;
 }
 @media screen and (max-width: 1200px) {
   .wrapper {
@@ -73,10 +76,11 @@ export default {
 }
 @media screen and (max-width: 992px) {
   .wrapper {
-    width: calc(100% - 2rem);
-    margin: 0 2rem;
-    padding-right: 4rem;
-    padding-left: 0;
+    width: 100%;
+  }
+  .quotation {
+    padding-top: 1rem;
+    font-size: 0.8rem;
   }
   .quotation h1 span {
     width: 100%;

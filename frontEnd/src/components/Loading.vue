@@ -1,9 +1,9 @@
 <template>
   <transition name="pumpkin">
-    <div class="box" v-show="this.$store.state.showLoading">
+    <div class="box" v-show="$store.state.showLoading"> 
       <h1>爷啊，俺在拼命加载中...</h1>
-      <div class="spinner spinnerThree">
-        <span v-for="(item, index) in 7" :key="index"></span>
+      <div class="spinner">
+        <span v-for="(item, index) in 8" :key="index"></span>
       </div>
     </div>
   </transition>
@@ -13,9 +13,9 @@
 export default {
   data() {
     return {
-        mounted() {
-            console.log(this.$store.state.showLoading)
-        }
+      mounted() {
+        console.log(this.$store.state.showLoading);
+      }
     };
   }
 };
@@ -24,17 +24,18 @@ export default {
 <style scoped>
 /* loading 动画 */
 .box {
-  width: 24rem;
+  width: 12rem;
   position: fixed;
-  margin-left: -12rem;
+  margin-left: -6rem;
   left: 50%;
-  top: 1rem;
+  top: 2rem;
   z-index: 999;
 }
 .box h1 {
+  margin-bottom: 0.5rem;
+  font-size: 1rem;
   text-align: center;
-  margin-bottom: 1rem;
-  color: #66666657;
+  color: #777;
 }
 .spinner {
   width: 100%;
@@ -43,64 +44,64 @@ export default {
   transform: translateX(50%);
   display: inline-block;
   position: relative;
-  background-color: #fff;
+  background-color: transparent;
 }
-.spinnerThree span {
-  height: 4rem;
-  width: 4rem;
+.spinner span {
+  height: 2rem;
+  width: 2rem;
   border-radius: 50%;
   position: absolute;
-  background: url("../assets/image/南瓜.jpg") center center no-repeat;
+  background: url("../assets/image/pumpkin.png") center center no-repeat;
   background-size: 100% 100%;
 }
-
-.spinnerThree > span:nth-child(1) {
+.spinner > span:nth-child(1) {
   top: 0;
   left: 0px;
   animation: bounce 2s linear 0s infinite;
 }
 
-.spinnerThree > span:nth-child(2) {
+.spinner > span:nth-child(2) {
   top: 0;
-  left: 55px;
+  left: 25px;
   animation: bounce 2s linear 0.09s infinite;
 }
 
-.spinnerThree > span:nth-child(3) {
+.spinner > span:nth-child(3) {
   top: 0;
-  left: 110px;
+  left: 50px;
   animation: bounce 2s linear 0.18s infinite;
 }
 
-.spinnerThree > span:nth-child(4) {
+.spinner > span:nth-child(4) {
   top: 0;
-  left: 165px;
+  left: 75px;
   animation: bounce 2s linear 0.27s infinite;
 }
 
-.spinnerThree > span:nth-child(5) {
+.spinner > span:nth-child(5) {
   top: 0;
-  left: 218px;
+  left: 100px;
   animation: bounce 2s linear 0.36s infinite;
 }
 
-.spinnerThree > span:nth-child(6) {
+.spinner > span:nth-child(6) {
   top: 0;
-  left: 272px;
+  left: 125px;
   animation: bounce 2s linear 0.45s infinite;
 }
 
-.spinnerThree > span:nth-child(7) {
+.spinner > span:nth-child(7) {
   top: 0;
-  left: 325px;
+  left: 150px;
   animation: bounce 2s linear 0.54s infinite;
 }
 
-.spinnerThree > span:nth-child(8) {
+.spinner > span:nth-child(8) {
   top: 0;
-  left: 380px;
+  left: 175px;
   animation: bounce 2s linear 0.63s infinite;
 }
+
 .pumpkin-enter,
 .pumpkin-leave-to {
   opacity: 0;
@@ -108,21 +109,22 @@ export default {
 }
 .pumpkin-enter-active,
 .pumpkin-leave-active {
-  transition: all 0.5s;
+  transition: all 0.8s;
 }
 .pumpkin-enter-to {
-  transform: translateY(0%);
+  transform: translateY(180%);
 }
+
 @keyframes bounce {
   0%,
-  10%,
+  20%,
   100% {
     top: 0;
     transform: scale(1);
   }
-  5% {
+  9% {
     top: 20px;
-    transform: scale(2);
+    transform: scale(3);
   }
 }
 /* ---loading 动画--- */

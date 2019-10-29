@@ -11,7 +11,9 @@
         </Waterfall>
       </div>
     </main>
-    <footer></footer>
+    <footer>
+      <Footer />
+    </footer>
   </div>
 </template>
 <script>
@@ -20,12 +22,14 @@ import Quotation from "@/components/Quotation.vue";
 import ArticleCard from "@/components/ArticleCard.vue";
 import api from "@/api/index.js";
 import Waterfall from "@/components/Waterfall";
+import Footer from "@/components/Footer";
 export default {
   components: {
     Header,
     Quotation,
     ArticleCard,
-    Waterfall
+    Waterfall,
+    Footer
   },
   data() {
     return {
@@ -51,7 +55,6 @@ export default {
         })
         .catch(err => {
           this.cards = []; //数据为空
-          console.log(err);
         });
     },
     loadData(page) {

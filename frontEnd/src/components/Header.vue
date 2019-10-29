@@ -2,7 +2,7 @@
   <header class="clearfix">
     <h1 class="fl">
       <router-link to="/">
-        <img src="../assets/image/南瓜.jpg" style="width: 5em;" />
+        <img src="../assets/image/pumpkin.png" style="width: 5em;" />
       </router-link>
     </h1>
     <span class="fl logo orange">pumpkin</span>
@@ -79,8 +79,9 @@ header {
   margin-bottom: 1.2rem;
 }
 header .logo {
-  font-style: italic;
-  color: orange;
+  font-family: cursive;
+  letter-spacing: 5px;
+  color: #ff450085;
   font-size: 1.5rem;
   display:inline-block;
   line-height: 5rem;
@@ -154,6 +155,7 @@ header nav ul li a:hover:after {
 .menu ul li {
   border-top: 1px solid hsla(0, 7%, 15%, 0.17);
   padding: 1.5rem 0;
+  transition: color .4s;
 }
 .menu ul li:first-child {
   border: none;

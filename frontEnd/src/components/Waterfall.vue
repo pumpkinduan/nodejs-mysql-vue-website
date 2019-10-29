@@ -45,7 +45,7 @@ export default {
       width: 240,
       loadPage: 1,
       canLoad: true,
-      noData: false,
+      noData: true,
       lists: this.cards
     };
   },
@@ -169,25 +169,13 @@ export default {
 }
 .loading-end {
   width: 100%;
+  letter-spacing: 2px;
+  font: italic bold 1.6rem sans-serif;
   text-align: center;
   position: absolute;
-  font-size: 1.6rem;
-  font-weight: 800;
   color: #66666657;
   bottom: -1rem;
   left: 0;
-}
-@keyframes bounce {
-  0%,
-  10%,
-  100% {
-    top: 0;
-    transform: scale(1);
-  }
-  5% {
-    top: 20px;
-    transform: scale(2);
-  }
 }
 /* ---loading 动画--- */
 @media screen and (max-width: 1200px) {

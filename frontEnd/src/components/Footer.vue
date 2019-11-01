@@ -7,11 +7,11 @@
         <section class="copyright">
           <span>@ 南瓜的时光机</span><span class="line"></span><span class="author">
             Author:
-            <a href>Pumpkin</a>
+            <a href="#">Pumpkin</a>
           </span>
         </section>
       </li>
-      <li class="link fr">
+      <li class="link fl">
         <h2>F O L L O W</h2>
         <div>
           <a 
@@ -33,10 +33,15 @@
 .footer {
   background-color: #eee;
   padding: 4rem;
-  font: bold 1.4rem cursive;
+  font: bold 1.4rem cursive !important;
+  /* font-family: cursive; */
   margin-top: 2rem;
 }
 /* --底部关于开始-- */
+.footer .about {
+  margin-bottom: 1.5rem;
+    margin-right: 20%;
+}
 .footer .about h1,
 .footer .link h2 {
   color: #333;
@@ -72,6 +77,7 @@
 /* --底部链接开始-- */
 .footer .link div {
     margin-top: 2rem;
+   
 }
 .footer .link a {
   border: 1px solid #777;

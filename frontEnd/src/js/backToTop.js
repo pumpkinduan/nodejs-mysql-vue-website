@@ -41,28 +41,38 @@ import {animate} from '@/lib/animate.js'
     }
     function createBtn() {
         var div = document.createElement('div');
-        div.innerHTML = 'TOP';
+        div.innerHTML = ` <svg width="50" height="50" viewBox="0 0 50 50" xmlns="http://www.w3.org/2000/svg">
+        <polyline 
+        points="15 30, 25 20, 35 30"
+        stroke-width="4"
+        stroke="#eee"
+        stroke-linecap="round"
+        stroke-opacity="0.6"
+         fill="transparent"
+         stroke-linejoin="round"
+         />
+         
+    </svg>`;
         div.id = 'backToTop';
         document.body.appendChild(div);
     }
     function setStyle() {
         var style = document.createElement('style');
         style.innerHTML = ` #backToTop {
-                                width: 30px;
-                                height: 40px;
-                                border-radius: 8px;
-                                background: rgba(0,0,0,.85);
-                                text-align: center;
-                                line-height: 40px;
-                                color: #fff;
-                                font-weight: 500;
+                                width: 50px;
+                                height: 50px;
+                                border-radius: 50%;
+                                background: rgba(0,0,0,.75);
                                 position: fixed;
-                                bottom: -40px;
-                                right: 5%;
-                                font-size: 12px;
+                                bottom: -50px;
+                                right: 2%;
                                 cursor: pointer;
-                                padding: 0 5px;
-                                tansition: all .3s;
+                            }
+                            polyline {
+                                transition: all .3s;
+                            }
+                            #backToTop:hover polyline {
+                                stroke-opacity: .85;
                             }`;
         document.head.appendChild(style);
     }

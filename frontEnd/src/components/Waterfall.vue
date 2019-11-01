@@ -10,7 +10,6 @@
       <slot :data="item"></slot>
     </div>
     <Loading />
-    <footer class="loading-end" v-show="noData">爷啊，油库里面没油喽!!!</footer>
   </div>
 </template>
 
@@ -45,7 +44,6 @@ export default {
       width: 240,
       loadPage: 1,
       canLoad: true,
-      noData: true,
       lists: this.cards
     };
   },
@@ -53,7 +51,7 @@ export default {
     cards(newVal, oldVal) {
       if (newVal.length < 1) {
         this.$nextTick(() => {
-          this.noData = true;
+           this.canLoad = false;
         });
       } else {
         this.lists.push(...newVal);
@@ -167,17 +165,6 @@ export default {
   right: 0;
   opacity: 0;
 }
-.loading-end {
-  width: 100%;
-  letter-spacing: 2px;
-  font: italic bold 1.6rem sans-serif;
-  text-align: center;
-  position: absolute;
-  color: #66666657;
-  bottom: -1rem;
-  left: 0;
-}
-/* ---loading 动画--- */
 @media screen and (max-width: 1200px) {
   .waterfall-item {
     width: 33.33% !important;

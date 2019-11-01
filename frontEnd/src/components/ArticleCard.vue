@@ -2,23 +2,24 @@
   <article class="card">
     <div class="inner">
       <h1 class="cover">
-        <router-link to="/">
+        <router-link :to="{name: 'detail', params: {articleId: `${article_id}`, showList: false}}">
           <img src="../assets/image/diagonal-building.jpg" width="100%" />
         </router-link>
       </h1>
       <section>
         <p class="tag">{{tag}}</p>
-        <router-link to="/">
+        <router-link :to="{name: 'detail', params: {articleId: `${article_id}`, showList: false}}">
           <p class="title">{{title}}</p>
         </router-link>
-        <div class="sub-content">{{info}}</div>
+        <div class="description">{{description}}</div>
       </section>
     </div>
   </article>
 </template>
 <script>
 export default {
-  props: ["title", "tag", "cover", "src", "info"],
+  props: ["title", "tag", "cover", "src", "description", "article_id"],
+
 };
 </script>
 <style scoped>
@@ -68,17 +69,18 @@ export default {
   opacity: 1;
 }
 .card .tag {
-  color: #333;
+  color: #666;
   margin: 1.2rem 0;
   font-size: 1rem;
+   font-weight: 400;
 }
 .card .title {
-  color: #222;
-  font-weight: 800;
+  color: #223;
+  font-weight: 500;
   margin-bottom: 1rem;
   font-size: 1.2rem;
 }
-.card .sub-content {
+.card .description {
   font-size: 1.3rem;
   color: #666;
   line-height: 1.5rem;

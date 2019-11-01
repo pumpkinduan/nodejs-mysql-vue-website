@@ -6,7 +6,12 @@
       <div class="wrap">
         <Waterfall :cards="cards" ref="waterfall" @loadData="loadData" :gap="gap">
           <template slot-scope="{data}">
-            <ArticleCard :title="data.title" :tag="data.tag" :info="info" />
+            <ArticleCard
+              :title="data.title"
+              :article_id="data.article_id"
+              :tag="data.tag"
+              :description="data.description"
+            />
           </template>
         </Waterfall>
       </div>
@@ -35,9 +40,7 @@ export default {
     return {
       cards: [],
       gap: 300,
-      page: 1,
-      info:
-        "Lorem ipsum Sed eiusmod esse aliqua sed inwfwawfawfwafwafwafwafwfawawf"
+      page: 1
     };
   },
   created() {

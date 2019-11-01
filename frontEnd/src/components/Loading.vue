@@ -9,18 +9,6 @@
   </transition>
 </template>
 
-<script>
-export default {
-  data() {
-    return {
-      mounted() {
-        console.log(this.$store.state.showLoading);
-      }
-    };
-  }
-};
-</script>
-
 <style scoped>
 /* loading 动画 */
 .box {
@@ -28,7 +16,7 @@ export default {
   position: fixed;
   margin-left: -6rem;
   left: 50%;
-  top: 2rem;
+  top: 1rem;
   z-index: 999;
 }
 .box h1 {
@@ -105,14 +93,14 @@ export default {
 .pumpkin-enter,
 .pumpkin-leave-to {
   opacity: 0;
-  transform: translateY(-100%);
+  top: -5rem;
 }
 .pumpkin-enter-active,
 .pumpkin-leave-active {
   transition: all 0.8s;
 }
 .pumpkin-enter-to {
-  transform: translateY(180%);
+   top: 1rem;
 }
 
 @keyframes bounce {

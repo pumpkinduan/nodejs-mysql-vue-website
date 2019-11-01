@@ -1,5 +1,5 @@
 <template>
-  <header class="clearfix">
+  <header class="clearfix">  
     <h1 class="fl">
       <router-link to="/">
         <img src="../assets/image/pumpkin.png" style="width: 5em;" />
@@ -9,7 +9,7 @@
     <nav id="nav-btn" class="fr" @click="show = true;">
       <ul>
         <li>
-          <a href="#menu"></a>
+          <a href="javascript:;"></a>
         </li>
       </ul>
     </nav>
@@ -19,7 +19,7 @@
         <ul>
           <li v-for="(item, prop, index) in navLinks" :key="index">
             <i :class="item.class"></i>
-            <router-link :to="{name: item.component}">{{item.name}}</router-link>
+            <router-link :to="{name: item.component, params: {showList: true}}">{{item.name}}</router-link>
           </li>
         </ul>
       </section>
@@ -43,7 +43,7 @@ export default {
         },
         {
           class: "iconfont icon-biaoqian3",
-          component: "blog",
+          component: "article",
           name: "博客"
         },
         {
@@ -53,7 +53,7 @@ export default {
         },
         {
           class: "iconfont icon-guanyuwo",
-          component: "me",
+          component: "about",
           name: "关于我"
         }
       ],

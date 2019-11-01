@@ -16,6 +16,8 @@ th, td, div, header ,main, footer, section, article, aside { /* table elements �
     padding: 0;
     color: #222;
     box-sizing: border-box;
+    font-family: Helvetica, "Microsoft YaHei", sans-serif;
+    letter-spacing: 1px;
 }
 
 html,body {
@@ -39,7 +41,9 @@ abbr[title], acronym[title] { /* 注：1.ie6 不支持 abbr; 2.这里用了属�
 border-bottom: 1px dotted;
 cursor: help;
 }
-
+.ql-editor {
+    padding: 0 !important;
+}
 q:before, q:after { content: ''; }
 
 /* 重置表单元素 */

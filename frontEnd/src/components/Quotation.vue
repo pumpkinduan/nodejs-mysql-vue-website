@@ -64,8 +64,8 @@ export default {
   margin-bottom: 20px;
 }
 .quotation .content {
-  font-weight: 500;
-  color: #fff;
+  font-weight: 300;
+  color: #dcd5d5e0;
   line-height: 24px;
   font-size: 1em;
 }

@@ -90,3 +90,6 @@ hr {
 img {
     display: block;
 }
+.middle {
+    vertical-align: middle;
+}

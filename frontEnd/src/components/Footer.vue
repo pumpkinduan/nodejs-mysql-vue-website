@@ -32,7 +32,7 @@
 <style scoped>
 .footer {
   background-color: #eee;
-  padding: 4rem;
+  padding: 4rem 4rem 0;
   font: bold 1.4rem cursive !important;
   /* font-family: cursive; */
   margin-top: 2rem;

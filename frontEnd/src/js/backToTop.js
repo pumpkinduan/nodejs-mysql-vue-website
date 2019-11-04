@@ -67,6 +67,7 @@ import {animate} from '@/lib/animate.js'
                                 bottom: -50px;
                                 right: 2%;
                                 cursor: pointer;
+                                z-index: 999999;
                             }
                             polyline {
                                 transition: all .3s;

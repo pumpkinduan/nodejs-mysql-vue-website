@@ -3,7 +3,7 @@
     <div class="inner">
       <h1 class="cover">
         <router-link :to="{name: 'detail', params: {articleId: `${article_id}`, showList: false}}">
-          <img src="../assets/image/diagonal-building.jpg" width="100%" />
+          <img src="http://n4-q.mafengwo.net/s15/M00/C7/3D/CoUBGV20DkWAapI_ABQ1nzdiSrA455.jpg?imageMogr2%2Fthumbnail%2F%21440x300r%2Fstrip%2Fgravity%2FCenter%2Fcrop%2F%21440x300%2Fquality%2F90" width="100%" />
         </router-link>
       </h1>
       <section>
@@ -78,10 +78,10 @@ export default {
   color: #223;
   font-weight: 500;
   margin-bottom: 1rem;
-  font-size: 1.2rem;
+  font-size: 1rem;
 }
 .card .description {
-  font-size: 1.3rem;
+  font-size: 0.9rem;
   color: #666;
   line-height: 1.5rem;
   word-break: break-all;

@@ -20,6 +20,9 @@
         <template slot="header" slot-scope="scope">
           <el-input v-model="search" placeholder="输入关键字搜索" />
         </template>
+        <template slot-scope="scope">
+           <slot name="only" :scopeProp="scope"></slot>
+        </template>
       </el-table-column>
     </el-table>
     <el-pagination
@@ -34,7 +37,6 @@
 </template>
 
 <script>
-import api from "@/api/article.js";
 export default {
   props: {
     tableData: Array,

@@ -25,7 +25,6 @@ axios.interceptors.request.use((config) => {
 //end loading
 function endLoading(response) {
     lodingInstancer.close();
-    return response;
 }
 //响应拦截
 axios.interceptors.response.use((response) => {

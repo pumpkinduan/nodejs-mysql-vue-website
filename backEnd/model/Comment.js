@@ -4,23 +4,10 @@
 const { Sequelize, Model } = require('sequelize');
 const { sequelize } = require('../core/db');
 const moment = require('moment');
-class Article extends Model { }
-Article.init({
-    title: Sequelize.STRING(32),
-    author: Sequelize.STRING(16),
-    tag: Sequelize.STRING(16),
-    content: Sequelize.TEXT,
-    cover: Sequelize.STRING,//文章封面
-    description: Sequelize.TEXT,
-    browse: {
-        type: Sequelize.INTEGER,
-        defaultValue: 0
-    },
-    total_char: Sequelize.INTEGER,
-    article_id: {
-        type: Sequelize.INTEGER,
-        unique: true
-    },
+class Comment extends Model { }
+Comment.init({
+    comment: Sequelize.STRING(256),
+    name: Sequelize.STRING(32),
     created_at: {
         type: Sequelize.DATE,
         get() {
@@ -35,8 +22,8 @@ Article.init({
     }
 }, {
     sequelize,
-    tableName: 'Article'
+    tableName: 'Comment'
 }).sync({alter: true});//增加或删除字段时自动适应数据表
 module.exports = {
-    Article
+    Comment
 }

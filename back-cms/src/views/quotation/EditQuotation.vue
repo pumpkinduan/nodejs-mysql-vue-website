@@ -64,7 +64,7 @@ export default {
       api
         .updateQuotation(this.id, data)
         .then(res => {
-          this.$refs.edit.quill.root.innerHTML = ""; //清空编辑器;
+          this.$refs.edit.quill.root.innerText = ""; //清空编辑器;
           this.$message({
             message: res.data.msg,
             duration: 1000
@@ -78,7 +78,7 @@ export default {
       this.dialogFormVisible = true;
       this.editQuotations = row;
       this.id = row.q_id;
-      this.$refs.edit.quill.root.innerHTML = row.content;
+      this.$refs.edit.quill.root.innerText = row.content;
     },
     handleDelete(index, row) {
       this.$confirm("此操作将永久删除该条语录, 是否继续?", "提示", {

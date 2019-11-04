@@ -48,7 +48,8 @@ export default {
         title: "标题",
         tag: "标签",
         total_char: "字数",
-        browse: "访问量"
+        browse: "访问量",
+        description: "描述"
       },
       editLists: {}, //待编辑的数据行
       tableData: [],

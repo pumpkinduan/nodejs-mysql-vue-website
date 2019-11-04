@@ -4,15 +4,16 @@ import Home from './views/Home.vue'
 import Login from './views/admin/login'
 import Register from './views/admin/register'
 import Error from './views/notFound.vue'
-import PublishArticle from "./views/article/PublishArticle";
+import PublishArticle from "./views/article/publishArticle";
 import ArticleList from "./views/article/articleList";
-import EditArticle from "./views/article/EditArticle";
-import PublishQuotation from "./views/quotation/PublishQuotation";
-import EditQuotation from "./views/quotation/EditQuotation";
+import EditArticle from "./views/article/editArticle";
+import PublishQuotation from "./views/quotation/publishQuotation";
+import EditQuotation from "./views/quotation/editQuotation";
 import QuotationList from "./views/quotation/quotationList";
-import PublishMe from "./views/me/PublishMe";
-import EditMe from "./views/me/EditMe";
+import PublishMe from "./views/me/publishMe";
+import EditMe from "./views/me/editMe";
 import MeList from "./views/me/meList";
+import CommentList from "./views/comment/commentList";
 Vue.use(Router)
 
 const router = new Router({
@@ -55,9 +56,14 @@ const router = new Router({
           component: QuotationList
         },
         {
-          path: 'publishMe',
+          path: 'quotationList',
           name: 'PublishMe',
           component: PublishMe
+        },
+        {
+          path: 'commentList',
+          name: 'CommentList',
+          component: CommentList
         },
         {
           path: 'editMe',

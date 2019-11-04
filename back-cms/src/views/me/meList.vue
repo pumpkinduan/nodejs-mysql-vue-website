@@ -42,6 +42,7 @@ export default {
       pageSize: 5, //每页的条数
       pageBtns: 5, //页码按钮显示数量
       labels: {
+        created_at: "创建时间",
         cover: "封面",
         content: "内容"
       }

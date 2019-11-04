@@ -1,24 +1,25 @@
 <template>
-  <div class="quotation-list">
-    <List 
-       :labels="labels"
-        :tableData="tableData"
-        :amount="amount"
-        :pageSize="pageSize"
-        :pageBtns="pageBtns"
-        :cacheData="cacheData"
-        @getCurrentItem="getCurrentItem"
-    />
+  <div class="comment-list">
+    <List
+      :labels="labels"
+      :tableData="tableData"
+      :amount="amount"
+      :pageSize="pageSize"
+      :pageBtns="pageBtns"
+      :cacheData="cacheData"
+      @getCurrentItem="getCurrentItem"
+    >
+      <template slot="only" slot-scope="{scopeProp}">
+        <el-button type="danger" @click="handleDelete(scopeProp.$index, scopeProp.row)">删除</el-button>
+      </template>
+    </List>
   </div>
 </template>
 
 <script>
-import api from "@/api/quotation.js";
+import api from "@/api/comment.js";
 import List from "@/components/List";
 export default {
-  components: {
-    List
-  },
   created() {
     api
       .getLists()
@@ -34,22 +35,48 @@ export default {
         console.log(err);
       });
   },
+  components: {
+    List
+  },
   data() {
     return {
+      search: "",
       tableData: [],
       cacheData: new Map(), //缓存条目数据
       amount: 0, //总条数-
       pageSize: 5, //每页的条数
       pageBtns: 5, //页码按钮显示数量
-       labels: {
-        created_at: "创建时间",
-        q_id: "id",
-        author: "作者",
-        content: "内容"
+      labels: {
+        created_at: "日期",
+        id: "id",
+        name: "名字",
+        comment: "评论"
       }
     };
   },
   methods: {
+    handleDelete(index, row) {
+      this.$confirm("此操作将永久删除该评论, 是否继续?", "提示", {
+        confirmButtonText: "确定",
+        cancelButtonText: "取消",
+        type: "warning"
+      })
+        .then(() => {
+          console.log(555)
+          api.deleteComment(row.id).then(res => {
+            if (res.data && res.data.success) {
+              this.$message.success(res.data.msg);
+              this.tableData.splice(index, 1); //删除纪录
+            }
+          });
+        })
+        .catch(() => {
+          this.$message({
+            type: "info",
+            message: "已取消删除"
+          });
+        });
+    },
     getCurrentItem(page) {
       //获取当前页的数据
       if (this.cacheData.has(page)) {

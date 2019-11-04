@@ -20,8 +20,9 @@ class ArticleDao {
                 article.total_char = info.total_char;
                 article.article_id = info.article_id;
                 article.browse = info.browse;
+                article.description = info.description
                 article.save().then((res) => {
-                    success(false, { msg: '添加成功', success: true })
+                    success(false, { msg: '添加成功', success: true });
                 }).catch(err => { success(new global.errs.HttpException()); console.log(err); })
             }
         }).catch(err => {
@@ -45,13 +46,13 @@ class ArticleDao {
                         pageSize: pageSize,
                         success: true
                     }
-                })
+                });
             } else {
-                success(new global.errs.NotFound('数据为空'))
+                success(new global.errs.NotFound('数据为空'));
             }
         }).catch(err => {
             success(new global.errs.HttpException());
-            throw err;
+            console.log(err)
         })
     }
     static getArticleDetailById(id, success) {//获取文章详情
@@ -105,9 +106,11 @@ class ArticleDao {
                     'tag': article_updated.tag,
                     'author': article_updated.author,
                     'browse': article_updated.browse,
-                    'cover': article_updated.cover
+                    'cover': article_updated.cover,
+                    'description': article_updated.description
                 }).then(res => {
                     success(false, { msg: '更新成功', success: true });
+
                 })
             } else {
                 success(new global.errs.NotFound('数据为空'))

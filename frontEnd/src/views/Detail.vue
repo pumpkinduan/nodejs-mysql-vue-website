@@ -1,29 +1,28 @@
 <template>
   <div class="detail">
     <main>
-      <section class="clearfix intro">
-        <h1 class="fl">
-          <img
-            src="../assets/image/diagonal-building.jpg"
-            width="100%"
-            style="border-radius: 6px;box-shadow: 0 0 3px 1px rgba(0,0,0,.3);"
-          />
-        </h1>
-        <aside class="fl">
+      <header class="pic"></header>
+      <div class="left-aside">
+        <section>
           <h2>{{details.title}}</h2>
-          <ul class="clearfix">
+          <ul class="clearfix tags">
             <li>发布于: {{ details.created_at}}</li>
             <li>标签: {{ details.tag}}</li>
             <li>浏览量: {{ details.browse}}</li>
             <li>字数: {{ details.total_char}}</li>
           </ul>
           <div class="description">{{ details.description }}</div>
-        </aside>
-      </section>
-      <div class="ql-snow">
-        <div class="ql-editor">
-          <div v-html="details.content" class="content"></div>
+        </section>
+        <div class="ql-snow">
+          <div class="ql-editor">
+            <div v-html="details.content" class="content"></div>
+          </div>
         </div>
+       
+        <section class="wrap-comment">
+          <Comment 
+          />
+        </section>
       </div>
     </main>
   </div>
@@ -31,8 +30,11 @@
 
 <script>
 import api from "@/api/index.js";
-
+import Comment from "@/components/Comment";
 export default {
+  components: {
+    Comment
+  },
   beforeRouteEnter(to, from, next) {
     //请求数据
     api
@@ -51,51 +53,66 @@ export default {
   },
   data() {
     return {
-      details: []
+      details: [],
+     
     };
   },
   created() {},
-  methods: {}
+  methods: {
+    
+  }
 };
 </script>
 
 <style scoped>
-.detail main aside h2 {
+.detail header {
+  width: 100%;
+  height: 400px;
+  background: url("http://n4-q.mafengwo.net/s15/M00/C7/3D/CoUBGV20DkWAapI_ABQ1nzdiSrA455.jpg?imageMogr2%2Fstrip")
+    0 0 no-repeat;
+  background-size: cover;
+  margin-bottom: 3rem;
+  box-shadow: 0 0 3px 1px rgba(0, 0, 0, 0.6);
+}
+.detail main section h2 {
   font-size: 1.5rem;
-  font-weight: 700;
-  color: #666;
+  font-weight: 500;
+  color: #444;
   margin-bottom: 0.8rem;
 }
-.detail main aside ul li {
+.detail main section .tags>li {
   float: left;
   margin-right: 1rem;
-  font-size: 1rem;
-  font-weight: 900;
+  font-size: 0.9rem;
+  font-weight: 540;
   color: #999;
 }
 .detail main .content {
-  margin-top: 2rem;
+  margin: 3rem 0;
+  line-height: 1.5rem;
+  padding-bottom: 2rem;
+  border-bottom: 1px solid #eee;
 }
 .detail main .description {
-  max-width: 22rem;
+  max-width: 30rem;
   overflow: auto;
   color: #555;
-  font-size: 01rem;
+  font-size: 1rem;
   font-weight: 700;
   line-height: 1.5rem;
   margin-top: 1rem;
   word-break: break-all;
 }
+
 @media screen and (min-width: 920px) {
-  .detail {
+  .detail main {
     padding: 3rem 12rem;
   }
   .detail main h1 {
-    width: calc(40% - 1rem);
-    margin-right: 1rem;
+    width: 100%;
   }
-  .detail main aside {
-    width: 60%;
+  .detail main .left-aside {
+    width: 70%;
   }
 }
 @media screen and (max-width: 920px) {
@@ -104,7 +121,7 @@ export default {
     margin-right: 0;
     margin-bottom: 1rem;
   }
-  .detail main aside {
+  .detail main .left-aside {
     width: 100%;
   }
   .detail {

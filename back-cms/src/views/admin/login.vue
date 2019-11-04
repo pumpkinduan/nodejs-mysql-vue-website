@@ -13,7 +13,7 @@
 
         <!-- <el-form-item label="记住密码">
           <el-switch v-model="isRemember"></el-switch>
-        </el-form-item> -->
+        </el-form-item>-->
 
         <el-form-item>
           <el-button type="success" @click="submitForm">登录</el-button>
@@ -25,8 +25,9 @@
 
 <script>
 import validator from "@/util/validateInfo.js";
-import jwtDecode from 'jwt-decode';
-import { mapActions } from 'vuex';
+import jwtDecode from "jwt-decode";
+import { mapActions } from "vuex";
+import api from "@/api/admin.js";
 export default {
   mounted() {
     this.loginForm.account = localStorage.getItem("account");
@@ -74,8 +75,8 @@ export default {
   },
   methods: {
     ...mapActions([
-      'set_admin', //this.set_admin() --> this.$store.dispatch('set_admin')
-      'set_authenticated'
+      "set_admin", //this.set_admin() --> this.$store.dispatch('set_admin')
+      "set_authenticated"
     ]),
     submitForm() {
       //密码校验
@@ -97,29 +98,27 @@ export default {
           showClose: true
         });
       }
-      this.axios
-        .post("/user/login", { account: account, password: pwd })
-        .then(
-          res => {
-            const data = res.data;
-            if (data && data.success) {
-              if ( data.token ) {
-                localStorage.setItem('token', data.token);
-                const decoded = jwtDecode(data.token);
-                this.set_admin(decoded);
-                this.set_authenticated(true);//表示登录成功
-              } else {
-                this.set_authenticated(false);
-              }
-              this.$router.push({ name: "home" });
+      api.login({ account: account, password: pwd }).then(
+        res => {
+          const data = res.data;
+          if (data && data.success) {
+            if (data.token) {
+              localStorage.setItem("token", data.token);
+              const decoded = jwtDecode(data.token);
+              this.set_admin(decoded);
+              this.set_authenticated(true); //表示登录成功
+            } else {
+              this.set_authenticated(false);
             }
-          },
-          err => {
-            this.loginForm.account = "";
-            this.loginForm.pwd = "";
-            throw err;
+            this.$router.push({ name: "home" });
           }
-        );
+        },
+        err => {
+          this.loginForm.account = "";
+          this.loginForm.pwd = "";
+          throw err;
+        }
+      );
     }
   }
 };

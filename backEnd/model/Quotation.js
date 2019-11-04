@@ -4,6 +4,7 @@
 const { Sequelize, Model } = require('sequelize');
 const { sequelize } = require('../core/db');
 class Quotation extends Model { }
+const moment = require('moment');
 Quotation.init({
     content: {
         type: Sequelize.TEXT,
@@ -13,6 +14,12 @@ Quotation.init({
     q_id: {
         type: Sequelize.INTEGER,
         unique: true
+    },
+    created_at: {
+        type: Sequelize.DATE,
+        get() {
+            return moment(this.getDataValue('created_at')).format('YYYY-MM-DD');
+        }
     }
 }, {
     sequelize,

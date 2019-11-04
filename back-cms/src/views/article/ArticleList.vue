@@ -50,7 +50,8 @@ export default {
         author: "作者",
         tag: "标签",
         cover: "封面",
-        title: "标题"
+        title: "标题",
+        description: "描述"
       }
     };
   },

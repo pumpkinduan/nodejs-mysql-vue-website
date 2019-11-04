@@ -29,6 +29,7 @@
 <script>
 import validator from "@/util/validateInfo.js";
 import { Message } from "element-ui";
+import api from "@/api/admin.js";
 export default {
   data() {
     const validateAccount = (rule, value, callback) => {
@@ -96,8 +97,8 @@ export default {
         return alert("两次密码输入不一致");
       }
       //向后台发送注册信息
-      this.axios
-        .post("/user/register", { account, password: pwd })
+      api
+        .register({ account, password: pwd })
         .then(res => {
           if (res.data && res.data.success) {
             this.$message({
@@ -113,7 +114,7 @@ export default {
           this.registerForm.account = "";
           this.registerForm.pwd = "";
           this.registerForm.checkPwd = "";
-          throw err
+          throw err;
         });
     }
   }

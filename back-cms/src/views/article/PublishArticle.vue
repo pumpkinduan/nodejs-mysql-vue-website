@@ -26,7 +26,8 @@ export default {
         author: "作者",
         tag: "标签",
         cover: "封面",
-        title: "标题"
+        title: "标题",
+        description: "描述"
       },
       tableData: [
         {
@@ -36,7 +37,8 @@ export default {
           cover: "",
           article_id: "",
           browse: "",
-          total_char: ""
+          total_char: "",
+          description: ""
         }
       ]
     };

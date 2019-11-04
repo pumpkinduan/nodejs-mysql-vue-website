@@ -82,6 +82,16 @@ export default {
             }
           ]
         },
+          {
+          icon: "el-icon-chat-dot-round",
+          name: "评论",
+          children: [
+            {
+              name: "评论数据",
+              component: "CommentList"
+            }
+          ]
+        },
         {
           icon: "el-icon-basketball",
           name: "关于我",

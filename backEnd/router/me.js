@@ -1,6 +1,7 @@
 const app = require('express');
 const meRouter = app.Router();
 const loader = require('../loader');
+const passport = require('passport');
 meRouter.post('/create', loader.get('me/create'))
 meRouter.get('/exact', loader.get('me/exact'))
 meRouter.put('/update/:id', loader.get('me/update'))

@@ -18,10 +18,9 @@
             <div v-html="details.content" class="content"></div>
           </div>
         </div>
-       
+
         <section class="wrap-comment">
-          <Comment 
-          />
+          <Comment />
         </section>
       </div>
     </main>
@@ -41,10 +40,7 @@ export default {
       .getArticleDetail(to.params.articleId)
       .then(res => {
         if (res.data && res.data.data) {
-          next(vm => {
-            vm.details = res.data.data;
-            vm.$store.state.showLoading = false; //加载动画
-          });
+          next(vm => vm.setData(res.data.data));
         }
       })
       .catch(err => {
@@ -53,13 +49,14 @@ export default {
   },
   data() {
     return {
-      details: [],
-     
+      details: []
     };
   },
-  created() {},
   methods: {
-    
+    setData(data) {
+      this.details = data;
+      this.$store.state.showLoading = false; //加载动画
+    }
   }
 };
 </script>
@@ -74,13 +71,16 @@ export default {
   margin-bottom: 3rem;
   box-shadow: 0 0 3px 1px rgba(0, 0, 0, 0.6);
 }
+.detail main {
+  background: #fff;
+}
 .detail main section h2 {
   font-size: 1.5rem;
   font-weight: 500;
   color: #444;
   margin-bottom: 0.8rem;
 }
-.detail main section .tags>li {
+.detail main section .tags > li {
   float: left;
   margin-right: 1rem;
   font-size: 0.9rem;
@@ -105,7 +105,7 @@ export default {
 }
 
 @media screen and (min-width: 920px) {
-  .detail main {
+  .detail {
     padding: 3rem 12rem;
   }
   .detail main h1 {

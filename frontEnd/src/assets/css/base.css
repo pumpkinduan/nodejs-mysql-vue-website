@@ -85,11 +85,14 @@ hr {
     text-align: center;
 }
 .orange {
-    color: #ff450085;
+    color: #ff8a00 !important;
 }
 img {
     display: block;
 }
 .middle {
     vertical-align: middle;
+}
+.relative {
+    position: relative;
 }

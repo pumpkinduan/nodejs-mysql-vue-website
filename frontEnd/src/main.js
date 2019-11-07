@@ -14,11 +14,10 @@ axios.interceptors.request.use((config) => {
 })
 axios.interceptors.response.use((response) => {
  store.state.showLoading = false;
-  store.state.showLoading = false;
   return response;
 }, (err) => {
   store.state.showLoading = false;
-  return Promise.reject(err)
+  return Promise.reject(err.response.data)
 })
 Vue.config.productionTip = false; 
 Vue.use(ElementUI);

@@ -3,20 +3,37 @@
     <section class="words">
       <header>
         <i class="iconfont icon-liuyan"></i>
-        <span style="vertical-align: 5px;font-size: 1rem;">
-          一共有
-          <strong style="vertical-align: middle;">{{commentSize}}</strong>条留言
-        </span>
+        <span style="vertical-align: 5px;font-size: 1rem;">一共有{{commentSize}}条留言</span>
       </header>
       <ul>
         <li v-for="(item, index) in words" :key="index">
-          <i class="iconfont icon-xiaolian-"></i>
-          <strong>{{item.name}}</strong>
-          <p>{{item.comment}}</p>
-          <p class="time clearfix">
-            <span class="fl">{{item.created_at}}</span>
-            <!-- <i class="fr iconfont icon-shanchu" @click="handleDelete(item.id, index)"></i> -->
-          </p>
+          <section>
+            <i class="iconfont icon-xiaolian-"></i>
+            <span class="user-name">{{item.name}}</span>
+          </section>
+          <section class="wrapper">
+            <div class="content">{{item.comment}}</div>
+            <div class="clearfix" style="padding-top: 0.5em;">
+              <span class="fl time">{{item.created_at}}</span>
+              <span class="fr time orange">{{(curPage - 1) * (pageSize) + (index+1) }}楼</span>
+              <!-- <i class="iconfont icon-pinglun fr" @click="handleReply(item.name, item.id, index)"></i> -->
+              <i
+                title="取消回复"
+                class="iconfont icon-quxiao fr"
+                v-show="isReply && curIndex == index"
+                @click="resetComment()"
+              ></i>
+            </div>
+          </section>
+          <!-- <template v-for="(child, c_index) in childWords">
+            <section v-if="child.parent_id == item.id" :key="c_index" class="child">
+              {{child.name}}于
+              <span class="time">{{child.created_at}}</span>回复
+              <span style="color: #ff9d00;">{{item.name}}</span>
+              <b>:</b>&nbsp;
+              <span style="color: #333;">{{child.comment}}</span>
+            </section>
+          </template> -->
         </li>
       </ul>
       <Pagination
@@ -28,8 +45,16 @@
       />
     </section>
     <section class="form">
-      <div>
-        <input type="text" placeholder="Name" v-model.trim="name" />
+      <strong>留言区</strong>
+      <div class="relative">
+        <input
+          ref="focusInput"
+          @input="errMessage = ''"
+          type="text"
+          placeholder="Name"
+          v-model.trim="name"
+        />
+        <p v-if="errMessage" class="errMessage">{{errMessage}}</p>
       </div>
       <div>
         <textarea
@@ -37,6 +62,7 @@
           type="text"
           v-model.trim="comment"
           :placeholder="prompt"
+          ref="focusTextarea"
         ></textarea>
       </div>
       <div>
@@ -62,14 +88,20 @@ export default {
       name: "",
       comment: "",
       words: [],
+      parent_id: null,
+      // childWords: [],
       cachedWords: new Map(),
       pageSize: 5,
+      curPage: 1,
       commentSize: 0,
+      errMessage: "",
+      isReply: false, //是否回复  默认 否
+      curIndex: "",
       prompt: "Hey,guys,come and say something"
     };
   },
   created() {
-    api.getCommentList(1).then(res => {
+    api.getArticleComments(this.$route.params.articleId, 1).then(res => {
       if (res.data) {
         this.words = res.data.data;
         this.cachedWords.set(1, this.words); //缓存第一页数据
@@ -80,37 +112,57 @@ export default {
   },
   methods: {
     send() {
-      if (this.comment) {
+      if (this.comment && this.name) {
         api
-          .sendComment({
-            name: this.name || "匿名",
-            comment: this.comment
+          .createComment({
+            name: this.name,
+            comment: this.comment,
+            article_id: this.$route.params.articleId
+            // parent_id: this.isReply ? this.parent_id : null
           })
           .then(res => {
             this.words.push({
               name: this.name,
               comment: this.comment,
               created_at: format()
+              // parent_id: this.isReply ? this.parent_id : null
             });
             this.name = "";
             this.comment = "";
+            this.resetComment();
+          })
+          .catch(err => {
+            this.$refs.focusInput.focus();
+            this.errMessage = err.msg;
           });
-      } else {
+      } else if (!this.comment) {
         this.prompt = "留言不能为空噢";
+        this.$refs.focusTextarea.focus();
+      } else {
+        this.$refs.focusInput.focus();
+        this.errMessage = "请留下阁下的大名吧";
       }
     },
-    handleDelete(id, index) {
-      api.deleteComment(id).then(res => {
-        if (res.data && res.data.success) {
-          this.words.splice(index, 1); //删除纪录
-        }
-      });
+    // handleReply(name, id, index) {
+    //   //代表 && index==key回复
+    //   this.isReply = true;
+    //   this.parent_id = id;
+    //   this.curIndex = index; //当前点击的那条留言
+    //   this.prompt = `回复${name}:`;
+    //   this.$refs.focusTextarea.focus();
+    // },
+    resetComment() {
+      //留言初始化
+      // this.isReply = !this.isReply;
+      // this.parent_id = null;
+      this.prompt = "Hey,guys,come and say something";
     },
     getCurrentPage(page) {
+      this.curPage = page;
       if (this.cachedWords.has(page)) {
         this.words = this.cachedWords.get(page);
       } else {
-        api.getCommentList(page).then(res => {
+        api.getArticleComments(this.$route.params.articleId, page).then(res => {
           if (res.data) {
             this.words = res.data.data;
             this.cachedWords.set(page, this.words); //缓存第一页数据
@@ -146,6 +198,14 @@ input {
   margin: 1rem 0;
   padding-left: 0.5em;
 }
+strong {
+  vertical-align: top;
+  font-size: 1.5rem;
+  font-weight: 400;
+  margin-left: 3px;
+  letter-spacing: 2px;
+  color: #ff8a00;
+}
 button,
 input,
 textarea {
@@ -153,7 +213,7 @@ textarea {
   outline: none;
   font-family: cursive, "Microsoft YaHei";
   border: 2px solid #e4e4e4;
-  font-size: 1.2rem;
+  font-size: 1rem;
 }
 textarea:focus,
 input:focus {
@@ -189,44 +249,58 @@ button:hover {
   border-bottom: solid 1px#eee;
   transition: all 0.3s;
 }
-.words ul li:hover {
-  background-color: #fdcc6347;
-  border-radius: 5px;
-}
-.words ul li p:first-child {
-  max-width: 600px;
-  min-width: 300px;
-}
-.words ul li p {
-  margin-top: 0.5rem;
+.words ul li section:not(:first-child) {
+  margin-top: 0.6rem;
   padding-left: 2.4rem;
+  color: #666;
 }
-.words ul li p.time {
-  color: #777;
-  padding-top: 0.5rem;
-  padding-bottom: 0.5rem;
+.words ul li section .user-name {
+  color: #ff8a00;
+  font-size: 1.2rem;
+  vertical-align: 4px;
+  margin-left: 6px;
+  font-weight: 300;
+}
+.words ul li section .content {
+  word-break: break-all;
 }
 .icon-xiaolian- {
-  font-size: 2.2rem;
+  font-size: 1.8rem;
+  color: #ff9d00;
 }
 .icon-liuyan {
   margin-right: 5px;
   font-size: 1.8rem;
 }
-.icon-shanchu {
-  font-size: 1.5rem;
-  transition: color 0.3s;
-  vertical-align: middle;
+.words ul li section:first-child {
+  max-width: 600px;
+  min-width: 300px;
 }
-.icon-shanchu:hover {
+
+.words ul li section .time {
+  color: #888;
+  font-size: 0.8em;
+}
+.icon-pinglun,
+.icon-quxiao {
+  font-size: 1rem;
+  transition: all 0.3s;
+  vertical-align: middle;
+  font-weight: 400;
+  margin-left: 10px;
+}
+.icon-pinglun:hover {
   cursor: pointer;
   color: #ff9d00;
 }
-strong {
-  vertical-align: top;
-  font-size: 1.3rem;
-  font-weight: 300;
-  margin-left: 3px;
-  letter-spacing: 2px;
+.icon-quxiao:hover {
+  color: #f40;
+  cursor: pointer;
+}
+.errMessage {
+  color: #f40;
+  position: absolute;
+  left: 4px;
+  bottom: 2px;
 }
 </style>

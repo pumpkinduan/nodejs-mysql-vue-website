@@ -19,14 +19,15 @@ export default {
     getQuotationList(params) {
         return axios.get('/api/quotation/list', { params });
     },
-    getCommentList(params) {
-        return axios.get('/api/comment/list', {
+    getArticleComments(article_id, page) {
+        return axios.get('/api/comment/article/comments', {
             params: {
-                page: params
+                article_id,
+                page
             }
         });
     },
-    sendComment(data) {
+    createComment(data) {
         return axios.post('/api/comment/create', data);
     },
     deleteComment(id) {

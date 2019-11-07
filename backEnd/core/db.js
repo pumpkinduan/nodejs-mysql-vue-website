@@ -20,7 +20,7 @@ const sequelize = new Sequelize(database, user, password, {
         scopes: {
           a_list: {
             attributes: { //只查找attributes里规定的字段
-              exclude: ['content', 'updated_at', 'deleted_at'] //排除这些字段不查找
+              exclude: ['content', 'updated_at', 'deleted_at', 'id'] //排除这些字段不查找
             }
           }
         },
@@ -34,7 +34,7 @@ const sequelize = new Sequelize(database, user, password, {
 });
 // Sync all models that aren't already in the database
 // using `force: true` will drop the table if it already exists
-sequelize.sync({force: false}).then(console.log('table has been created')).catch(e => console.log(e))
+sequelize.sync({force: false,alter: true}).then(console.log('table has been created')).catch(e => console.log(e))
 sequelize
   .authenticate()
   .then(() => {

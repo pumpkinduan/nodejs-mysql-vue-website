@@ -3,29 +3,31 @@
     <section class="words">
       <header>
         <i class="iconfont icon-liuyan"></i>
-        <span style="vertical-align: 5px;font-size: 1rem;">一共有{{commentSize}}条留言</span>
+        <span style="vertical-align: 5px;font-size: 1rem;" v-if="words.length > 0">一共有{{commentSize}}条留言</span>
+        <span style="vertical-align: 5px;font-size: 1rem;" v-else>目前还没有人留下ta的足迹噢,快来抢占一楼吧</span>
       </header>
-      <ul>
-        <li v-for="(item, index) in words" :key="index">
-          <section>
-            <i class="iconfont icon-xiaolian-"></i>
-            <span class="user-name">{{item.name}}</span>
-          </section>
-          <section class="wrapper">
-            <div class="content">{{item.comment}}</div>
-            <div class="clearfix" style="padding-top: 0.5em;">
-              <span class="fl time">{{item.created_at}}</span>
-              <span class="fr time orange">{{(curPage - 1) * (pageSize) + (index+1) }}楼</span>
-              <!-- <i class="iconfont icon-pinglun fr" @click="handleReply(item.name, item.id, index)"></i> -->
-              <i
-                title="取消回复"
-                class="iconfont icon-quxiao fr"
-                v-show="isReply && curIndex == index"
-                @click="resetComment()"
-              ></i>
-            </div>
-          </section>
-          <!-- <template v-for="(child, c_index) in childWords">
+      <template v-if="words.length > 0">
+        <ul>
+          <li v-for="(item, index) in words" :key="index">
+            <section>
+              <i class="iconfont icon-xiaolian-"></i>
+              <span class="user-name">{{item.name}}</span>
+            </section>
+            <section class="wrapper">
+              <div class="content">{{item.comment}}</div>
+              <div class="clearfix" style="padding-top: 0.5em;">
+                <span class="fl time">{{item.created_at}}</span>
+                <span class="fr time orange">{{(curPage - 1) * (pageSize) + (index+1) }}楼</span>
+                <!-- <i class="iconfont icon-pinglun fr" @click="handleReply(item.name, item.id, index)"></i> -->
+                <i
+                  title="取消回复"
+                  class="iconfont icon-quxiao fr"
+                  v-show="isReply && curIndex == index"
+                  @click="resetComment()"
+                ></i>
+              </div>
+            </section>
+            <!-- <template v-for="(child, c_index) in childWords">
             <section v-if="child.parent_id == item.id" :key="c_index" class="child">
               {{child.name}}于
               <span class="time">{{child.created_at}}</span>回复
@@ -33,16 +35,17 @@
               <b>:</b>&nbsp;
               <span style="color: #333;">{{child.comment}}</span>
             </section>
-          </template> -->
-        </li>
-      </ul>
-      <Pagination
-        :totalData="commentSize"
-        :pageSize="pageSize"
-        @current-change="getCurrentPage"
-        @next-page="nextPage"
-        @prev-page="prevPage"
-      />
+            </template>-->
+          </li>
+        </ul>
+        <Pagination
+          :totalData="commentSize"
+          :pageSize="pageSize"
+          @current-change="getCurrentPage"
+          @next-page="nextPage"
+          @prev-page="prevPage"
+        />
+      </template>
     </section>
     <section class="form">
       <strong>留言区</strong>
@@ -127,6 +130,7 @@ export default {
               created_at: format()
               // parent_id: this.isReply ? this.parent_id : null
             });
+            this.commentSize ++;
             this.name = "";
             this.comment = "";
             this.resetComment();

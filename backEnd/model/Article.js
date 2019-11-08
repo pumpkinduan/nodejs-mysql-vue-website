@@ -17,10 +17,7 @@ Article.init({
         defaultValue: 0
     },
     total_char: Sequelize.INTEGER,
-    article_id: {
-        type: Sequelize.INTEGER,
-        unique: true
-    },
+    article_id: Sequelize.INTEGER,
     created_at: {
         type: Sequelize.DATE,
         get() {

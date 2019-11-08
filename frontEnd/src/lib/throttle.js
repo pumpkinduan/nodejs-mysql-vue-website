@@ -13,4 +13,6 @@ function throttle(handle, delay) {
         }, delay || 300);
     }
 }
-module.exports = {throttle}
+export {
+    throttle
+}

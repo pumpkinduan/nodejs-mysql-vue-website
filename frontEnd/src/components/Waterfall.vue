@@ -15,8 +15,8 @@
 
 <script>
 import Loading from "@/components/Loading";
-import {debounce} from "@/lib/debounce.js";
-import {throttle} from "@/lib/throttle.js";
+import { debounce } from "@/lib/debounce.js";
+import { throttle } from "@/lib/throttle.js";
 export default {
   components: {
     Loading
@@ -51,7 +51,7 @@ export default {
     cards(newVal, oldVal) {
       if (newVal.length < 1) {
         this.$nextTick(() => {
-           this.canLoad = false;
+          this.canLoad = false;
         });
       } else {
         this.lists.push(...newVal);
@@ -61,6 +61,10 @@ export default {
   },
   updated() {
     this.setPostion();
+    //保证初次进入页面时，瀑布流没有留白现象
+    if (this.isloadedMore() && this.canLoad) {
+      this.loadData();
+    }
   },
   mounted() {
     this.init();
@@ -79,9 +83,7 @@ export default {
       }, 300);
       window.onscroll = throttle(function() {
         if (_self.isloadedMore() && _self.canLoad) {
-          _self.canLoad = false;
-          _self.loadPage++;
-          _self.$emit("loadData", _self.loadPage);
+          _self.loadData();
         }
       }, 300);
     },
@@ -148,6 +150,11 @@ export default {
       if (heightMin < window.innerHeight + document.documentElement.scrollTop) {
         return true;
       }
+    },
+    loadData() {
+      this.canLoad = false;
+      this.loadPage++;
+      this.$emit("loadData", this.loadPage);
     }
   }
 };

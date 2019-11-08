@@ -11,6 +11,7 @@
               :article_id="data.article_id"
               :tag="data.tag"
               :description="data.description"
+              :browse="data.browse"
             />
           </template>
         </Waterfall>

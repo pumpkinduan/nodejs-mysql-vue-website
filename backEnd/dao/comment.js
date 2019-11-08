@@ -12,10 +12,11 @@ class CommentDao {
         }
         Comment.findOne({
             where: {
-                name: info.name
+                name: info.name,
+                article_id: info.article_id
             }
         }).then(val => {
-            if (!val) {//名字不能重复
+            if (!val) {//同一篇文章下的留言者的名字不能重复
                 const c = new Comment();
                 c.comment = info.comment;
                 c.article_id = info.article_id;

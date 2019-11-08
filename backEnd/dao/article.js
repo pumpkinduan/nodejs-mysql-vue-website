@@ -92,7 +92,21 @@ class ArticleDao {
             success(new global.errs.HttpException());
         })
     }
-    static updateArticleById(id, article_updated, success) {//更新文章
+    static updateBrowse(id, info, success) {
+        // console.log(info)
+        Article.findOne({
+            where: {
+                article_id: id
+            }
+        }).then( val => {
+            val.update({
+                'browse': info.browse
+            }).then(res => {
+                success(false, { msg: '访问量增加了', success: true } )
+            }).catch( err => {console.log(err)}) 
+        })
+    }
+    static updateArticleById(id, info, success) {//更新文章
         Article.findOne({
             where: {
                 article_id: id
@@ -100,14 +114,14 @@ class ArticleDao {
         }).then(article => {
             if (article) {
                 article.update({
-                    'title': article_updated.title,
-                    'content': article_updated.content,
-                    'total_char': article_updated.total_char,
-                    'tag': article_updated.tag,
-                    'author': article_updated.author,
-                    'browse': article_updated.browse,
-                    'cover': article_updated.cover,
-                    'description': article_updated.description
+                    'title': info.title,
+                    'content': info.content,
+                    'total_char': info.total_char,
+                    'tag': info.tag,
+                    'author': info.author,
+                    'browse': info.browse,
+                    'cover': info.cover,
+                    'description': info.description
                 }).then(res => {
                     success(false, { msg: '更新成功', success: true });
 

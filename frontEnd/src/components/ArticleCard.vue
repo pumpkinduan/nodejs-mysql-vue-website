@@ -8,7 +8,7 @@
       </h1>
       <section>
         <p class="tag">{{tag}}</p>
-        <router-link :to="{name: 'detail', params: {articleId: `${article_id}`, showList: false}}">
+        <router-link :to="{name: 'detail', params: {articleId: `${article_id}`, showList: false}, browse: browse}">
           <p class="title">{{title}}</p>
         </router-link>
         <div class="description">{{description}}</div>
@@ -18,7 +18,7 @@
 </template>
 <script>
 export default {
-  props: ["title", "tag", "cover", "src", "description", "article_id"],
+  props: ["title", "tag", "cover", "src", "description", "article_id", "browse"],
 
 };
 </script>
@@ -33,6 +33,10 @@ export default {
 .card .cover {
   overflow: hidden;
   position: relative;
+}
+.card .cover a {
+  width: 100%;
+  display: block;
 }
 .card .cover a:before,
 .card .cover a:after {

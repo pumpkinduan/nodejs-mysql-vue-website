@@ -5,7 +5,9 @@
         <h1>A B O U T</h1>
         <p>life is beautiful like summer flowers and death like autumn leaves</p>
         <section class="copyright">
-          <span>@ 南瓜的时光机</span><span class="line"></span><span class="author">
+          <span>@ 南瓜的时光机</span>
+          <span class="line"></span>
+          <span class="author">
             Author:
             <a href="#">Pumpkin</a>
           </span>
@@ -14,7 +16,7 @@
       <li class="link fl">
         <h2>F O L L O W</h2>
         <div>
-          <a 
+          <a
             target="_blank"
             href="http://mail.qq.com/cgi-bin/qm_share?t=qm_mailme&email=tIWBhY2Cho2BgYD0xcWa19vZ"
           >
@@ -32,15 +34,14 @@
 <style scoped>
 .footer {
   background-color: #eee;
-  padding: 4rem 4rem 0;
+  padding: 2.5rem 4rem;
   font: bold 1.4rem cursive !important;
-  /* font-family: cursive; */
   margin-top: 2rem;
 }
 /* --底部关于开始-- */
 .footer .about {
-  margin-bottom: 1.5rem;
-    margin-right: 20%;
+  /* margin-bottom: 1.5rem; */
+  margin-right: 32%;
 }
 .footer .about h1,
 .footer .link h2 {
@@ -55,9 +56,10 @@
 .footer .about .copyright {
   color: #888;
   font-size: 1rem;
+  margin-bottom: 1rem;
 }
 .footer .about .copyright span {
-    word-spacing: -2px;
+  word-spacing: -2px;
 }
 .footer .about .copyright .line {
   border-left: 1px solid #ccc;
@@ -67,7 +69,7 @@
 .footer .about .copyright .author a {
   border-bottom: 1px dotted #666;
   color: #666;
-  transition: color .4s;
+  transition: color 0.4s;
 }
 .footer .about .copyright .author a:hover {
   color: #ff450085;
@@ -76,8 +78,7 @@
 
 /* --底部链接开始-- */
 .footer .link div {
-    margin-top: 2rem;
-   
+  margin-top: 1rem;
 }
 .footer .link a {
   border: 1px solid #777;
@@ -85,7 +86,7 @@
   margin-right: 1rem;
   padding: 1rem;
   display: inline-block;
-  transition: all .5s;
+  transition: all 0.5s;
   color: #433;
 }
 .footer .link a:hover {

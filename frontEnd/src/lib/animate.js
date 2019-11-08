@@ -119,7 +119,7 @@
             return elem.currentStyle[prop];
         }
     }
-module.exports = {
+export {
     animate,
     getStyle
 }

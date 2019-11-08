@@ -9,4 +9,4 @@ function debounce(handle, delay) {
         }, delay || 300);
     }
 }
-module.exports = {debounce}
+export {debounce}

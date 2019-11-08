@@ -23,7 +23,7 @@ export default {
     };
   },
   mounted() {
-    this.$emit('sendGap', this.$refs.quotation.offsetHeight);
+    this.$emit("sendGap", this.$refs.quotation.offsetHeight);
   },
   created() {
     api
@@ -48,7 +48,7 @@ export default {
 }
 .quotation {
   width: 100%;
-   font-size: 1rem;
+  font-size: 1rem;
   padding: 4rem 2rem 1rem 2rem;
   background-color: rgba(0, 0, 0, 0.85);
 }
@@ -78,16 +78,18 @@ export default {
   .wrapper {
     width: 100%;
   }
+}
+@media only screen and (max-width: 600px) {
   .quotation {
     padding-top: 1rem;
     font-size: 0.8rem;
   }
   .quotation h1 span {
     width: 100%;
-    margin: 16px 0;
+    margin: 12px 0;
   }
 }
-@media only screen and (min-width: 992px) {
+@media only screen and (min-width: 600px) {
   .quotation:hover .is-active {
     transform: scale(0.8, 1.1) translateY(20%) !important;
   }

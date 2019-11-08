@@ -47,14 +47,43 @@ export default {
         console.log(err);
       });
   },
+  mounted() {
+    this.startCount();
+  },
   data() {
     return {
-      details: []
+      details: {},
+      stayTime: 0,
+      browse: 0,
+      second: 0,
+      timer: null,
+      readingTime: 0//阅读时长，大于该值访问量才会+1
     };
   },
+  beforeRouteLeave(to, from, next) {
+    if (this.second > this.readingTime) {
+      api.updateBrowse(this.$route.params.articleId, {
+        browse: this.browse
+      }); //更新访问量
+      next()
+    }
+     next()
+  },
   methods: {
+    startCount() {
+      clearInterval(this.timer);
+      this.timer = setInterval(() => {
+        this.second++;
+        if (this.second > this.readingTime ) {
+          clearInterval(this.timer);
+          this.browse++; //访问量+1
+        }
+      }, 1000);
+    },
     setData(data) {
       this.details = data;
+      this.readingTime = Math.floor(data.total_char / 20);
+      this.browse = data.browse;
       this.$store.state.showLoading = false; //加载动画
     }
   }
@@ -92,6 +121,7 @@ export default {
   line-height: 1.5rem;
   padding-bottom: 2rem;
   border-bottom: 1px solid #eee;
+  font-size: 1.5em;
 }
 .detail main .description {
   max-width: 30rem;

@@ -1,4 +1,5 @@
 import axios from 'axios';
+import obj from '@/axios'
 export default {
     getLatestQuotation() {
         return axios.get('/api/quotation/exact');
@@ -20,7 +21,7 @@ export default {
         return axios.get('/api/quotation/list', { params });
     },
     getArticleComments(article_id, page) {
-        return axios.get('/api/comment/article/comments', {
+        return axios.get('/api/comment/all', {
             params: {
                 article_id,
                 page
@@ -32,5 +33,8 @@ export default {
     },
     deleteComment(id) {
         return axios.delete("/api/comment/delete/" + id);
+    },
+    updateBrowse(id, data) {
+        return obj.instance.put("/api/browse/update/" + id, data);
     }
 }

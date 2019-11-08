@@ -1,11 +1,4 @@
-div, section {
-    -moz-user-select:none; /* Firefox私有属性 */
-    -webkit-user-select:none; /* WebKit内核私有属性 */
-    -ms-user-select:none; /* IE私有属性(IE10及以后) */
-    -khtml-user-select:none; /* KHTML内核私有属性 */
-    -o-user-select:none; /* Opera私有属性 */
-    user-select:none; /* CSS3属性 */
-}
+
 /* 清除内外边距 */
 body, h1, h2, h3, h4, h5, h6, hr, p, blockquote, /* structural elements 结构元素 */
 dl, dt, dd, ul, ol, li, /* list elements 列表元素 */
@@ -43,6 +36,9 @@ cursor: help;
 }
 .ql-editor {
     padding: 0 !important;
+}
+.ql-editor .ql-size-large {
+    font-size: 1em;
 }
 q:before, q:after { content: ''; }
 

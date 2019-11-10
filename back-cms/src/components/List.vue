@@ -46,8 +46,7 @@ export default {
     labels: {
       type: Object,
       required: true
-    },
-    cacheData: Map
+    }
   },
   data() {
     return {

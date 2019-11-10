@@ -34,12 +34,12 @@
     ></el-pagination>
     <el-dialog :title="title" :visible.sync="dialogFormVisible">
       <el-form :model="editLists">
-        <el-form-item 
-        :label="v" 
-        label-width="80px" 
-        v-for="(v, i) in labels" 
-        :key="i"
-        :rules="[{required: i !== 'content', message: `${v}不能为空`}]"
+        <el-form-item
+          :label="v"
+          label-width="80px"
+          v-for="(v, i) in labels"
+          :key="i"
+          :rules="[{required: i !== 'content', message: `${v}不能为空`}]"
         >
           <el-input v-model="editLists[i]" autocomplete="off" :disabled="i == 'content'"></el-input>
         </el-form-item>
@@ -113,12 +113,15 @@ export default {
   },
   methods: {
     submit() {
-      const data = {};
+      const data = {},
+        regSpecialCharacter = /[^\u4e00-\u9fa5\w]/gim; //匹配非字母数字_和汉字以外的字符,如标点符号
       Object.assign(data, this.editLists, {
-        content: this.quill.root.innerHTML
+        content: this.quill.root.innerHTML,
+        total_char: this.quill.getText().replace(regSpecialCharacter,'').length
       });
       if (!this.quill.getText().trim()) return;
       this.$emit("submit", data);
+      console.log(this.quill.root.innerHTML.replace(regSpace, ''))
     },
     handleDelete(index, row) {
       this.$emit("handleDelete", index, row);

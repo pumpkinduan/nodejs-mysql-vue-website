@@ -10,9 +10,6 @@ import EditArticle from "./views/article/editArticle";
 import PublishQuotation from "./views/quotation/publishQuotation";
 import EditQuotation from "./views/quotation/editQuotation";
 import QuotationList from "./views/quotation/quotationList";
-import PublishMe from "./views/me/publishMe";
-import EditMe from "./views/me/editMe";
-import MeList from "./views/me/meList";
 import CommentList from "./views/comment/commentList";
 Vue.use(Router)
 
@@ -56,24 +53,9 @@ const router = new Router({
           component: QuotationList
         },
         {
-          path: 'quotationList',
-          name: 'PublishMe',
-          component: PublishMe
-        },
-        {
           path: 'commentList',
           name: 'CommentList',
           component: CommentList
-        },
-        {
-          path: 'editMe',
-          name: 'EditMe',
-          component: EditMe
-        },
-        {
-          path: 'meList',
-          name: 'MeList',
-          component: MeList
         }
       ]
     },

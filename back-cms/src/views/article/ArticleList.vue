@@ -47,7 +47,6 @@ export default {
         article_id: "id",
         total_char: "字数",
         browse: "访问量",
-        author: "作者",
         tag: "标签",
         cover: "封面",
         title: "标题",

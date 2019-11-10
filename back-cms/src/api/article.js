@@ -1,10 +1,10 @@
 import axios from 'axios';
 export default {
-    publishArticle(params) {
-        return axios.post("/api/article/create", params);
+    publishArticle(data) {
+        return axios.post("/api/article/create", data);
     },
-    updateArticle(params, id) {
-        return axios.put("/api/article/update/" + id, params);
+    updateArticle(data, id) {
+        return axios.put("/api/article/update/" + id, data);
     },
     getLists(params) {
         return axios.get("/api/article/list", {params});

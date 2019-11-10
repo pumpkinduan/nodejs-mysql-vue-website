@@ -1,5 +1,5 @@
 /**
- * @ 文章数据库模型
+ * @ 文章数据表模型
  **/
 const { Sequelize, Model } = require('sequelize');
 const { sequelize } = require('../core/db');
@@ -33,7 +33,8 @@ Article.init({
 }, {
     sequelize,
     tableName: 'Article'
-}).sync({alter: true});//增加或删除字段时自动适应数据表
+})
+// .sync({alter: true});//增加或删除字段时自动适应数据表
 module.exports = {
     Article
 }

@@ -47,8 +47,8 @@ export default {
         cover: "封面",
         title: "标题",
         tag: "标签",
-        total_char: "字数",
-        browse: "访问量",
+        // total_char: "字数",
+        // browse: "访问量",
         description: "描述"
       },
       editLists: {}, //待编辑的数据行
@@ -94,6 +94,7 @@ export default {
       api.getDetail(row.article_id).then(res => {
         //获取文章详情内容，进行编辑
         if (res.data && res.data.data) {
+          console.log(res.data.data)
           this.$refs.edit.quill.root.innerHTML = res.data.data.content; //显示文章内容
         }
       });

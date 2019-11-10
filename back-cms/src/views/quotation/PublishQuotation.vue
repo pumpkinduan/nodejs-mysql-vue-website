@@ -60,7 +60,7 @@ export default {
 </script>
 <style scoped>
 .publish-quotation {
-  height: 70%;
+  height: 100%;
 }
 .wrapper {
   height: 100%;

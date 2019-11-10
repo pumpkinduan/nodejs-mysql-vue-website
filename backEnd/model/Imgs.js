@@ -2,10 +2,13 @@
 const { Sequelize, Model } = require('sequelize');
 const { sequelize } = require('../core/db');
 const moment = require('moment');
-class ArticleImgs extends Model { }
-ArticleImgs.init({
-    path: Sequelize.STRING,
-    article_id:Sequelize.INTEGER,
+class Imgs extends Model { }
+Imgs.init({
+    url: Sequelize.STRING,
+    originalname: Sequelize.STRING,
+    size: Sequelize.INTEGER,
+    filename: Sequelize.STRING,
+    mimetype: Sequelize.STRING,
     created_at: {
         type: Sequelize.DATE,
         get() {
@@ -20,8 +23,8 @@ ArticleImgs.init({
     }
 }, {
     sequelize,
-    tableName: 'ArticleImgs'
-})
+    tableName: 'Imgs'
+}).sync({alter: true})
 module.exports = {
-    ArticleImgs
+    Imgs
 }

@@ -1,13 +1,13 @@
 <template>
   <div class="wrapper">
     <section class="quotation fl" ref="quotation">
-      <el-carousel :interval="2000" arrow="never" height="300px">
+      <el-carousel :interval="3000" arrow="never" height="300px">
         <el-carousel-item v-for="(item, index) in quotations" :key="index">
           <h1 class="clearfix">
-            <span class="created-at fl">{{item.created_at}}</span>
-            <span class="author fr">{{item.author}}</span>
+            <span class="created-at fl">{{format()}}</span>
+            <span class="author fr">{{item.from}}</span>
           </h1>
-          <p class="content" v-html="item.content"></p>
+          <p class="content" v-html="item.hitokoto"></p>
         </el-carousel-item>
       </el-carousel>
     </section>
@@ -15,27 +15,45 @@
 </template>
 <script>
 import api from "@/api/index.js";
+import { format } from "@/lib/formatTime.js";
 export default {
   data() {
     return {
       quotations: [],
-      flag: false
+      flag: false,
+      format: format,
+      timer: null
     };
   },
   mounted() {
     this.$emit("sendGap", this.$refs.quotation.offsetHeight);
   },
-  created() {
-    api
-      .getQuotationList()
-      .then(result => {
-        if (result.data && result.data.data.length) {
-          this.quotations = result.data.data;
+  methods: {
+    getHitokoto() {
+      api.getHitokoto().then(res => {
+        if (this.quotations.length > 2) {
+          clearInterval(this.timer);
+        } else {
+          this.quotations.push(res.data);
         }
-      })
-      .catch(err => {
-        console.log(err);
       });
+    }
+  },
+  created() {
+    // api
+    //   .getQuotationList()
+    //   .then(result => {
+    //     if (result.data && result.data.data.length) {
+    //       this.quotations = result.data.data;
+    //     }
+    //   })
+    //   .catch(err => {
+    //     console.log(err);
+    //   });
+    this.getHitokoto();
+    this.timer = setInterval(() => {
+      this.getHitokoto();
+    }, 10000);
   }
 };
 </script>

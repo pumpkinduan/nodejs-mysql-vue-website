@@ -1,8 +1,11 @@
 import axios from 'axios';
 import obj from '@/axios'
+
 export default {
-    getLatestQuotation() {
-        return axios.get('/api/quotation/exact');
+    getHitokoto() {
+        // return axios.get('/api/quotation/exact');
+        //使用第三方一言公开的api
+        return axios.get('https://v1.hitokoto.cn/?c=d')
     },
     getArticleList(params) {
         return axios.get('/api/article/list', {

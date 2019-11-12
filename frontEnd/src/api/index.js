@@ -8,7 +8,14 @@ export default {
         return axios.get('https://v1.hitokoto.cn/?c=d')
     },
     getArticleList(params) {
-        return axios.get('/api/article/list', {
+        return axios.get('/api/article/', {
+            params: {
+                page: params
+            }
+        });
+    },
+    getBlogList(params) {
+        return axios.get('/api/article/blog', {
             params: {
                 page: params
             }
@@ -39,5 +46,8 @@ export default {
     },
     updateBrowse(id, data) {
         return obj.instance.put("/api/browse/update/" + id, data);
-    }
+    },
+    publishQuotation(data) {
+        return axios.post("/api/quotation/create", data);
+    },
 }

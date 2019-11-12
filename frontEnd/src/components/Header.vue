@@ -43,7 +43,7 @@ export default {
         },
         {
           class: "iconfont icon-biaoqian3",
-          component: "article",
+          component: "blog",
           name: "博客"
         },
         {

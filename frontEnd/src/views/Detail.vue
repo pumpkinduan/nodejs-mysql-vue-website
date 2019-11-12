@@ -2,27 +2,20 @@
   <div class="detail">
     <main>
       <header class="pic"></header>
-      <div class="left-aside">
-        <section>
-          <h2>{{details.title}}</h2>
-          <ul class="clearfix tags">
-            <li>发布于: {{ details.created_at}}</li>
-            <li>标签: {{ details.tag}}</li>
-            <li>浏览量: {{ details.browse}}</li>
-            <li>字数: {{ details.total_char}}</li>
-          </ul>
-          <div class="description">{{ details.description }}</div>
-        </section>
-        <div class="ql-snow">
-          <div class="ql-editor">
-            <div v-html="details.content" class="content"></div>
-          </div>
-        </div>
-
-        <section class="wrap-comment">
-          <Comment />
-        </section>
-      </div>
+      <section>
+        <h2>{{details.title}}</h2>
+        <ul class="info">
+          <li>发布于: {{ details.created_at}}</li>
+          <li>标签: {{ details.tag}}</li>
+          <li>浏览量: {{ details.browse}}</li>
+          <li>字数: {{ details.total_char}}</li>
+        </ul>
+        <div class="description">{{ details.description }}</div>
+      </section>
+      <div v-html="details.content" class="content"></div>
+      <section class="wrap-comment">
+        <Comment />
+      </section>
     </main>
   </div>
 </template>
@@ -57,7 +50,7 @@ export default {
       browse: 0,
       second: 0,
       timer: null,
-      readingTime: 0//阅读时长，大于该值访问量才会+1
+      readingTime: 0 //阅读时长，大于该值访问量才会+1
     };
   },
   beforeRouteLeave(to, from, next) {
@@ -65,16 +58,16 @@ export default {
       api.updateBrowse(this.$route.params.articleId, {
         browse: this.browse
       }); //更新访问量
-      next()
+      next();
     }
-     next()
+    next();
   },
   methods: {
     startCount() {
       clearInterval(this.timer);
       this.timer = setInterval(() => {
         this.second++;
-        if (this.second > this.readingTime ) {
+        if (this.second > this.readingTime) {
           clearInterval(this.timer);
           this.browse++; //访问量+1
         }
@@ -102,21 +95,27 @@ export default {
 }
 .detail main {
   background: #fff;
+  padding: 0 2rem;
+}
+.detail main section .info {
+  display: flex;
+  justify-content: center;
 }
 .detail main section h2 {
   font-size: 1.5rem;
   font-weight: 500;
   color: #444;
+  text-align: center;
   margin-bottom: 0.8rem;
 }
-.detail main section .tags > li {
-  float: left;
-  margin-right: 1rem;
+.detail main section .info > li {
+  margin-right: 0.8rem;
   font-size: 0.9rem;
   font-weight: 540;
   color: #999;
 }
 .detail main .content {
+  text-indent: 1em;
   margin: 3rem 0;
   line-height: 1.5rem;
   padding-bottom: 2rem;
@@ -124,8 +123,7 @@ export default {
   font-size: 1.5em;
 }
 .detail main .description {
-  max-width: 30rem;
-  overflow: auto;
+  text-align: center;
   color: #555;
   font-size: 1rem;
   font-weight: 700;
@@ -133,16 +131,12 @@ export default {
   margin-top: 1rem;
   word-break: break-all;
 }
-
 @media screen and (min-width: 920px) {
   .detail {
     padding: 3rem 12rem;
   }
   .detail main h1 {
     width: 100%;
-  }
-  .detail main .left-aside {
-    width: 70%;
   }
 }
 @media screen and (max-width: 920px) {

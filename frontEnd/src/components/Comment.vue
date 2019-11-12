@@ -238,12 +238,13 @@ button {
 button:hover {
   opacity: 0.8;
 }
-.words {
+.words, .form {
   margin-bottom: 2rem;
+  width: 70%;
 }
 .words header {
   padding: 1rem 0;
-  border-bottom: 1px solid #eee;
+  border-bottom: 1px dashed #eee;
   letter-spacing: 2px;
 }
 .words ul li {

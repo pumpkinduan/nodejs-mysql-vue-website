@@ -1,7 +1,7 @@
 <template>
   <div class="wrapper">
     <section class="quotation fl" ref="quotation">
-      <el-carousel :interval="3000" arrow="never" height="300px">
+      <el-carousel :interval="5000" arrow="never" height="300px">
         <el-carousel-item v-for="(item, index) in quotations" :key="index">
           <h1 class="clearfix">
             <span class="created-at fl">{{format()}}</span>
@@ -29,27 +29,43 @@ export default {
     this.$emit("sendGap", this.$refs.quotation.offsetHeight);
   },
   methods: {
-    getHitokoto() {
+    getHitokoto() {//第三方获取
       api.getHitokoto().then(res => {
-        if (this.quotations.length > 2) {
-          clearInterval(this.timer);
+        if (res.data) {
+          if (this.quotations.length > 2) {
+            clearInterval(this.timer);
+          } else {
+            this.quotations.push(res.data);
+            this.publishQuotation( {
+              author: res.data.from,
+              content: res.data.hitokoto
+            } )
+          }
         } else {
-          this.quotations.push(res.data);
+          this.getQuotation();
         }
+      }).catch(err => {
+        console.log(err)
+         this.getQuotation();
       });
+    },
+    publishQuotation(data) {
+      api.publishQuotation(data)
+    },
+    getQuotation() {//自己的数据库中获取
+      api
+        .getQuotationList()
+        .then(result => {
+          if (result.data && result.data.data.length) {
+            this.quotations = result.data.data;
+          }
+        })
+        .catch(err => {
+          console.log(err);
+        });
     }
   },
   created() {
-    // api
-    //   .getQuotationList()
-    //   .then(result => {
-    //     if (result.data && result.data.data.length) {
-    //       this.quotations = result.data.data;
-    //     }
-    //   })
-    //   .catch(err => {
-    //     console.log(err);
-    //   });
     this.getHitokoto();
     this.timer = setInterval(() => {
       this.getHitokoto();

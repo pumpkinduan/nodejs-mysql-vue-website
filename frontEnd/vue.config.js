@@ -5,10 +5,11 @@ module.exports = {
         host: 'localhost',
         https: false,
         hotOnly: false,
-        //后台接口地址: 'http://localhost:8021'
+        disableHostCheck: true, //允许外网访问本机
+        //后台接口地址: 'http://localhost:8088'
         proxy: {//配置跨域
             '/api': {
-                target: 'http://localhost:8021', 
+                target: 'http://localhost:8088', 
                 ws: true,
                 changeOrigin: true,
                 pathRewrite: {

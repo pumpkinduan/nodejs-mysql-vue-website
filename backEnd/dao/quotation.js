@@ -12,22 +12,18 @@ class quotationDao {
             quotation ? success(false, quotation) : success(new global.errs.NotFound('数据为空'))
         }).catch(err => console.log(err));
     }
-    static createOneQuotation(quotation_add, success) {
-        Quotation.findOne({
-            where: {
-                q_id: quotation_add.q_id
-            }
-        }).then(quotation => {
-            if ( !quotation ) {
+    static createOneQuotation(info, success) {
+        Quotation.findAll().then(quotation => {
+            if ( quotation.length <= 10 ) {
                 const q = new Quotation();
-                q.content = quotation_add.content;
-                q.q_id = quotation_add.q_id;
-                q.author = quotation_add.author;
+                q.content = info.content;
+                q.author = info.author;
+                q.q_id =  +Date.now().toString().slice(5);
                 q.save().then( res => {
                     success(false, {msg:'创建成功',success: true});
                 }).catch(err => console.log(err)) 
             } else {
-                success(new global.errs.Existed('不可重复创建'));
+                success(new global.errs.Existed('数据容器满了'));
             }
         }).catch(err => success(new global.errs.HttpException()));
     }
@@ -51,7 +47,8 @@ class quotationDao {
             console.log(err)
         })
     }
-    static updateQuotationById(id, info, success) {//更新文章
+    static updateQuotationById(id, info, success) {
+        console.log(id)
         Quotation.findOne({
             where: {
                 q_id: id

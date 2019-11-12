@@ -21,7 +21,7 @@ export default {
   },
   created() {
     api
-      .getLists()
+      .getQuotationLists()
       .then(res => {
         if (res.data && res.data.data) {
           this.tableData = res.data.data;

@@ -6,6 +6,7 @@ import Register from './views/admin/register'
 import Error from './views/notFound.vue'
 import PublishArticle from "./views/article/publishArticle";
 import ArticleList from "./views/article/articleList";
+import SelectArticleEdit from "./views/article/selectArticleEdit";
 import EditArticle from "./views/article/editArticle";
 import PublishQuotation from "./views/quotation/publishQuotation";
 import EditQuotation from "./views/quotation/editQuotation";
@@ -31,6 +32,11 @@ const router = new Router({
           path: 'articleList',
           name: 'ArticleList',
           component: ArticleList
+        },
+        {
+          path: 'selectArticleEdit',
+          name: 'SelectArticleEdit',
+          component: SelectArticleEdit
         },
         {
           path: 'editArticle',

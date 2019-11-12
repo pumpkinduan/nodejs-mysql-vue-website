@@ -3,7 +3,6 @@ const { Imgs } = require('../model/Imgs');
 const { sequelize } = require('../core/db');
 class ImgsDao {
     static uploadPictureInfo(file, success) {
-        console.log(file)
        let imgInfo = new Imgs();
        imgInfo.url = file.path;
        imgInfo.originalname = file.originalname;

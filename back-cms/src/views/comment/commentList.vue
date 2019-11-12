@@ -6,7 +6,6 @@
       :amount="amount"
       :pageSize="pageSize"
       :pageBtns="pageBtns"
-      :cacheData="cacheData"
       @getCurrentItem="getCurrentItem"
     >
       <template slot="only" slot-scope="{scopeProp}">
@@ -50,8 +49,10 @@ export default {
         created_at: "日期",
         id: "id",
         name: "名字",
-        comment: "评论"
-      }
+        comment: "评论",
+        article_id: '文章id'
+      },
+      curPage: 1
     };
   },
   methods: {
@@ -62,7 +63,6 @@ export default {
         type: "warning"
       })
         .then(() => {
-          console.log(555)
           api.deleteComment(row.id).then(res => {
             if (res.data && res.data.success) {
               this.$message.success(res.data.msg);
@@ -79,6 +79,7 @@ export default {
     },
     getCurrentItem(page) {
       //获取当前页的数据
+      this.curPage = page;
       if (this.cacheData.has(page)) {
         //若是已经缓存数据了则不必发送网络请求
         this.tableData = this.cacheData.get(page); //从缓存中取数据

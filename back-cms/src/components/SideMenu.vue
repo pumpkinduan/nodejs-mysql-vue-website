@@ -15,7 +15,7 @@
             </el-menu-item>
           </router-link>
           <template v-for="(f_item, f_index) in menu">
-            <el-submenu v-if="f_item.children" :key="f_index" :index="f_index">
+            <el-submenu v-if="f_item.children" :key="f_index" :index="f_index + ''">
               <template slot="title">
                 <i :class="f_item.icon"></i>
                 <span>{{ f_item.name }}</span>
@@ -24,13 +24,13 @@
                 <router-link
                   v-for="(c_item, c_index) in f_item.children"
                   :key="c_index"
-                  :to="{name: c_item.component}"
+                  :to="{name: c_item.component, params: {publish: c_item.publish}}"
                 >
-                  <el-menu-item :index="c_index">{{ c_item.name }}</el-menu-item>
+                  <el-menu-item :index="f_index + '-' + c_index">{{ c_item.name }}</el-menu-item>
                 </router-link>
               </el-menu-item-group>
             </el-submenu>
-             <el-menu-item :index="f_index" v-else :key="f_item.icon">
+             <el-menu-item :index="f_index + ''" v-else :key="f_item.icon">
               <i :class="f_item.icon"></i>
               <span>{{ f_item.name }}</span>
             </el-menu-item>
@@ -52,11 +52,12 @@ export default {
           children: [
             {
               name: "文章编辑",
-              component: "EditArticle"
+              component: "SelectArticleEdit"
             },
             {
               name: "文章发布",
-              component: "PublishArticle"
+              component: "PublishArticle",
+              publish: true,
             },
             {
               name: "文章信息",

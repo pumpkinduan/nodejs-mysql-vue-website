@@ -1,45 +1,20 @@
 <template>
-  <div class="edit-quotation">
-   <Edit
-       ref="edit"
+  <div class="select-edit">
+    <Edit
       :labels="labels"
       :tableData="tableData"
       :amount="amount"
       :pageSize="pageSize"
       :pageBtns="pageBtns"
       :cacheData="cacheData"
-      :stay="true"
       @getCurrentItem="getCurrentItem"
-      @handleEdit="handleEdit"
       @handleDelete="handleDelete"
-      @submit="submit"
       @resetDialog="resetDialog"
-      title="关于我的信息编辑"
-    >
-     <el-dialog title="每日一句编辑" :visible.sync="dialogFormVisible">
-      <el-form :model="tableData[index]">
-        <el-form-item
-          :label="val"
-          label-width="80px"
-          v-for="(val, attr) in labels"
-          :key="attr"
-          :rules="[{required: true, message: `${val}不能为空`}]"
-          :prop="attr"
-        >
-          <el-input v-model="tableData[index][attr]" autocomplete="off" :disabled="attr == 'q_id'">{{ attr }}</el-input>
-        </el-form-item>
-      </el-form>
-      <div slot="footer" class="dialog-footer">
-        <el-button type="primary" @click="handleConfirm">确认更新</el-button>
-        <el-button @click="dialogFormVisible = false">取消</el-button>
-        <el-button @click="resetDialog">重置</el-button>
-      </div>
-    </el-dialog>
-   </Edit>
+    />
   </div>
 </template>
 <script>
-import api from "@/api/quotation.js";
+import api from "@/api/article.js";
 import Edit from "@/components/Edit";
 export default {
   components: {
@@ -47,7 +22,7 @@ export default {
   },
   created() {
     api
-      .getQuotationLists()
+      .getAllLists()
       .then(res => {
         if (res.data && res.data.data) {
           this.tableData = res.data.data;
@@ -62,58 +37,29 @@ export default {
   },
   data() {
     return {
-      id: "",
-      search: "",
-      dialogFormVisible: false,
-      labels: { 
-        q_id: "id",
-        author: "作者",
-        content: "内容",
+      labels: {
+        cover: "封面",
+        title: "标题",
+        tag: "标签",
+        description: "描述"
       },
-      cacheData: new Map(),
-      tableData: [{ 
-        q_id: 0,
-        author: "",
-        content: "",
-      }],
-      index: 0,
+      tableData: [],
+      id: "",
+      cacheData: new Map(), //缓存条目数据
       amount: 0, //总条数-
       pageSize: 5, //每页的条数
       pageBtns: 5 //页码按钮显示数量
     };
   },
-
   methods: {
-    submit(data) {
-      api
-        .updateQuotation(this.id, data)
-        .then(res => {
-          this.dialogFormVisible = false;
-          this.$message({
-            message: res.data.msg,
-            duration: 1000
-          });
-        })
-        .catch(err => {
-          console.log(err);
-        });
-    },
-    handleConfirm() {
-      this.submit() 
-    },
-    handleEdit(index, row) {
-      this.dialogFormVisible = true;
-      this.index = index;
-      this.id = row.q_id;
-    },
     handleDelete(index, row) {
-      this.$confirm("此操作将永久删除该条语录, 是否继续?", "提示", {
+      this.$confirm("此操作将永久删除该文章, 是否继续?", "提示", {
         confirmButtonText: "确定",
         cancelButtonText: "取消",
         type: "warning"
       })
         .then(() => {
-          api.deleteQuotation(row.q_id).then(res => {
+          api.deleteArticle(row.article_id).then(res => {
             if (res.data && res.data.success) {
               this.$message.success(res.data.msg);
               this.tableData.splice(index, 1); //删除纪录
@@ -128,8 +74,8 @@ export default {
         });
     },
     resetDialog() {
-      for (var i in this.addLists) {
-        this.addLists[i] = "";
+      for (let i in this.editLists) {
+        this.editLists[i] = "";
       }
     },
     getCurrentItem(page) {
@@ -140,7 +86,7 @@ export default {
         return;
       }
       api
-        .getQuotationLists({ page })
+        .getAllLists({ page })
         .then(res => {
           if (res.data && res.data.data) {
             this.tableData = res.data.data; //更新显示数据
@@ -155,7 +101,7 @@ export default {
 };
 </script>
 <style scoped>
-.edit-quotation {
+.select-edit{
   height: 70%;
 }
 </style>

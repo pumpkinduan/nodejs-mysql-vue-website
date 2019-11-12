@@ -21,7 +21,7 @@ class CommentDao {
                 c.comment = info.comment;
                 c.article_id = info.article_id;
                 c.name = info.name;
-                c.parent_id = info.parent_id;
+                // c.parent_id = info.parent_id;
                 c.save().then((res) => {
                     success(false, { msg: '添加成功', success: true });
                 }).catch(err => { success(new global.errs.HttpException()); console.log(err); })
@@ -95,6 +95,7 @@ class CommentDao {
                 success(new global.errs.NotFound('数据为空'))
             }
         }).catch(err => {
+            console.log(err)
             success(new global.errs.HttpException());
         })
     }

@@ -6,13 +6,13 @@ export default {
     updateArticle(data, id) {
         return axios.put("/api/article/update/" + id, data);
     },
-    getLists(params) {
+    getAllLists(params) {
         return axios.get("/api/article/list", {params});
+    },
+    getArticleDetail(id) {
+        return axios.get('/api/article/detail/' + id);
     },
     deleteArticle(id) {
         return axios.delete("/api/article/delete/" + id);
-    },
-    getDetail(id) {
-        return axios.get("/api/article/detail/" + id);
     }
 }

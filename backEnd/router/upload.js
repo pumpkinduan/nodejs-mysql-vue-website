@@ -13,7 +13,7 @@ var storage = multer.diskStorage({//将上传的文件(文件是二进制数据�
 let upload = multer({
     storage: storage
 })
-//一次性可以最多上传10张图片
-uploadRouter.post('/picture', upload.array('picture', 10), loader.get('upload/picture'));
+//一次性上传一张图片
+uploadRouter.post('/picture', upload.single('picture'), loader.get('upload/picture'));
 // uploadRouter.delete('/delete/:id', loader.get('upload/delePicture'));
 module.exports = uploadRouter

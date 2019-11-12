@@ -5,20 +5,21 @@ class ArticleDao {
     static createArticle(info, success) {//创建文章
         Article.findOne({
             where: {
-                article_id: info.article_id
+                title: info.title
             }
         }).then((val) => {
             if (val) {
                 success(new global.errs.Existed('不可重复创建'))
             } else {
                 const article = new Article();
+                article.type = info.type
                 article.title = info.title;
+                article.article_id =  +Date.now().toString().slice(5);
                 article.author = info.author;
                 article.cover = info.cover;
                 article.tag = info.tag;
                 article.content = info.content;
                 article.total_char = info.total_char;
-                article.article_id = info.article_id;
                 article.browse = info.browse;
                 article.description = info.description
                 article.save().then((res) => {
@@ -30,10 +31,39 @@ class ArticleDao {
             console.log(err);
         })
     }
+    static getAllList(page = 1, desc = "created_at", success) {//获取文章列表
+        const pageSize = 5; //每页的文章数量
+        Article.scope('a_list').findAndCountAll({
+            //分页
+            limit: pageSize,
+            offset: pageSize * (page - 1),
+            order: [[desc, 'DESC']] //按照文章创建的时间倒序查找
+        }).then((article) => {
+            console.log(article)
+            if (article.rows.length !== 0) {
+                success(false, {
+                    data: article.rows,
+                    meta: {
+                        count: article.count,
+                        pageSize: pageSize,
+                        success: true
+                    }
+                });
+            } else {
+                success(new global.errs.NotFound('数据为空'));
+            }
+        }).catch(err => {
+            success(new global.errs.HttpException());
+            console.log(err)
+        })
+    }
     static getArticleList(page = 1, desc = "created_at", success) {//获取文章列表
         const pageSize = 5; //每页的文章数量
         Article.scope('a_list').findAndCountAll({
             //分页
+            where: {//查找文章
+                type: 0
+            },
             limit: pageSize,
             offset: pageSize * (page - 1),
             order: [[desc, 'DESC']] //按照文章创建的时间倒序查找
@@ -43,6 +73,34 @@ class ArticleDao {
                     data: article.rows,
                     meta: {
                         count: article.count,
+                        pageSize: pageSize,
+                        success: true
+                    }
+                });
+            } else {
+                success(new global.errs.NotFound('数据为空'));
+            }
+        }).catch(err => {
+            success(new global.errs.HttpException());
+            console.log(err)
+        })
+    }
+    static getBlogList(page = 1, desc = "created_at", success) {//获取文章列表
+        const pageSize = 5; //每页的文章数量
+        Article.scope('a_list').findAndCountAll({
+            //分页
+            where: {//查找博客
+                type: 1
+            },
+            limit: pageSize,
+            offset: pageSize * (page - 1),
+            order: [[desc, 'DESC']] //按照文章创建的时间倒序查找
+        }).then((blog) => {
+            if (blog.rows.length !== 0) {
+                success(false, {
+                    data: blog.rows,
+                    meta: {
+                        count: blog.count,
                         pageSize: pageSize,
                         success: true
                     }

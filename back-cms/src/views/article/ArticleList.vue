@@ -18,7 +18,7 @@ import List from "@/components/List";
 export default {
   created() {
     api
-      .getLists()
+      .getAllLists()
       .then(res => {
         if (res.data && res.data.data) {
           this.tableData = res.data.data;
@@ -47,6 +47,7 @@ export default {
         article_id: "id",
         total_char: "字数",
         browse: "访问量",
+        type: "文章类型",
         tag: "标签",
         cover: "封面",
         title: "标题",
@@ -63,7 +64,7 @@ export default {
         return;
       }
       api
-        .getLists({ page })
+        .getAllLists({ page })
         .then(res => {
           if (res.data && res.data.data) {
             this.tableData = res.data.data; //更新显示数据

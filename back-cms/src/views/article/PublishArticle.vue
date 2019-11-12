@@ -4,12 +4,28 @@
       ref="publish"
       :labels="labels"
       :tableData="tableData"
+      :edit="false"
       @submit="submit"
       @resetDialog="resetDialog"
-      title="发布文章"
+      title="发表文章"
+      btnText="添加"
     >
-  
-  </Publish>
+      <template>
+        <el-upload
+          class="upload-demo"
+          drag
+          action="/api/upload/picture"
+          multiple
+          name="picture"
+          :on-success="uploadSuccess"
+          :on-error="uploadErr"
+        >
+          <i class="el-icon-upload"></i>
+          <div class="el-upload__text">一张精致的封面图片，有利于吸引ta人的眼球噢</div>
+          <div class="el-upload__tip" slot="tip">只能上传jpg/png文件，且不超过500kb</div>
+        </el-upload>
+      </template>
+    </Publish>
   </div>
 </template>
 <script>
@@ -22,7 +38,6 @@ export default {
   data() {
     return {
       labels: {
-        article_id: "id",
         tag: "标签",
         cover: "封面",
         title: "标题",
@@ -33,29 +48,37 @@ export default {
           tag: "",
           title: "",
           cover: "",
-          article_id: "",
           description: ""
         }
       ]
     };
   },
   methods: {
+    uploadErr() {
+      this.$message.error("upload failed");
+    },
+    uploadSuccess(response, file) {
+      this.tableData[0].cover = response.path.replace(/\\/gi, "/");
+    },
     submit(data) {
       api
         .publishArticle(data)
         .then(res => {
-           this.$refs.publish.quillEditor.quill.root.innerHTML = ""; //清空编辑器;
-          for (var i in this.tableData[0]) {
-            this.tableData[0][i] = "";
+          if (res.data) {
+            this.submitSuccess(res.data);
           }
-          this.$message({
-            message: res.data.msg,
-            duration: 1000
-          });
         })
         .catch(err => {
           console.log(err);
         });
+    },
+    submitSuccess(data) {
+      this.$refs.publish.$refs.quillEditor.quill.root.innerHTML = ""; //清空编辑器;
+      this.resetDialog();
+      this.$message({
+        message: data.msg,
+        duration: 1000
+      });
     },
     resetDialog() {
       for (var i in this.tableData[0]) {

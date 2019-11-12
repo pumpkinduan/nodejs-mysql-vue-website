@@ -9,11 +9,24 @@ function createArticle(req, res, next) {
         reactToClient(res, err, data)
     })
 }
-
+//获取文章和博客所有列表
+function getAllList(req, res, next) {
+    const {page, desc} = req.query;
+    const data = ArticleDao.getAllList(page, desc, (err, data) => {
+        reactToClient(res, err, data)
+    });
+}
 //获取文章列表
 function getArticleList(req, res, next) {
     const {page, desc} = req.query;
     const data = ArticleDao.getArticleList(page, desc, (err, data) => {
+        reactToClient(res, err, data)
+    });
+}
+//获取博客列表
+function getBlogList(req, res, next) {
+    const {page, desc} = req.query;
+    const data = ArticleDao.getBlogList(page, desc, (err, data) => {
         reactToClient(res, err, data)
     });
 }
@@ -32,7 +45,6 @@ function deleteArticleById(req, res, next) {
 function updateBrowse(req, res, next) {
     const {id} = req.params;
     const info = req.body;
-    console.log(info)
     ArticleDao.updateBrowse(id, info,(err, data) => {
         reactToClient(res, err, data)
     })
@@ -44,10 +56,12 @@ function updateArticleById(req, res, next) {
         reactToClient(res, err, data)
     })
 }
-map.set('article/create', createArticle);
-map.set('article/list', getArticleList);
-map.set('article/detail', getArticleDetailById);
-map.set('article/delete', deleteArticleById);
-map.set('article/update', updateArticleById);
+map.set('createArticle', createArticle);
+map.set('getArticleList', getArticleList);
+map.set('getBlogList', getBlogList);
+map.set('getAllList', getAllList);
+map.set('getArticleDetailById', getArticleDetailById);
+map.set('deleteArticleById', deleteArticleById);
+map.set('updateArticleById', updateArticleById);
 map.set('browse/update', updateBrowse);
 module.exports = map;

@@ -13,6 +13,7 @@ Quotation.init({
     author: Sequelize.STRING(32),
     q_id: {
         type: Sequelize.INTEGER,
+        defaultValue: +Date.now().toString().slice(5),
         unique: true
     },
     created_at: {

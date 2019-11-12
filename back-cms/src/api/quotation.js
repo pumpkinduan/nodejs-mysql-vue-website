@@ -6,10 +6,10 @@ export default {
     deleteQuotation(id) {
         return axios.delete("/api/quotation/delete/" + id);
     },
-    getLists(params) {
+    getQuotationLists(params) {
         return axios.get("/api/quotation/list", {params});
     },
     updateQuotation(id, data) {
-        return axios.get("/api/quotation/update/" + id, {data});
+        return axios.put("/api/quotation/update/" + id, {data});
     }
 }

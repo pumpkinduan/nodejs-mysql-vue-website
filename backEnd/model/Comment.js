@@ -13,7 +13,7 @@ Comment.init({
         //父级留言的id
         //该id字段有值，则表示该条留言为子（回复）留言，无则为父级（一级）留言
         type: Sequelize.INTEGER,
-        default: null
+        defaultValue: null
     },
     created_at: {
         type: Sequelize.DATE,

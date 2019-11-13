@@ -5,10 +5,10 @@ module.exports = {
         host: 'localhost',
         https: false,
         hotOnly: false,
-        //后台接口地址: 'http://localhost:8021/register'
+        //后台接口地址: 'http://localhost:8088/register'
         proxy: {//配置跨域
             '/api': {
-                target: 'http://localhost:8021', 
+                target: 'http://localhost:8088', 
                 ws: true,
                 changeOrigin: true,
                 pathRewrite: {

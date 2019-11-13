@@ -14,7 +14,7 @@ class initEntrance {//初始化入口，将一些代码从主程序文件中尽�
         const routes = requireDirectory( module,`${process.cwd()}/router`);
         for ( var path in routes ) {
             //加载路由
-            this.app.use(`/${path}`, routes[path]);                
+            this.app.use(`/api/${path}`, routes[path]);                
         }
     }
     initHttpException() {

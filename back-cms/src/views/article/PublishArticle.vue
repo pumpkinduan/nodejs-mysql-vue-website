@@ -10,11 +10,11 @@
       title="发表文章"
       btnText="添加"
     >
-      <template>
+      <template  slot-scope="{serverUrl}">
         <el-upload
           class="upload-demo"
           drag
-          action="/api/upload/picture"
+          :action="`${serverUrl}/api/upload`"
           multiple
           name="picture"
           :on-success="uploadSuccess"
@@ -39,7 +39,6 @@ export default {
     return {
       labels: {
         tag: "标签",
-        cover: "封面",
         title: "标题",
         description: "描述"
       },

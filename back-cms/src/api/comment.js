@@ -1,9 +1,9 @@
-import axios from 'axios';
+import {axiosInstance} from '@/axios'
 export default {
     getLists(params) {
-        return axios.get("/api/comment/list", {params});
+        return axiosInstance.get("/api/comment/list", {params});
     },
     deleteComment(id) {
-        return axios.delete("/api/comment/delete/" + id);
+        return axiosInstance.delete("/api/comment/delete/" + id);
     }
 }

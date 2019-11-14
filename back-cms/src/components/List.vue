@@ -15,7 +15,14 @@
         :key="index"
         :sortable="attr == 'created_at' || attr == 'total_char' || attr=='browse'"
         :sort-method="attr == 'total_char' ? sortByAmount : attr == 'browse' ? sortByBrowse : null"
-      ></el-table-column>
+      >
+      </el-table-column>
+       <el-table-column min-width="240" fixed="right" label="封面" align="center">
+       <template slot-scope="scope">
+          <img style="width:100%" :src="`${serverUrl}/${scope.row.cover}`">
+       </template>
+      </el-table-column>
+        
       <el-table-column min-width="160" fixed="right">
         <template slot="header" slot-scope="scope">
           <el-input v-model="search" placeholder="输入关键字搜索" />
@@ -37,6 +44,7 @@
 </template>
 
 <script>
+import config from '@/config'
 export default {
   props: {
     tableData: Array,
@@ -50,7 +58,8 @@ export default {
   },
   data() {
     return {
-      search: ""
+      search: "",
+       serverUrl: config.serverUrl
     };
   },
   methods: {

@@ -1,7 +1,11 @@
 import axios from 'axios';
-import VueAxios from 'vue-axios';
+import config from './config';
 import { Loading, Message } from 'element-ui';
 let lodingInstancer = null;
+const axiosInstance = axios.create({
+  baseURL: config.serverUrl,
+  timeout: 6000
+})
 // start loading
 function startLoading() {
     lodingInstancer = Loading.service({
@@ -11,7 +15,7 @@ function startLoading() {
     });
 }
 //请求拦截
-axios.interceptors.request.use((config) => {
+axiosInstance.interceptors.request.use((config) => {
     startLoading(); //加载动画
     //http请求头 设置Authorization, 进行身份认证
     if (localStorage.getItem('token')) {
@@ -27,7 +31,7 @@ function endLoading(response) {
     lodingInstancer.close();
 }
 //响应拦截
-axios.interceptors.response.use((response) => {
+axiosInstance.interceptors.response.use((response) => {
     endLoading();
     return response;
 }, function (err) {
@@ -53,6 +57,5 @@ axios.interceptors.response.use((response) => {
     return Promise.reject(err)
 })
 export {
-    axios,
-    VueAxios
+    axiosInstance
 }

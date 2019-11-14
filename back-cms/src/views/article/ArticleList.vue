@@ -49,7 +49,7 @@ export default {
         browse: "访问量",
         type: "文章类型",
         tag: "标签",
-        cover: "封面",
+        // cover: "封面",
         title: "标题",
         description: "描述"
       }

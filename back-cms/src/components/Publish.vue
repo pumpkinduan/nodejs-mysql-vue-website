@@ -10,6 +10,11 @@
         v-for="(value, attr, index) in labels"
         :key="index"
       ></el-table-column>
+        <el-table-column min-width="240" fixed="right" label="封面" align="center">
+       <template slot-scope="scope">
+          <img style="width:100%" :src="`${serverUrl}/${scope.row.cover}`" alt="待上传">
+       </template>
+      </el-table-column>
       <el-table-column align="center" min-width="160" fixed="right">
         <template slot-scope="scope">
           <el-button type="info" @click="dialogFormVisible = true">{{btnText}}</el-button>
@@ -26,7 +31,7 @@
           :rules="[{required: true, message: `${val}不能为空`}]"
           :prop="attr"
         >
-          <el-input v-model="tableData[0][attr]" autocomplete="off">{{ attr }}</el-input>
+          <el-input :disabled="attr == 'cover'" v-model="tableData[0][attr]" autocomplete="off">{{ attr }}</el-input>
         </el-form-item>
       </el-form>
       <div slot="footer" class="dialog-footer">
@@ -36,11 +41,11 @@
       </div>
     </el-dialog>
     <div class="wrapper">
-      <slot></slot>
+      <slot :serverUrl="serverUrl"></slot>
       <el-upload
         class="picture-upload"
         ref="upload"
-        :action="remoteUrl"
+        :action="`${serverUrl}/api/upload`"
         name="picture"
         :file-list="fileList"
         :on-success="uploadSuccess"
@@ -78,6 +83,7 @@ import Quill from "quill";
 import { quillEditor } from "vue-quill-editor";
 import "quill/dist/quill.core.css";
 import "quill/dist/quill.snow.css";
+import config from "@/config.js"
 export default {
   components: {
     quillEditor
@@ -94,8 +100,8 @@ export default {
   },
   data() {
     return {
+      serverUrl: config.serverUrl,
       dialogFormVisible: false,
-      remoteUrl: "/api/upload/picture", //服务器处理图片的接口地址
       fileList: [],
       editorOption: {
         placeholder: "让你的手动起来吧！！！",
@@ -147,9 +153,7 @@ export default {
       quill.insertEmbed(
         position,
         "image",
-        `api/getPicture?path=${response.path.replace(/\\/gi, "/")}&mimetype=${
-          file.raw.type
-        }`
+        `${this.serverUrl}/${response.path.replace(/\\/gi, "/")}`
       );
       //光标到最后
       quill.setSelection(position + 1);

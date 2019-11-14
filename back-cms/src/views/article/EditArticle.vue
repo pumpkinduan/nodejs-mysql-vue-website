@@ -14,7 +14,7 @@
         <el-upload
           class="upload-demo"
           drag
-          action="/api/upload/picture"
+          :action="`${ajaxUrl}/api/upload/picture`"
           multiple
           name="picture"
           :on-success="uploadSuccess"
@@ -32,6 +32,7 @@
 <script>
 import Publish from "@/components/Publish";
 import api from "@/api/article.js";
+import {ajaxUrl} from '@/config.js';
 export default {
   components: {
     Publish

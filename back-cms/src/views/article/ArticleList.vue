@@ -2,6 +2,7 @@
   <div class="article-list">
     <List 
         :labels="labels"
+        :hasCover="true"
         :tableData="tableData"
         :amount="amount"
         :pageSize="pageSize"
@@ -49,7 +50,6 @@ export default {
         browse: "访问量",
         type: "文章类型",
         tag: "标签",
-        // cover: "封面",
         title: "标题",
         description: "描述"
       }

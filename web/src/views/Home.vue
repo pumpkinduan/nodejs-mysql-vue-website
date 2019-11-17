@@ -30,6 +30,7 @@ import api from "@/api/index.js";
 import Waterfall from "@/components/Waterfall";
 import Footer from "@/components/Footer";
 export default {
+  name: 'Home',
   components: {
     Header,
     Quotation,

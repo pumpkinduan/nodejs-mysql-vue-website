@@ -3,7 +3,6 @@
     <el-table
       :data="tableData.filter(data => !search || data.title.toLowerCase().includes(search.toLowerCase()))"
       style="width: 100%"
-      :default-sort="{prop: 'created_at', order: 'descending'}"
     >
       <el-table-column
         align="center"
@@ -15,20 +14,19 @@
         :key="index"
         :sortable="attr == 'created_at' || attr == 'total_char' || attr=='browse'"
         :sort-method="attr == 'total_char' ? sortByAmount : attr == 'browse' ? sortByBrowse : null"
-      >
+      ></el-table-column>
+      <el-table-column min-width="240" fixed="right" label="封面" align="center" v-if="hasCover">
+        <template slot-scope="scope">
+          <img style="width:100%" v-if="scope.row.cover" :src="`${serverUrl}/${scope.row.cover}`" />
+        </template>
       </el-table-column>
-       <el-table-column min-width="240" fixed="right" label="封面" align="center">
-       <template slot-scope="scope">
-          <img style="width:100%" :src="`${serverUrl}/${scope.row.cover}`">
-       </template>
-      </el-table-column>
-        
+
       <el-table-column min-width="160" fixed="right">
         <template slot="header" slot-scope="scope">
           <el-input v-model="search" placeholder="输入关键字搜索" />
         </template>
         <template slot-scope="scope">
-           <slot name="only" :scopeProp="scope"></slot>
+          <slot name="only" :scopeProp="scope"></slot>
         </template>
       </el-table-column>
     </el-table>
@@ -44,9 +42,10 @@
 </template>
 
 <script>
-import config from '@/config'
+import config from "@/config";
 export default {
   props: {
+    hasCover: Boolean,
     tableData: Array,
     amount: Number, //总条数-
     pageSize: Number, //每页的条数
@@ -59,7 +58,7 @@ export default {
   data() {
     return {
       search: "",
-       serverUrl: config.serverUrl
+      serverUrl: config.serverUrl
     };
   },
   methods: {

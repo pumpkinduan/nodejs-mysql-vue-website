@@ -1,6 +1,5 @@
 const { Article } = require('../model/Article');
 const { sequelize } = require('../core/db');
-
 class ArticleDao {
     static createArticle(info, success) {//创建文章
         Article.findOne({

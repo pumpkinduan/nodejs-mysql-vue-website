@@ -31,7 +31,7 @@ export default {
     return {};
   },
   beforeRouteEnter(to, from, next) {
-    next( vm => vm.$store.state.showLoading = true);
+    next(vm => (vm.$store.state.showLoading = true));
   },
   created() {}
 };

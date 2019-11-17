@@ -2,7 +2,6 @@ const express = require('express');
 const app = new express();//main application
 const globalConf = require('./config');
 const passport = require('passport');
-const fs = require('fs');
 app.all('*', function (req, res, next) {
     res.header("Access-Control-Allow-Origin", "*");
     res.header("Access-Control-Allow-Headers", "Content-Type,Content-Length, Authorization, Accept,X-Requested-With");

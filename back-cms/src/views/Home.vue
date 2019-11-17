@@ -8,7 +8,9 @@
         <SideMenu />
       </el-aside>
       <el-main style="padding: 10px; margin-bottom: 20px;">
-        <router-view />
+        <keep-alive>
+          <router-view />
+        </keep-alive>
       </el-main>
     </el-container>
   </el-container>
@@ -30,5 +32,4 @@ export default {
   width: 100%;
   height: 100%;
 }
-
 </style>

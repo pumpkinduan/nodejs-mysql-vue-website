@@ -59,7 +59,6 @@ export default {
       this.$emit('getData', page);
     },
     nextPage(page) {
-      console.log(page)
       this.$emit('getData', page);
     },
     prevPage(page) {

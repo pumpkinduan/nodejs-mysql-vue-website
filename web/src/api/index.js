@@ -30,7 +30,7 @@ export default {
         return instance.get('/api/quotation/list', { params });
     },
     getArticleComments(article_id, page) {
-        return axiosInstance.get('/api/comment/all', {
+        return instance.get('/api/comment/list', {
             params: {
                 article_id,
                 page
@@ -40,13 +40,13 @@ export default {
     createComment(data) {
         return axiosInstance.post('/api/comment/create', data);
     },
-    deleteComment(id) {
-        return axiosInstance.delete("/api/comment/delete/" + id);
-    },
     updateBrowse(id, data) {
         return instance.put("/api/browse/update/" + id, data);
     },
     publishQuotation(data) {
         return instance.post("/api/quotation/create", data);
     },
+    createReply(data) {
+        return instance.post("/api/reply/create", data);
+    }
 }

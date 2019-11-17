@@ -13,8 +13,7 @@ Quotation.init({
     author: Sequelize.STRING(32),
     q_id: {
         type: Sequelize.INTEGER,
-        defaultValue: +Date.now().toString().slice(5),
-        unique: true
+        defaultValue: +Date.now().toString().slice(5)
     },
     created_at: {
         type: Sequelize.DATE,
@@ -25,7 +24,7 @@ Quotation.init({
 }, {
     sequelize,
     tableName: 'Quotation'
-})
+}).sync({alter: true});
 
 module.exports = {
     Quotation

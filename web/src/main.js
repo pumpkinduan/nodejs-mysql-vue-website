@@ -1,16 +1,15 @@
 import Vue from 'vue'
-import App from './App.vue'
 import '@/assets/css/base.css'
 import router from './router'
 import store from './store'
-import './axios'
 import '@/js/generateHeart.js'
 import '@/js/backToTop.js'
-import ElementUI from 'element-ui';
-import 'element-ui/lib/theme-chalk/index.css';
+import { Carousel, CarouselItem } from 'element-ui';
+import App from './App.vue';
 
+Vue.use(Carousel);
+Vue.use(CarouselItem);
 Vue.config.productionTip = false; 
-Vue.use(ElementUI);
 new Vue({
   router,
   store,

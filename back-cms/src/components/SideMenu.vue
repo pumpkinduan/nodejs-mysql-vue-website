@@ -30,7 +30,7 @@
                 </router-link>
               </el-menu-item-group>
             </el-submenu>
-             <el-menu-item :index="f_index + ''" v-else :key="f_item.icon">
+            <el-menu-item :index="f_index + ''" v-else :key="f_item.icon">
               <i :class="f_item.icon"></i>
               <span>{{ f_item.name }}</span>
             </el-menu-item>
@@ -57,7 +57,7 @@ export default {
             {
               name: "文章发布",
               component: "PublishArticle",
-              publish: true,
+              publish: true
             },
             {
               name: "文章信息",
@@ -83,13 +83,23 @@ export default {
             }
           ]
         },
-          {
+        {
           icon: "el-icon-chat-dot-round",
           name: "评论",
           children: [
             {
               name: "评论数据",
               component: "CommentList"
+            }
+          ]
+        },
+         {
+          icon: "el-icon-chat-line-square",
+          name: "回复",
+          children: [
+            {
+              name: "回复列表",
+              component: "ReplyList"
             }
           ]
         }

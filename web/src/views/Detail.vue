@@ -2,7 +2,7 @@
   <div class="detail">
     <main>
       <header class="pic">
-        <img :src="'http://localhost:8088/'+details.cover" v-if="details.cover">
+        <img :src="serverUrl+'/'+details.cover" v-if="details.cover">
       </header>
       <section>
         <h2>{{details.title}}</h2>
@@ -24,6 +24,7 @@
 
 <script>
 import api from "@/api/index.js";
+import config from "@/config.js";
 import Comment from "@/components/Comment";
 export default {
   components: {
@@ -39,7 +40,7 @@ export default {
         }
       })
       .catch(err => {
-        console.log(err);
+        // console.log(err);
       });
   },
   mounted() {
@@ -51,6 +52,7 @@ export default {
       stayTime: 0,
       browse: 0,
       second: 0,
+      serverUrl: config.serverUrl,
       timer: null,
       readingTime: 0 //阅读时长，大于该值访问量才会+1
     };
@@ -88,9 +90,7 @@ export default {
 <style scoped>
 .detail header img {
   width: 100%;
-  /* height: 400px; */
   margin-bottom: 3rem;
-  /* box-shadow: 0 0 3px 1px rgba(0, 0, 0, 0.5); */
 }
 .detail main {
   background: #fff;

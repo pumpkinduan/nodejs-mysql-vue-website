@@ -14,7 +14,7 @@
         <el-upload
           class="upload-demo"
           drag
-          :action="`${ajaxUrl}/api/upload/picture`"
+          :action="`${serverUrl}/api/upload`"
           multiple
           name="picture"
           :on-success="uploadSuccess"
@@ -32,7 +32,7 @@
 <script>
 import Publish from "@/components/Publish";
 import api from "@/api/article.js";
-import {ajaxUrl} from '@/config.js';
+import config from '@/config.js';
 export default {
   components: {
     Publish
@@ -40,6 +40,7 @@ export default {
   data() {
     return {
       edit: false,
+      serverUrl: config.serverUrl,
       title: "发布文章",
       labels: {
         tag: "标签",

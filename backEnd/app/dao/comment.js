@@ -1,6 +1,6 @@
 const { Comment } = require('../model/Comment');
 const { sequelize } = require('../core/db');
-
+const { Reply } = require('../model/Reply');
 class CommentDao {
     static createComment(info, success) {//创建留言
         if (!Comment.findOne({ //留言信息对应的文章没有找到
@@ -8,12 +8,15 @@ class CommentDao {
                 article_id: info.article_id
             }
         })) {
-            global.errs.NotFound('留言的相关文章不存在');
+            success(global.errs.NotFound('留言的相关文章不存在'));
         }
         Comment.findOne({
             where: {
                 name: info.name,
                 article_id: info.article_id
+            },
+            attributes: {
+                exclude: ['updated_at']
             }
         }).then(val => {
             if (!val) {//同一篇文章下的留言者的名字不能重复
@@ -21,9 +24,10 @@ class CommentDao {
                 c.comment = info.comment;
                 c.article_id = info.article_id;
                 c.name = info.name;
-                // c.parent_id = info.parent_id;
                 c.save().then((res) => {
-                    success(false, { msg: '添加成功', success: true });
+                    //res.dataValues 添加的数据对象
+                    let data = Object.assign(res.dataValues,{replies: []})
+                    success(false, { msg: '添加成功', success: true, data: data});
                 }).catch(err => { success(new global.errs.HttpException()); console.log(err); })
             } else {
                 success(new global.errs.Existed('昵称已经被人使用啦'));
@@ -40,13 +44,29 @@ class CommentDao {
             //分页
             limit: pageSize,
             offset: pageSize * (page - 1),
-            order: [[desc]]
+            order: [[desc]],
+            attributes: {
+                exclude: ['updated_at', 'email']
+            },
+            include: [ //获取查询到的每条留言下的回复，根据定义的外键关系查找
+                {
+                    model: Reply,
+                    attributes: {
+                        exclude: ['updated_at', 'email']
+                    }
+                }
+            ]
         }).then((comments) => {
             if (comments.rows.length !== 0) {
+                let totalReplies = 0;
+                comments.rows.forEach( (item, index) => {
+                    totalReplies += item.replies.length;
+                })
                 success(false, {
                     data: comments.rows,
                     meta: {
-                        count: comments.count,
+                        totalComments: comments.count,
+                        totalReplies: totalReplies,
                         pageSize: pageSize,
                         success: true
                     }
@@ -60,7 +80,7 @@ class CommentDao {
         })
     }
     //全部留言
-    static getCommentList(page = 1, desc = "created_at", success) {
+    static getCommentAll(page = 1, desc = "created_at", success) {
         const pageSize = 5;
         Comment.findAndCountAll({
             //分页

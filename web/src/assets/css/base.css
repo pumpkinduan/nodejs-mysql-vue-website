@@ -1,10 +1,19 @@
-
 /* 清除内外边距 */
-body, h1, h2, h3, h4, h5, h6, hr, p, blockquote, /* structural elements 结构元素 */
-dl, dt, dd, ul, ol, li, /* list elements 列表元素 */
-pre, /* text formatting elements 文本格式元素 */
-fieldset, lengend, button, input, textarea, /* form elements 表单元素 */
-th, td, div, header ,main, footer, section, article, aside { /* table elements 表格元素 */
+
+body, h1, h2, h3, h4, h5, h6, hr, p, blockquote,
+/* structural elements 结构元素 */
+
+dl, dt, dd, ul, ol, li,
+/* list elements 列表元素 */
+
+pre,
+/* text formatting elements 文本格式元素 */
+
+fieldset, lengend, button, input, textarea,
+/* form elements 表单元素 */
+
+th, td, div, header, main, footer, section, article, aside {
+    /* table elements 表格元素 */
     margin: 0;
     padding: 0;
     color: #222;
@@ -13,83 +22,141 @@ th, td, div, header ,main, footer, section, article, aside { /* table elements �
     letter-spacing: 1px;
 }
 
-html,body {
+html, body {
     width: 100%;
     height: 100%;
 }
+
 body {
     font-size: 62.5% !important;
 }
-address, cite, dfn, em, var { font-style: normal; } /* 将斜体扶正 */
-code, kbd, pre, samp, tt { font-family: "Courier New", Courier, monospace; } /* 统一等宽字体 */
-small { font-size: 12px; } /* 小于 12px 的中文很难阅读，让 small 正常化 */
+
+address, cite, dfn, em, var {
+    font-style: normal;
+}
+
+/* 将斜体扶正 */
+
+code, kbd, pre, samp, tt {
+    font-family: "Courier New", Courier, monospace;
+}
+
+/* 统一等宽字体 */
+
+small {
+    font-size: 12px;
+}
+
+/* 小于 12px 的中文很难阅读，让 small 正常化 */
 
 /* 重置列表元素 */
-ul, ol, li { list-style: none; }
+
+ul, ol, li {
+    list-style: none;
+}
 
 /* 重置文本格式元素 */
-a { text-decoration: none ; color: #666 ; font-size: 1rem; display: inline-block;}
 
-abbr[title], acronym[title] { /* 注：1.ie6 不支持 abbr; 2.这里用了属性选择符，ie6 下无效果 */
-border-bottom: 1px dotted;
-cursor: help;
+a {
+    text-decoration: none;
+    color: #666;
+    font-size: 1rem;
+    display: inline-block;
 }
+
+abbr[title], acronym[title] {
+    /* 注：1.ie6 不支持 abbr; 2.这里用了属性选择符，ie6 下无效果 */
+    border-bottom: 1px dotted;
+    cursor: help;
+}
+
 .ql-editor {
     padding: 0 !important;
 }
+
 .ql-editor .ql-size-large {
     font-size: 1em;
 }
-q:before, q:after { content: ''; }
+
+q:before, q:after {
+    content: '';
+}
 
 /* 重置表单元素 */
-legend { color: #000; } /* for ie6 */
-fieldset, img { border: none; } /* img 搭车：让链接里的 img 无边框 */
+
+legend {
+    color: #000;
+}
+
+/* for ie6 */
+
+fieldset, img {
+    border: none;
+}
+
+/* img 搭车：让链接里的 img 无边框 */
+
 /* 注：optgroup 无法扶正 */
+
 button, input, select, textarea {
-    font-size: 100%; /* 使得表单元素在 ie 下能继承字体大小 */
+    font-size: 100%;
+    /* 使得表单元素在 ie 下能继承字体大小 */
 }
 
 /* 重置表格元素 */
+
 table {
-border-collapse: collapse;
-border-spacing: 0;
+    border-collapse: collapse;
+    border-spacing: 0;
 }
 
 /* 重置 hr */
+
 hr {
     border: none;
     height: 1px;
 }
-.clearfix::before,
-.clearfix::after {
-	content: ' ';
-	clear: both;
-	display: block;
-	font-size: 0;
+
+.clearfix::before, .clearfix::after {
+    content: ' ';
+    clear: both;
+    display: block;
+    font-size: 0;
 }
+
 .fl {
     float: left;
 }
+
 .fr {
     float: right;
 }
+
 .blue {
     color: #2395ff;
 }
-.center{
+
+.center {
     text-align: center;
 }
+
 .orange {
     color: #ff8a00 !important;
 }
+
+.fs-15 {
+    font-size: 1.5rem;
+}
+
 img {
     display: block;
     max-width: 100%;
 }
+
 .middle {
     vertical-align: middle;
 }
+
 .relative {
     position: relative;
 }

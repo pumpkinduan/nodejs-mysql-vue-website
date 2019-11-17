@@ -41,7 +41,7 @@ Article.init({
     sequelize,
     tableName: 'Article'
 })
-.sync({alter: true});//增加或删除字段时自动适应数据表
+// .sync({alter: true});//增加或删除字段时自动适应数据表
 module.exports = {
     Article
 }

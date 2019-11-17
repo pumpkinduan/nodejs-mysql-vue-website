@@ -21,7 +21,7 @@ import List from "@/components/List";
 export default {
   created() {
     api
-      .getLists()
+      .getCommentAll()
       .then(res => {
         if (res.data && res.data.data) {
           this.tableData = res.data.data;
@@ -86,7 +86,7 @@ export default {
         return;
       }
       api
-        .getLists({ page })
+        .getCommentAll({ page })
         .then(res => {
           if (res.data && res.data.data) {
             this.tableData = res.data.data; //更新显示数据

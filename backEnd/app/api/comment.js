@@ -18,9 +18,9 @@ function getArticleComments(req, res, next) {
     });
 }
 //获取全部留言
-function getCommentList(req, res, next) {
+function getCommentAll(req, res, next) {
     const { page, desc } = req.query;
-    CommentDao.getCommentList(page, desc, (err, data) => {
+    CommentDao.getCommentAll(page, desc, (err, data) => {
         reactToClient(res, err, data)
     });
 }
@@ -32,7 +32,7 @@ function deleteCommentById(req, res, next) {
 
 }
 map.set('comment/create', createComment);
-map.set('comment/list', getCommentList);
-map.set('comment/all', getArticleComments);
+map.set('comment/list', getArticleComments);
+map.set('comment/all', getCommentAll);
 map.set('comment/delete', deleteCommentById);
 module.exports = map;

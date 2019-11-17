@@ -1,45 +1,73 @@
 <template>
   <div class="comment">
     <section class="words">
-      <header>
+      <h3>
         <i class="iconfont icon-liuyan"></i>
-        <span style="vertical-align: 5px;font-size: 1rem;" v-if="words.length > 0">一共有{{commentSize}}条留言</span>
+        <span style="vertical-align: 5px;font-size: 1rem;" v-if="words.length > 0">
+          一共有
+          <em class="orange">{{totalComments}}</em>条留言和
+          <em class="orange">{{totalReplies}}</em>条回复
+        </span>
         <span style="vertical-align: 5px;font-size: 1rem;" v-else>目前还没有人留下ta的足迹噢,快来抢占一楼吧</span>
-      </header>
+      </h3>
       <template v-if="words.length > 0">
         <ul>
           <li v-for="(item, index) in words" :key="index">
-            <section>
-              <i class="iconfont icon-xiaolian-"></i>
+            <header>
+              <i class="iconfont icon-xiaolian- fs-15 orange"></i>
               <span class="user-name">{{item.name}}</span>
-            </section>
+            </header>
             <section class="wrapper">
               <div class="content">{{item.comment}}</div>
               <div class="clearfix" style="padding-top: 0.5em;">
                 <span class="fl time">{{item.created_at}}</span>
-                <span class="fr time orange">{{(curPage - 1) * (pageSize) + (index+1) }}楼</span>
-                <!-- <i class="iconfont icon-pinglun fr" @click="handleReply(item.name, item.id, index)"></i> -->
-                <i
-                  title="取消回复"
-                  class="iconfont icon-quxiao fr"
-                  v-show="isReply && curIndex == index"
-                  @click="resetComment()"
-                ></i>
+                <span class="fr time">{{(curPage - 1) * (pageSize) + (index+1) }}楼</span>
+                <i class="iconfont icon-pinglun fr" @click="handleReply(item.name, item.id, index)"></i>
+              </div>
+              <template>
+                <section
+                  :key="r_index"
+                  class="reply"
+                  v-for="(reply, r_index) in item.replies.slice(0,3)"
+                >
+                  <div class="replier">
+                    <i class="iconfont orange fs-15 icon-github"></i>
+                    <span class="user-name">{{reply.name}}</span>
+                    <small style="color: #666;">回复道</small>
+                    <span class="time fr">{{reply.created_at}}</span>
+                  </div>
+                  <p style="text-indent: 2rem;" class="content">{{reply.content}}</p>
+                </section>
+                <transition-group name="slide" tag="div" appear>
+                  <section
+                    :key="r_index + 3"
+                    class="reply"
+                    v-for="(reply, r_index) in item.replies.slice(3)"
+                    v-show="item.active"
+                  >
+                    <div class="replier">
+                      <i class="iconfont orange fs-15 icon-github"></i>
+                      <span>{{reply.name}}回复道</span>
+                      <span class="time fr">{{reply.created_at}}</span>
+                    </div>
+                    <p style="text-indent: 2rem;" class="content">{{reply.content}}</p>
+                  </section>
+                </transition-group>
+              </template>
+              <div
+                v-if="item.replies && item.replies.length>3"
+                @click="item.active=!item.active"
+                class="showMore clearfix fr"
+              >
+                <span v-if="!item.active">剩余{{item.replies.length - 3}}条回复</span>
+                <span v-else>收起回复</span>
+                <span :class="['iconfont','icon-xiala',(item.active ? 'active' : '')]"></span>
               </div>
             </section>
-            <!-- <template v-for="(child, c_index) in childWords">
-            <section v-if="child.parent_id == item.id" :key="c_index" class="child">
-              {{child.name}}于
-              <span class="time">{{child.created_at}}</span>回复
-              <span style="color: #ff9d00;">{{item.name}}</span>
-              <b>:</b>&nbsp;
-              <span style="color: #333;">{{child.comment}}</span>
-            </section>
-            </template>-->
           </li>
         </ul>
         <Pagination
-          :totalData="commentSize"
+          :totalData="totalComments"
           :pageSize="pageSize"
           @current-change="getCurrentPage"
           @next-page="nextPage"
@@ -66,14 +94,13 @@
           v-model.trim="comment"
           :placeholder="prompt"
           ref="focusTextarea"
+          :maxlength="maxlength"
         ></textarea>
       </div>
-      <div>
-        <button @click="send">send comment</button>
+      <div class="clearfix">
+        <button @click="send" class="fl">send comment</button>
+        <button @click="cancle" class="fr">取消</button>
       </div>
-    </section>
-    <section class="prompt">
-      <p>提示: 欢迎留下大家的评语，由于评论信息将会公开显示，所以大家不要透露私人信息，如账号，邮箱...</p>
     </section>
   </div>
 </template>
@@ -82,6 +109,7 @@
 import { format } from "@/lib/formatTime.js";
 import api from "@/api/index.js";
 import Pagination from "@/components/Pagination";
+import { debounce } from "@/lib/debounce.js";
 export default {
   components: {
     Pagination
@@ -89,56 +117,93 @@ export default {
   data() {
     return {
       name: "",
+      showMore: false,
+      maxlength: 128,
       comment: "",
       words: [],
-      parent_id: null,
-      // childWords: [],
+      totalReplies: 0,
+      comment_id: null, //当前被回复的留言的id
       cachedWords: new Map(),
       pageSize: 5,
       curPage: 1,
-      commentSize: 0,
+      totalComments: 0,
       errMessage: "",
       isReply: false, //是否回复  默认 否
       curIndex: "",
       prompt: "Hey,guys,come and say something"
     };
   },
+  watch: {
+    comment(newVal, oldVal) {
+      this.debounceComment(newVal);
+    }
+  },
   created() {
-    api.getArticleComments(this.$route.params.articleId, 1).then(res => {
-      if (res.data) {
-        this.words = res.data.data;
-        this.cachedWords.set(1, this.words); //缓存第一页数据
-        this.pageSize = parseInt(res.data.meta.pageSize);
-        this.commentSize = parseInt(res.data.meta.count);
-      }
-    });
+    this.getData();
   },
   methods: {
+    getData() {
+      api.getArticleComments(this.$route.params.articleId, 1).then(res => {
+        if (res.data) {
+          let data = res.data.data;
+          for (let i in data) {
+            //重新整理数据格式，添加 active: false，用于排他
+            data[i]["active"] = false;
+          }
+          this.words = data;
+          this.cachedWords.set(1, this.words); //缓存第一页数据
+          this.pageSize = parseInt(res.data.meta.pageSize);
+          this.totalComments = parseInt(res.data.meta.totalComments);
+          this.totalReplies = parseInt(res.data.meta.totalReplies);
+        }
+      });
+      let self = this;
+      this.debounceComment = debounce(newVal => {
+        newVal.length >= 128
+          ? (self.errMessage = "留言的字符个数不能超过128噢")
+          : (self.errMessage = "");
+      });
+    },
     send() {
       if (this.comment && this.name) {
-        api
-          .createComment({
-            name: this.name,
-            comment: this.comment,
-            article_id: this.$route.params.articleId
-            // parent_id: this.isReply ? this.parent_id : null
-          })
-          .then(res => {
-            this.words.push({
+        if (!this.isReply) {
+          api
+            .createComment({
               name: this.name,
               comment: this.comment,
-              created_at: format()
-              // parent_id: this.isReply ? this.parent_id : null
+              article_id: this.$route.params.articleId
+            })
+            .then(res => {
+              let data = res.data.data;
+              let newComment = Object.assign(data, {
+                created_at: format()
+              })
+              this.words.push(newComment);
+              this.totalComments++;
+              this.resetComment();
+            })
+            .catch(err => {
+              this.$refs.focusInput.focus();
+              this.errMessage = err.msg;
             });
-            this.commentSize ++;
-            this.name = "";
-            this.comment = "";
-            this.resetComment();
-          })
-          .catch(err => {
-            this.$refs.focusInput.focus();
-            this.errMessage = err.msg;
-          });
+        } else {
+          api
+            .createReply({
+              name: this.name,
+              content: this.comment,
+              comment_id: this.comment_id
+            })
+            .then(res => {
+              this.words[this.curIndex].replies.push({
+                name: this.name,
+                content: this.comment,
+                created_at: format(),
+                replies: []
+              });
+              this.totalReplies++;
+              this.resetComment();
+            });
+        }
       } else if (!this.comment) {
         this.prompt = "留言不能为空噢";
         this.$refs.focusTextarea.focus();
@@ -147,18 +212,22 @@ export default {
         this.errMessage = "请留下阁下的大名吧";
       }
     },
-    // handleReply(name, id, index) {
-    //   //代表 && index==key回复
-    //   this.isReply = true;
-    //   this.parent_id = id;
-    //   this.curIndex = index; //当前点击的那条留言
-    //   this.prompt = `回复${name}:`;
-    //   this.$refs.focusTextarea.focus();
-    // },
+    cancle() {
+      this.resetComment();
+    },
+    handleReply(name, id, index) {
+      //代表 && index==key回复
+      this.isReply = true;
+      this.comment_id = id;
+      this.curIndex = index; //当前点击的那条留言
+      this.prompt = `回复${name}:`;
+      this.$refs.focusTextarea.focus();
+    },
     resetComment() {
       //留言初始化
-      // this.isReply = !this.isReply;
-      // this.parent_id = null;
+      this.isReply = false;
+      this.comment = "";
+      this.name = "";
       this.prompt = "Hey,guys,come and say something";
     },
     getCurrentPage(page) {
@@ -185,10 +254,120 @@ export default {
 </script>
 
 <style scoped>
-.prompt p {
+.comment .prompt p {
   font-weight: 400;
   color: #554c3d;
   font-size: 0.8rem;
+}
+.comment .words,
+.form {
+  margin-bottom: 2rem;
+  width: 70%;
+}
+.comment .words h3 {
+  padding: 1rem 0;
+  border-bottom: 1px dashed #eee;
+  letter-spacing: 2px;
+  font-weight: 400;
+}
+.comment .words ul li {
+  line-height: 1.5rem;
+  font-size: 0.8rem;
+  padding: 1.2rem 1rem;
+}
+.words ul li header {
+  max-width: 600px;
+  min-width: 300px;
+}
+.comment .words ul li section .time {
+  color: #888;
+  font-size: 0.8em;
+}
+.comment .words ul li section.wrapper {
+  margin-top: 0.6rem;
+  padding-left: 2rem;
+  position: relative;
+  color: #666;
+  overflow: hidden;
+}
+.comment .words ul li section.wrapper .showMore {
+  display: inline-block;
+  cursor: pointer;
+}
+.comment .words ul li section.wrapper .showMore span {
+  display: inline-block;
+}
+.comment .words ul li section.wrapper .showMore:hover {
+  color: #ff9d00;
+}
+.comment .words ul li header .user-name {
+  font-size: 0.9rem;
+  vertical-align: 2px;
+  margin-left: 6px;
+  font-weight: 500;
+}
+.comment .words ul li .content {
+  word-break: break-all;
+  color: #334;
+  font-weight: 400;
+}
+.comment .words ul li section .reply {
+  padding: 0.8rem;
+}
+.comment .words ul li section .reply:hover {
+  background-color: #eeeeee57;
+}
+.comment .words ul li section .reply:last-child {
+  border: none;
+}
+/* 字体图标样式开始 */
+.icon-liuyan {
+  margin-right: 5px;
+  font-size: 1.8rem;
+}
+.icon-pinglun {
+  font-size: 1rem;
+  transition: all 0.3s;
+  vertical-align: middle;
+  font-weight: 400;
+  margin-right: 10px;
+}
+.icon-pinglun:hover {
+  cursor: pointer;
+  color: #ff9d00;
+}
+.icon-github {
+  vertical-align: middle;
+  margin-right: 5px;
+}
+.icon-quxiao:hover {
+  color: #f40;
+  cursor: pointer;
+}
+/* 字体图标样式结束 */
+.slide-enter {
+  transform: translateY(-100%);
+  opacity: 0;
+}
+.slide-enter-active,
+.slide-leave-active {
+  transition: all 0.3s;
+}
+.slide-enter-to {
+  transform: translateY(0%);
+}
+.slide-leave-to {
+  opacity: 0;
+  transform: translateY(-100%);
+}
+.errMessage {
+  color: #f40;
+  position: absolute;
+  left: 4px;
+  bottom: 2px;
+}
+.active {
+  transform: rotate(180deg) !important;
 }
 textarea {
   width: 100%;
@@ -224,10 +403,9 @@ input:focus {
   border: 2px solid orange;
 }
 button {
-  margin: 0.8rem 0;
-  width: 12rem;
-  height: 3.5rem;
-  line-height: 2rem;
+  margin: 0.5rem 0;
+  /* width: 12rem; */
+  padding: 0.7rem 0.8rem;
   border: none;
   text-align: center;
   color: #fff;
@@ -237,75 +415,5 @@ button {
 }
 button:hover {
   opacity: 0.8;
-}
-.words, .form {
-  margin-bottom: 2rem;
-  width: 70%;
-}
-.words header {
-  padding: 1rem 0;
-  border-bottom: 1px dashed #eee;
-  letter-spacing: 2px;
-}
-.words ul li {
-  line-height: 1.5rem;
-  font-size: 1rem;
-  padding: 1.4rem 1rem;
-  border-bottom: solid 1px#eee;
-  transition: all 0.3s;
-}
-.words ul li section:not(:first-child) {
-  margin-top: 0.6rem;
-  padding-left: 2.4rem;
-  color: #666;
-}
-.words ul li section .user-name {
-  color: #ff8a00;
-  font-size: 1.2rem;
-  vertical-align: 4px;
-  margin-left: 6px;
-  font-weight: 300;
-}
-.words ul li section .content {
-  word-break: break-all;
-}
-.icon-xiaolian- {
-  font-size: 1.8rem;
-  color: #ff9d00;
-}
-.icon-liuyan {
-  margin-right: 5px;
-  font-size: 1.8rem;
-}
-.words ul li section:first-child {
-  max-width: 600px;
-  min-width: 300px;
-}
-
-.words ul li section .time {
-  color: #888;
-  font-size: 0.8em;
-}
-.icon-pinglun,
-.icon-quxiao {
-  font-size: 1rem;
-  transition: all 0.3s;
-  vertical-align: middle;
-  font-weight: 400;
-  margin-left: 10px;
-}
-.icon-pinglun:hover {
-  cursor: pointer;
-  color: #ff9d00;
-}
-.icon-quxiao:hover {
-  color: #f40;
-  cursor: pointer;
-}
-.errMessage {
-  color: #f40;
-  position: absolute;
-  left: 4px;
-  bottom: 2px;
 }
 </style>

@@ -28,6 +28,7 @@
 </template>
   <script>
 export default {
+  name: 'HeaderNav',
   data() {
     return {
       navLinks: [

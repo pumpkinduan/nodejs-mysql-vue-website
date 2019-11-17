@@ -1,8 +1,9 @@
-import axios from 'axios';
+import axios from 'axios'
 import store from './store'
+import config from './config'
 //全局的拦截配置
 const axiosInstance = axios.create({
-  baseURL: 'http://localhost:8088',
+  baseURL: config.serverUrl,
   timeout: 6000
 })
 const myInterceptor = axiosInstance.interceptors.request.use((config) => {
@@ -17,8 +18,8 @@ const myInterceptor = axiosInstance.interceptors.request.use((config) => {
     return Promise.reject(err.response.data)
   })
 const instance = axios.create({
-  baseURL: 'http://localhost:8088',
-  timeout: 2000
+  baseURL: config.serverUrl,
+  timeout: 8000
 });
 export {
   axiosInstance,

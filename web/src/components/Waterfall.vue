@@ -2,25 +2,23 @@
   <div class="waterfall-container" ref="waterfall_container">
     <div
       class="waterfall-item"
-      :style="{width: `${width}px`, transition: 'all .4s', 'padding': `0 ${gutter/2}px`}"
+      :style="{transition: 'all .4s', 'padding': `0 ${gutter/2}px`}"
       ref="waterfall_item"
       v-for="(item, index) in lists"
       :key="index"
     >
       <slot :data="item"></slot>
     </div>
-    <Loading />
   </div>
 </template>
-
 <script>
-import Loading from "@/components/Loading";
 import { debounce } from "@/lib/debounce.js";
 import { throttle } from "@/lib/throttle.js";
 export default {
-  components: {
-    Loading
+  activated() {//解决 失活的瀑布流组件 再次被激活时 定位发生错乱的bug
+    this.setPostion();
   },
+  name: 'waterFall',
   props: {
     gap: Number,
     gutter: {
@@ -80,12 +78,12 @@ export default {
       let _self = this;
       window.onresize = debounce(function() {
         _self.setPostion();
-      }, 300);
+      }, 550);
       window.onscroll = throttle(function() {
         if (_self.isloadedMore() && _self.canLoad) {
           _self.loadData();
         }
-      }, 300);
+      }, 400);
     },
     setPostion() {
       //避免累加
@@ -166,7 +164,7 @@ export default {
   margin-bottom: 2rem;
 }
 .waterfall-item {
-  width: 25% !important;
+  width: 25%;
   position: absolute;
   left: 0;
   right: 0;

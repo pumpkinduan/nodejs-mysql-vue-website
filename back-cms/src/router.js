@@ -1,79 +1,77 @@
 import Vue from 'vue'
 import Router from 'vue-router'
 import Home from './views/Home.vue'
-import Login from './views/admin/login'
-import Register from './views/admin/register'
 import Error from './views/notFound.vue'
-import PublishArticle from "./views/article/publishArticle";
-import ArticleList from "./views/article/articleList";
-import SelectArticleEdit from "./views/article/selectArticleEdit";
-import EditArticle from "./views/article/editArticle";
-import PublishQuotation from "./views/quotation/publishQuotation";
-import EditQuotation from "./views/quotation/editQuotation";
-import QuotationList from "./views/quotation/quotationList";
-import CommentList from "./views/comment/commentList";
 Vue.use(Router)
-
 const router = new Router({
-  mode: 'history',
+  mode: 'hash',
   base: process.env.BASE_URL,
   routes: [
     {
       path: '/',
+      redirect: '/admin'
+    },
+    {
+      path: '/admin',
       name: 'home',//主页面
       component: Home,
       children: [
         {
           path: 'publishArticle',
           name: 'PublishArticle',
-          component: PublishArticle
+          component: () => import("./views/article/publishArticle")
         },
         {
-          path: 'articleList',
+          path: 'rticleList',
           name: 'ArticleList',
-          component: ArticleList
+          component: () => import("./views/article/articleList")
         },
         {
           path: 'selectArticleEdit',
           name: 'SelectArticleEdit',
-          component: SelectArticleEdit
+          component: () => import("./views/article/selectArticleEdit")
         },
         {
           path: 'editArticle',
           name: 'EditArticle',
-          component: EditArticle
+          component: () => import("./views/article/editArticle")
         },
         {
           path: 'publishQuotation',
           name: 'PublishQuotation',
-          component: PublishQuotation
+          component: () => import("./views/quotation/publishQuotation")
         },
         {
           path: 'editQuotation',
           name: 'EditQuotation',
-          component: EditQuotation
+          component: () => import("./views/quotation/editQuotation")
         },
         {
           path: 'quotationList',
           name: 'QuotationList',
-          component: QuotationList
+          component: () => import("./views/quotation/quotationList")
         },
         {
           path: 'commentList',
           name: 'CommentList',
-          component: CommentList
+          component: () => import("./views/comment/commentList")
+        },
+        {
+          path: 'replyList',
+          name: 'ReplyList',
+          component: () => import("./views/reply/replyList")
         }
       ]
     },
     {
-      path: '/login',//登录
+      path: 'admin/login',//登录
       name: 'login',
-      component: Login
+      component: () => import('./views/admin/login')
     },
     {
-      path: '/register',//注册
+      path: 'admin/register',//注册
       name: 'register',
-      component: Register
+      component: () => import('./views/admin/register')
     },
     {//捕获404页面，该路由须放置在最后，当其他路由未匹配到时将捕获404
       path: '/*',
@@ -84,10 +82,10 @@ const router = new Router({
 })
 //全局路由守卫，须先登录后访问主页面
 router.beforeEach((to, from, next) => {
-  if (to.path == '/login' || to.path == '/register') {
+  if (to.path == 'admin/login' || to.path == 'admin/register') {
     next();
   } else {
-    localStorage.getItem('token') && localStorage.getItem('isAuthenticated') ? next() : next('/login');
+    localStorage.getItem('token') && localStorage.getItem('isAuthenticated') ? next() : next({name: 'login'});
   }
 })
 export default router

@@ -1,38 +1,40 @@
 const { Comment } = require('../model/Comment');
 const { sequelize } = require('../core/db');
 const { Reply } = require('../model/Reply');
+const { Article } = require('../model/Article');
 class CommentDao {
     static createComment(info, success) {//创建留言
-        if (!Comment.findOne({ //留言信息对应的文章没有找到
+        Article.findOne({
             where: {
                 article_id: info.article_id
-            }
-        })) {
-            success(global.errs.NotFound('留言的相关文章不存在'));
-        }
-        Comment.findOne({
-            where: {
-                name: info.name,
-                article_id: info.article_id
-            },
-            attributes: {
-                exclude: ['updated_at']
             }
         }).then(val => {
-            if (!val) {//同一篇文章下的留言者的名字不能重复
+            if (!val) { //val 为null 没有找到留言对应的文章
+                success(new global.errs.NotFound('留言对应的文章不存在'))
+                return;
+            }
+            Comment.findOne({
+                where: {
+                    name: info.name
+                }
+            }).then(res => {
+                if (res) {
+                    success(new global.errs.Existed('昵称已被使用了，换个吧'))
+                    return;
+                }
                 const c = new Comment();
                 c.comment = info.comment;
                 c.article_id = info.article_id;
                 c.name = info.name;
                 c.save().then((res) => {
                     //res.dataValues 添加的数据对象
-                    let data = Object.assign(res.dataValues,{replies: []})
-                    success(false, { msg: '添加成功', success: true, data: data});
+                    let data = Object.assign(res.dataValues, { replies: [] })
+                    success(false, { msg: '添加成功', success: true, data: data });
                 }).catch(err => { success(new global.errs.HttpException()); console.log(err); })
-            } else {
-                success(new global.errs.Existed('昵称已经被人使用啦'));
-            }
+            })
+
         })
+
     }
     //文章下的留言
     static getArticleComments(article_id, page = 1, desc = "created_at", success) {
@@ -48,9 +50,10 @@ class CommentDao {
             attributes: {
                 exclude: ['updated_at', 'email']
             },
+            distinct: true,//去重，防止count出现错误，主表多少条数据count就是多少
             include: [ //获取查询到的每条留言下的回复，根据定义的外键关系查找
                 {
-                    model: Reply,
+                    model: Reply,                  
                     attributes: {
                         exclude: ['updated_at', 'email']
                     }
@@ -59,13 +62,13 @@ class CommentDao {
         }).then((comments) => {
             if (comments.rows.length !== 0) {
                 let totalReplies = 0;
-                comments.rows.forEach( (item, index) => {
+                comments.rows.forEach((item, index) => {
                     totalReplies += item.replies.length;
                 })
                 success(false, {
                     data: comments.rows,
                     meta: {
-                        totalComments: comments.count,
+                        totalComments:comments.count,
                         totalReplies: totalReplies,
                         pageSize: pageSize,
                         success: true

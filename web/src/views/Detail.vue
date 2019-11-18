@@ -39,9 +39,6 @@ export default {
           next(vm => vm.setData(res.data.data));
         }
       })
-      .catch(err => {
-        // console.log(err);
-      });
   },
   mounted() {
     this.startCount();

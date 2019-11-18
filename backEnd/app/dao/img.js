@@ -13,25 +13,6 @@ class ImgsDao {
         success(false, { msg: '添加成功', success: true, path: file.path});
        }, err => console.log(err))
     }
-    static getPictureByArticleId(quotation_add, success) {
-        ArticleImgs.findOne({
-            where: {
-                q_id: quotation_add.q_id
-            }
-        }).then(quotation => {
-            if ( !quotation ) {
-                const q = new ArticleImgs();
-                q.content = quotation_add.content;
-                q.q_id = quotation_add.q_id;
-                q.author = quotation_add.author;
-                q.save().then( res => {
-                    success(false, {msg:'创建成功',success: true});
-                }).catch(err => console.log(err)) 
-            } else {
-                success(new global.errs.Existed('不可重复创建'));
-            }
-        }).catch(err => success(new global.errs.HttpException()));
-    }
     static delePicById(id, success) {
         ArticleImgs.findOne( {
             where: {

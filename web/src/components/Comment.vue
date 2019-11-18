@@ -21,7 +21,7 @@
               <div class="content">{{item.comment}}</div>
               <div class="clearfix" style="padding-top: 0.5em;">
                 <span class="fl time">{{item.created_at}}</span>
-                <span class="fr time">{{(curPage - 1) * (pageSize) + (index+1) }}楼</span>
+                <span class="fr time">{{ (index+1) }}楼</span>
                 <i class="iconfont icon-pinglun fr" @click="handleReply(item.name, item.id, index)"></i>
               </div>
               <template>
@@ -66,14 +66,8 @@
             </section>
           </li>
         </ul>
-        <Pagination
-          :totalData="totalComments"
-          :pageSize="pageSize"
-          @current-change="getCurrentPage"
-          @next-page="nextPage"
-          @prev-page="prevPage"
-        />
       </template>
+      <div :class="[loading_gif ? 'block-loading': '']"></div>
     </section>
     <section class="form">
       <strong>留言区</strong>
@@ -108,28 +102,24 @@
 <script>
 import { format } from "@/lib/formatTime.js";
 import api from "@/api/index.js";
-import Pagination from "@/components/Pagination";
 import { debounce } from "@/lib/debounce.js";
+import { throttle } from "@/lib/throttle.js";
 export default {
-  components: {
-    Pagination
-  },
   data() {
     return {
+      canLoad: true,
+      loading_gif: false,
       name: "",
-      showMore: false,
       maxlength: 128,
       comment: "",
       words: [],
       totalReplies: 0,
       comment_id: null, //当前被回复的留言的id
-      cachedWords: new Map(),
-      pageSize: 5,
-      curPage: 1,
       totalComments: 0,
       errMessage: "",
       isReply: false, //是否回复  默认 否
       curIndex: "",
+      page: 1,
       prompt: "Hey,guys,come and say something"
     };
   },
@@ -141,22 +131,41 @@ export default {
   created() {
     this.getData();
   },
+  mounted() {
+    let self = this;
+    window.onscroll = throttle(function() {
+      //懒加载留言
+      if (self.loadMoreComment()) {
+         self.page++;
+         self.loading_gif = true;
+        self.getData();
+      }
+    }, 400);
+  },
   methods: {
     getData() {
-      api.getArticleComments(this.$route.params.articleId, 1).then(res => {
-        if (res.data) {
-          let data = res.data.data;
-          for (let i in data) {
-            //重新整理数据格式，添加 active: false，用于排他
-            data[i]["active"] = false;
+      api
+        .getArticleComments(this.$route.params.articleId, this.page)
+        .then(res => {
+          if (res.data) {
+              this.loading_gif = false;
+            let data = res.data.data;
+            for (let i in data) {
+              //重新整理数据格式，添加 active: false，用于排他
+              data[i]["active"] = false;
+            }
+            this.words.push(...data);
+            this.pageSize = parseInt(res.data.meta.pageSize);
+            this.totalComments += parseInt(res.data.meta.totalComments);
+            this.totalReplies += parseInt(res.data.meta.totalReplies);
           }
-          this.words = data;
-          this.cachedWords.set(1, this.words); //缓存第一页数据
-          this.pageSize = parseInt(res.data.meta.pageSize);
-          this.totalComments = parseInt(res.data.meta.totalComments);
-          this.totalReplies = parseInt(res.data.meta.totalReplies);
-        }
-      });
+        })
+        .catch(err => {
+          //后台没有数据时会报错
+          //表示下次不能再请求数据
+          this.canLoad = false;
+          this.loading_gif = false;
+        });
       let self = this;
       this.debounceComment = debounce(newVal => {
         newVal.length >= 128
@@ -177,14 +186,14 @@ export default {
               let data = res.data.data;
               let newComment = Object.assign(data, {
                 created_at: format()
-              })
+              });
               this.words.push(newComment);
               this.totalComments++;
               this.resetComment();
             })
             .catch(err => {
-              this.$refs.focusInput.focus();
               this.errMessage = err.msg;
+              this.$refs.focusInput.focus();
             });
         } else {
           api
@@ -230,24 +239,20 @@ export default {
       this.name = "";
       this.prompt = "Hey,guys,come and say something";
     },
-    getCurrentPage(page) {
-      this.curPage = page;
-      if (this.cachedWords.has(page)) {
-        this.words = this.cachedWords.get(page);
-      } else {
-        api.getArticleComments(this.$route.params.articleId, page).then(res => {
-          if (res.data) {
-            this.words = res.data.data;
-            this.cachedWords.set(page, this.words); //缓存第一页数据
-          }
-        });
+    loadMoreComment() {
+      if (this.canLoad) {
+        const ele = document.getElementsByClassName("words")[0],
+          viewHeight =
+            document.documentElement.clientHeight ||
+            document.body.clientHeight ||
+            window.innerHeight,
+          { bottom } = ele.getBoundingClientRect();
+        if (bottom - 100 < viewHeight) {
+          //最后几条留言快要离开可视区时，加载留言
+          //100 为预留 距离，提前一点加载留言
+          return true;
+        }
       }
-    },
-    nextPage(page) {
-      this.getCurrentPage(page);
-    },
-    prevPage(page) {
-      this.getCurrentPage(page);
     }
   }
 };

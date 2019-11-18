@@ -15,10 +15,11 @@
 import { debounce } from "@/lib/debounce.js";
 import { throttle } from "@/lib/throttle.js";
 export default {
-  activated() {//解决 失活的瀑布流组件 再次被激活时 定位发生错乱的bug
+  activated() {
+    //解决 失活的瀑布流组件 再次被激活时 定位发生错乱的bug
     this.setPostion();
   },
-  name: 'waterFall',
+  name: "waterFall",
   props: {
     gap: Number,
     gutter: {
@@ -80,7 +81,7 @@ export default {
         _self.setPostion();
       }, 550);
       window.onscroll = throttle(function() {
-        if (_self.isloadedMore() && _self.canLoad) {
+        if (_self.isloadedMore()) {
           _self.loadData();
         }
       }, 400);
@@ -143,10 +144,15 @@ export default {
       container.style.height = Math.max.apply(null, heightArr) + "px";
     },
     isloadedMore() {
-      const { heightArr } = this;
-      const heightMin = Math.min.apply(null, heightArr);
-      if (heightMin < window.innerHeight + document.documentElement.scrollTop) {
-        return true;
+      if (this.canLoad) {
+        const { heightArr } = this;
+        const heightMin = Math.min.apply(null, heightArr);
+        if (
+          heightMin <
+          window.innerHeight + document.documentElement.scrollTop
+        ) {
+          return true;
+        }
       }
     },
     loadData() {

@@ -1,6 +1,5 @@
 <template>
   <div id="app">
-    <Loading />
     <transition appear name="fade" mode="out-in">
       <keep-alive :include="['Home']">
         <router-view />
@@ -9,17 +8,12 @@
   </div>
 </template>
 <script>
-import Loading from "@/components/Loading";
 export default {
-  components: {
-    Loading
-  }
 };
 </script>  
 <style scoped>
 #app {
   width: 100%;
-  height: 100%;
 }
 .fade-enter-active,
 .fade-leave-active {

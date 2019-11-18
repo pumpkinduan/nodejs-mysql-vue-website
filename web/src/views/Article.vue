@@ -1,6 +1,5 @@
 <template>
   <div class="article">
-    <Loading />
     <transition name="fade">
       <div class="wrapper" v-show="!$store.state.showLoading">
         <header>
@@ -20,12 +19,10 @@
 <script>
 import Header from "@/components/Header.vue";
 import Footer from "@/components/Footer";
-import Loading from "@/components/Loading";
 export default {
   components: {
     Header,
     Footer,
-    Loading
   },
   data() {
     return {};

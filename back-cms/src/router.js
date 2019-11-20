@@ -9,7 +9,7 @@ const router = new Router({
   routes: [
     {
       path: '/',
-      redirect: '/admin'
+      redirect: '/admin/'
     },
     {
       path: '/admin',
@@ -22,16 +22,11 @@ const router = new Router({
           component: () => import("./views/article/publishArticle")
         },
         {
-          path: 'rticleList',
+          path: 'articleList',
           name: 'ArticleList',
           component: () => import("./views/article/articleList")
         },
-        {
-          path: 'selectArticleEdit',
-          name: 'SelectArticleEdit',
-          component: () => import("./views/article/selectArticleEdit")
-        },
-        {
+         {
           path: 'editArticle',
           name: 'EditArticle',
           component: () => import("./views/article/editArticle")
@@ -40,11 +35,6 @@ const router = new Router({
           path: 'publishQuotation',
           name: 'PublishQuotation',
           component: () => import("./views/quotation/publishQuotation")
-        },
-        {
-          path: 'editQuotation',
-          name: 'EditQuotation',
-          component: () => import("./views/quotation/editQuotation")
         },
         {
           path: 'quotationList',
@@ -64,12 +54,12 @@ const router = new Router({
       ]
     },
     {
-      path: 'admin/login',//登录
+      path: '/admin/login',//登录
       name: 'login',
       component: () => import('./views/admin/login')
     },
     {
-      path: 'admin/register',//注册
+      path: '/admin/register',//注册
       name: 'register',
       component: () => import('./views/admin/register')
     },
@@ -82,7 +72,7 @@ const router = new Router({
 })
 //全局路由守卫，须先登录后访问主页面
 router.beforeEach((to, from, next) => {
-  if (to.path == 'admin/login' || to.path == 'admin/register') {
+  if (to.path == '/admin/login' || to.path == '/admin/register') {
     next();
   } else {
     localStorage.getItem('token') && localStorage.getItem('isAuthenticated') ? next() : next({name: 'login'});

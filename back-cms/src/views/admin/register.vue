@@ -106,7 +106,7 @@ export default {
               type: "success"
             });
             setTimeout(() => {
-              this.$router.push("/login");
+              this.$router.push({name: 'login'});
             }, 0);
           }
         })

@@ -15,5 +15,5 @@ let upload = multer({
 })
 //一次性上传一张图片
 uploadRouter.post('/', upload.single('picture'), loader.get('upload'));
-// uploadRouter.delete('/delete/:id', loader.get('upload/delePicture'));
+uploadRouter.delete('/delete/:path', loader.get('upload/delete'));
 module.exports = uploadRouter

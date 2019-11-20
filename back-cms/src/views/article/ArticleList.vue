@@ -1,15 +1,25 @@
 <template>
   <div class="article-list">
-    <List 
-        :labels="labels"
-        :hasCover="true"
-        :tableData="tableData"
-        :amount="amount"
-        :pageSize="pageSize"
-        :pageBtns="pageBtns"
-        :cacheData="cacheData"
-        @getCurrentItem="getCurrentItem"
-    />
+    <List
+      :labels="labels"
+      :hasCover="true"
+      :tableData="tableData"
+      :amount="amount"
+      :pageSize="pageSize"
+      :pageBtns="pageBtns"
+      :cacheData="cacheData"
+      @getCurrentItem="getCurrentItem"
+    >
+      <template slot="only" slot-scope="{scopeProp}">
+        <router-link
+          style="margin-right: 8px;"
+          :to="{name: 'EditArticle', params: {article: scopeProp.row}}"
+        >
+          <el-button type="info">编辑</el-button>
+        </router-link>
+        <el-button type="danger" @click="handleDelete(scopeProp.$index, scopeProp.row)">删除</el-button>
+      </template>
+    </List>
   </div>
 </template>
 
@@ -33,7 +43,7 @@ export default {
       });
   },
   components: {
-      List
+    List
   },
   data() {
     return {
@@ -56,6 +66,27 @@ export default {
     };
   },
   methods: {
+      handleDelete(index, row) {
+      this.$confirm("此操作将永久删除该文章, 是否继续?", "提示", {
+        confirmButtonText: "确定",
+        cancelButtonText: "取消",
+        type: "warning"
+      })
+        .then(() => {
+          api.deleteArticle(row.article_id).then(res => {
+            if (res.data && res.data.success) {
+              this.$message.success(res.data.msg);
+              this.tableData.splice(index, 1); //删除纪录
+            }
+          });
+        })
+        .catch(() => {
+          this.$message({
+            type: "info",
+            message: "已取消删除"
+          });
+        });
+    },
     getCurrentItem(page) {
       //获取当前页的数据
       if (this.cacheData.has(page)) {
@@ -80,5 +111,4 @@ export default {
 </script>
 
 <style scoped>
-
 </style>

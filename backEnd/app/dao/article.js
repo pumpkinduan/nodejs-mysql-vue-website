@@ -1,4 +1,5 @@
 const { Article } = require('../model/Article');
+const { ImgsDao } = require('../dao/img.js');
 const { sequelize } = require('../core/db');
 class ArticleDao {
     static createArticle(info, success) {//创建文章
@@ -13,7 +14,7 @@ class ArticleDao {
                 const article = new Article();
                 article.type = info.type
                 article.title = info.title;
-                article.article_id =  +Date.now().toString().slice(5);
+                article.article_id = +Date.now().toString().slice(5);
                 article.author = info.author;
                 article.cover = info.cover;
                 article.tag = info.tag;
@@ -149,17 +150,16 @@ class ArticleDao {
         })
     }
     static updateBrowse(id, info, success) {
-        // console.log(info)
         Article.findOne({
             where: {
                 article_id: id
             }
-        }).then( val => {
+        }).then(val => {
             val.update({
                 'browse': info.browse
             }).then(res => {
-                success(false, { msg: '访问量增加了', success: true } )
-            }).catch( err => {console.log(err)}) 
+                success(false, { msg: '访问量增加了', success: true })
+            }).catch(err => { console.log(err) })
         })
     }
     static updateArticleById(id, info, success) {//更新文章
@@ -169,6 +169,10 @@ class ArticleDao {
             }
         }).then(article => {
             if (article) {
+                if (article.cover !== info.cover) {
+                    //删除封面
+                    ImgsDao._delete(article.cover.replace(/\//g, '\\'))
+                }
                 article.update({
                     'title': info.title,
                     'content': info.content,
@@ -187,6 +191,7 @@ class ArticleDao {
             }
         }).catch(err => {
             success(new global.errs.HttpException());
+            console.log(err)
             throw err;
         })
     }

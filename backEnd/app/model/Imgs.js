@@ -4,7 +4,7 @@ const { sequelize } = require('../core/db');
 const moment = require('moment');
 class Imgs extends Model { }
 Imgs.init({
-    url: Sequelize.STRING,
+    path: Sequelize.STRING,
     originalname: Sequelize.STRING,
     size: Sequelize.INTEGER,
     filename: Sequelize.STRING,

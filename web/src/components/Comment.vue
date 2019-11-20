@@ -3,12 +3,12 @@
     <section class="words">
       <h3>
         <i class="iconfont icon-liuyan"></i>
-        <span style="vertical-align: 5px;font-size: 1rem;" v-if="words.length > 0">
+        <span v-if="words.length > 0">
           一共有
           <em class="orange">{{totalComments}}</em>条留言和
           <em class="orange">{{totalReplies}}</em>条回复
         </span>
-        <span style="vertical-align: 5px;font-size: 1rem;" v-else>目前还没有人留下ta的足迹噢,快来抢占一楼吧</span>
+        <span v-else>目前还没有人留下ta的足迹噢,快来抢占一楼吧</span>
       </h3>
       <template v-if="words.length > 0">
         <ul>
@@ -136,8 +136,8 @@ export default {
     window.onscroll = throttle(function() {
       //懒加载留言
       if (self.loadMoreComment()) {
-         self.page++;
-         self.loading_gif = true;
+        self.page++;
+        self.loading_gif = true;
         self.getData();
       }
     }, 400);
@@ -148,7 +148,7 @@ export default {
         .getArticleComments(this.$route.params.articleId, this.page)
         .then(res => {
           if (res.data) {
-              this.loading_gif = false;
+            this.loading_gif = false;
             let data = res.data.data;
             for (let i in data) {
               //重新整理数据格式，添加 active: false，用于排他
@@ -267,13 +267,17 @@ export default {
 .comment .words,
 .form {
   margin-bottom: 2rem;
-  width: 70%;
 }
 .comment .words h3 {
   padding: 1rem 0;
   border-bottom: 1px dashed #eee;
   letter-spacing: 2px;
   font-weight: 400;
+  color: #666;
+}
+.comment .words h3 span {
+  vertical-align: 4px;
+  font-size: 0.8rem;
 }
 .comment .words ul li {
   line-height: 1.5rem;
@@ -327,8 +331,7 @@ export default {
 }
 /* 字体图标样式开始 */
 .icon-liuyan {
-  margin-right: 5px;
-  font-size: 1.8rem;
+  font-size: 1.2rem;
 }
 .icon-pinglun {
   font-size: 1rem;

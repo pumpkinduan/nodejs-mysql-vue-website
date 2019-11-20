@@ -12,6 +12,7 @@
               :tag="data.tag"
               :description="data.description"
               :browse="data.browse"
+              :cover="data.cover"
             />
           </template>
         </Waterfall>
@@ -30,7 +31,7 @@ import api from "@/api/index.js";
 import Waterfall from "@/components/Waterfall";
 import Footer from "@/components/Footer";
 export default {
-  name: 'Home',
+  name: "Home",
   components: {
     Header,
     Quotation,
@@ -53,14 +54,9 @@ export default {
       this.gap = gap;
     },
     getData(page) {
-      api
-        .getArticleList(page)
-        .then(result => {
-          this.cards = result.data.data;
-        })
-        .catch(err => {
-          this.cards = []; //数据为空
-        });
+      api.getArticleList(page).then(result => {
+        this.cards.push(...result.data.data);
+      });
     },
     loadData(page) {
       this.getData(page);

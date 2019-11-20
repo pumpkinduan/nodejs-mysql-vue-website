@@ -1,11 +1,11 @@
 <template>
   <div class="article">
     <transition name="fade">
-      <div class="wrapper" v-show="!$store.state.showLoading">
+      <div class="wrapper">
         <header>
           <Header />
         </header>
-        <main>
+        <main class="box">
           <router-view></router-view>
         </main>
         <footer>
@@ -27,10 +27,6 @@ export default {
   data() {
     return {};
   },
-  beforeRouteEnter(to, from, next) {
-    next(vm => (vm.$store.state.showLoading = true));
-  },
-  created() {}
 };
 </script>
 

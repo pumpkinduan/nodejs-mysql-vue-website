@@ -51,10 +51,6 @@ export default {
           name: "文章管理",
           children: [
             {
-              name: "文章编辑",
-              component: "SelectArticleEdit"
-            },
-            {
               name: "文章发布",
               component: "PublishArticle",
               publish: true
@@ -69,10 +65,6 @@ export default {
           icon: "el-icon-ice-tea",
           name: "每日一句",
           children: [
-            {
-              name: "语录编辑",
-              component: "EditQuotation"
-            },
             {
               name: "语录发布",
               component: "PublishQuotation"

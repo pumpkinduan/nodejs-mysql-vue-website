@@ -88,7 +88,6 @@ export default {
       this.tableData[0].cover = response.path.replace(/\\/gi, "/");
     },
     submit(data) {
-      console.log(data)
       api
         .updateArticle(data, this.$route.params.article.article_id)
         .then(res => {
@@ -107,6 +106,7 @@ export default {
         message: data.msg,
         duration: 1000
       });
+      this.$router.push({name: 'ArticleList'})
     },
     resetDialog() {
       for (var i in this.tableData[0]) {

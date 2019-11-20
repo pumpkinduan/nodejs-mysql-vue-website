@@ -130,6 +130,8 @@ export default {
 @media screen and (min-width: 920px) {
   .detail {
     padding: 3rem 12rem;
+    width: 90%;
+    margin: 0 auto;
   }
   .detail main h1 {
     width: 100%;

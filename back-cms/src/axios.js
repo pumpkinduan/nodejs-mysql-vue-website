@@ -41,12 +41,12 @@ axiosInstance.interceptors.response.use((response) => {
     if (status == 401) {
         Message.error('登录失败,token已经失效');
         localStorage.removeItem('token');
-        window.location = '/login';
+        window.location = '/#/admin/login';
     } else if (status == 400) {
         if (err.response.data.msg == "账号不存在，请先注册") {
             Message.error(err.response.data.msg);
             setTimeout(() => {
-                window.location = '/register';
+                window.location = '/#/admin/register';
             }, 1000);
         } else {
             Message.error(err.response.data.msg);

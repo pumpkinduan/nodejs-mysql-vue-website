@@ -8,13 +8,13 @@ function upload(req, res, next) {
     })
 }
 
-function delePicById(req, res, next) {
-    const { id } = req.params;
-    ImgsDao.deleteCommentById(id, (err, data) => {
+function _delete(req, res, next) {
+    const { path } = req.params;
+    ImgsDao._delete(path, (err, data) => {
         reactToClient(res, err, data)
     });
 
 }
 map.set('upload', upload);
-map.set('upload/delePicture', delePicById);
+map.set('upload/delete', _delete);
 module.exports = map;

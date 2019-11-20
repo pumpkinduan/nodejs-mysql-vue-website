@@ -3,7 +3,7 @@
     <div class="inner">
       <h1 class="cover">
         <router-link :to="{name: 'detail', params: {articleId: `${article_id}`, showList: false}}">
-          <img src="http://n4-q.mafengwo.net/s15/M00/C7/3D/CoUBGV20DkWAapI_ABQ1nzdiSrA455.jpg?imageMogr2%2Fthumbnail%2F%21440x300r%2Fstrip%2Fgravity%2FCenter%2Fcrop%2F%21440x300%2Fquality%2F90" width="100%" />
+          <img :src="`${serverUrl}/${cover}`" width="100%" />
         </router-link>
       </h1>
       <section>
@@ -17,7 +17,13 @@
   </article>
 </template>
 <script>
+import config from "@/config.js";
 export default {
+  data() {
+    return {
+      serverUrl: config.serverUrl
+    }
+  },
   props: ["title", "tag", "cover", "src", "description", "article_id", "browse"],
 
 };

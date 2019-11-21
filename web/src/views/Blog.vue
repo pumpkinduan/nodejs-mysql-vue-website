@@ -41,7 +41,6 @@ export default {
       })
       .catch(err => {
         this.blogList = []; //数据为空
-        console.log(err);
       });
   },
   methods: {

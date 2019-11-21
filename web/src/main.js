@@ -1,7 +1,6 @@
 import Vue from 'vue'
 import '@/assets/css/base.css'
 import router from './router'
-import store from './store'
 import '@/js/generateHeart.js'
 import '@/js/backToTop.js'
 import { Carousel, CarouselItem } from 'element-ui';
@@ -12,6 +11,5 @@ Vue.use(CarouselItem);
 Vue.config.productionTip = false; 
 new Vue({
   router,
-  store,
   render: h => h(App)
 }).$mount('#app')

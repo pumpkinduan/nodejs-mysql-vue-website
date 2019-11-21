@@ -109,10 +109,10 @@ export default {
     return {
       canLoad: true,
       loading_gif: false,
-      name: "",
       maxlength: 128,
-      comment: "",
       words: [],
+      name: "",
+      comment: "",
       totalReplies: 0,
       comment_id: null, //当前被回复的留言的id
       totalComments: 0,
@@ -120,16 +120,29 @@ export default {
       isReply: false, //是否回复  默认 否
       curIndex: "",
       page: 1,
+      articleId: "",
       prompt: "Hey,guys,come and say something"
     };
   },
   watch: {
-    comment(newVal, oldVal) {
+    comment(newVal) {
       this.debounceComment(newVal);
+    },
+    name(newVal) {
+      this.debounceName(newVal);
     }
   },
   created() {
     this.getData();
+    this.articleId = this.$route.params.articleId;
+    let parse1 =
+      sessionStorage.getItem("name") &&
+      JSON.parse(sessionStorage.getItem("name"))[this.articleId];
+    let parse2 =
+      sessionStorage.getItem("comment") &&
+      JSON.parse(sessionStorage.getItem("comment"))[this.articleId];
+    this.name = parse1 && parse1.name;
+    this.comment = parse2 && parse2.comment;
   },
   mounted() {
     let self = this;
@@ -145,7 +158,7 @@ export default {
   methods: {
     getData() {
       api
-        .getArticleComments(this.$route.params.articleId, this.page)
+        .getArticleComments(this.articleId, this.page)
         .then(res => {
           if (res.data) {
             this.loading_gif = false;
@@ -167,9 +180,30 @@ export default {
           this.loading_gif = false;
         });
       let self = this;
-      this.debounceComment = debounce(newVal => {
-        newVal.length >= 128
+      this.debounceComment = debounce((newVal) => {
+        sessionStorage.setItem(
+          "name",
+          JSON.stringify({
+            [this.articleId]: {
+              name: newVal
+            }
+          })
+        );
+        newVal && newVal.length >= 128
           ? (self.errMessage = "留言的字符个数不能超过128噢")
+          : (self.errMessage = "");
+      });
+      this.debounceName = debounce(newVal => {
+        sessionStorage.setItem(
+          "comment",
+          JSON.stringify({
+            [this.articleId]: {
+              comment: newVal
+            }
+          })
+        );
+        newVal && newVal.length >= 12
+          ? (self.errMessage = "昵称的字符个数不能超过12噢")
           : (self.errMessage = "");
       });
     },

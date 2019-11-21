@@ -48,11 +48,6 @@ export default {
           name: "博客"
         },
         {
-          class: "iconfont icon-liuyan",
-          component: "home",
-          name: "留言板"
-        },
-        {
           class: "iconfont icon-guanyuwo",
           component: "about",
           name: "关于我"

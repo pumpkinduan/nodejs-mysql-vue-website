@@ -150,7 +150,9 @@ hr {
 
 img {
     display: block;
+    margin: 3px 0;
     max-width: 100%;
+    min-width: 80%;
 }
 .relative {
     position: relative;

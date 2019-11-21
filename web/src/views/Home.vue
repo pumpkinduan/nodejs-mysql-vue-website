@@ -9,7 +9,7 @@
             <ArticleCard
               :title="data.title"
               :article_id="data.article_id"
-              :tag="data.tag"
+              :created_at="data.created_at"
               :description="data.description"
               :browse="data.browse"
               :cover="data.cover"

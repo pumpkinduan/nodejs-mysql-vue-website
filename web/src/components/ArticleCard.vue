@@ -6,9 +6,11 @@
           <img :src="`${serverUrl}/${cover}`" width="100%" />
         </router-link>
       </h1>
-      <section>
-        <p class="tag">{{tag}}</p>
-        <router-link :to="{name: 'detail', params: {articleId: `${article_id}`, showList: false}, browse: browse}">
+      <section class="wrap">
+        <p class="date">{{created_at}}</p>
+        <router-link
+          :to="{name: 'detail', params: {articleId: `${article_id}`, showList: false}, browse: browse}"
+        >
           <p class="title">{{title}}</p>
         </router-link>
         <div class="description">{{description}}</div>
@@ -22,37 +24,50 @@ export default {
   data() {
     return {
       serverUrl: config.serverUrl
-    }
+    };
   },
-  props: ["title", "tag", "cover", "src", "description", "article_id", "browse"],
-
+  props: [
+    "title",
+    "created_at",
+    "cover",
+    "src",
+    "description",
+    "article_id",
+    "browse"
+  ]
 };
 </script>
 <style scoped>
 .card .inner {
   border: 1px solid #eee;
 }
-.card .inner section {
+.card .inner .wrap {
   padding: 1.2rem;
+  transition: background-color .3s;
 }
-
-.card .cover {
+.card .inner .wrap:hover {
+  background-color: #f8f8f8;
+}
+.card .inner .wrap:hover .title {
+  color: rgb(221, 145, 3);
+}
+.card .inner .cover {
   overflow: hidden;
   position: relative;
 }
-.card .cover a {
+.card .inner .cover a {
   width: 100%;
   display: block;
 }
-.card .cover a:before,
-.card .cover a:after {
+.card .inner .cover a:before,
+.card .inner .cover a:after {
   display: block;
   position: absolute;
   opacity: 0;
   transition: all 0.35s;
   z-index: 1;
 }
-.card .cover a:before {
+.card .inner .cover a:before {
   width: 100%;
   height: 100%;
   background-color: rgba(0, 0, 0, 0.7);
@@ -60,7 +75,7 @@ export default {
   top: 0;
   left: 0;
 }
-.card .cover a:after {
+.card .inner .cover a:after {
   content: "Let's go";
   top: 50%;
   left: 50%;
@@ -68,31 +83,35 @@ export default {
   font-size: 1.5rem;
   color: #ddd;
 }
-.card .cover img {
+.card .inner .cover img {
   transition: all 0.35s;
+  margin: 0;
 }
-.card .cover:hover a img {
+.card .inner .cover:hover a img {
   transform: scale(1.1);
 }
-.card .cover:hover a::before,
-.card .cover:hover a::after {
+.card .inner .cover:hover a::before,
+.card .inner .cover:hover a::after {
   opacity: 1;
 }
-.card .tag {
+.card .inner .wrap .date {
   color: #666;
-  margin: 1.2rem 0;
-  font-size: 1rem;
-   font-weight: 400;
+  margin-bottom: 1rem;
+  font-size: 0.8rem;
+  font-weight: 400;
 }
-.card .title {
-  color: #223;
+.card .inner .wrap .title {
+  color: #333;
   font-weight: 500;
   margin-bottom: 1rem;
-  font-size: 1rem;
-}
-.card .description {
   font-size: 0.9rem;
-  color: #666;
+  transition: color 0.3s;
+}
+
+.card .inner .wrap .description {
+  font-size: 0.8rem;
+  color: #444;
+  font-weight: 500;
   line-height: 1.5rem;
   word-break: break-all;
 }

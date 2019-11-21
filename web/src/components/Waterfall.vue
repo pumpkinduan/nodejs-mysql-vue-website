@@ -18,11 +18,13 @@ export default {
   activated() {
     //解决 失活的瀑布流组件 再次被激活时 定位发生错乱的bug
     this.setPostion();
-    // console.log('activated')
   },
   name: "waterFall",
   props: {
-    gap: Number,
+    gap: {
+      type: Number,
+      default: 0
+    },
     gutter: {
       type: Number,
       default: 32
@@ -51,12 +53,6 @@ export default {
   },
   mounted() {
     this.init();
-  },
-  computed: {
-    columns() {
-      const { screenWidth, gutter } = this;
-      return Math.floor(screenWidth / this.$refs.waterfall_item[0].offsetWidth);
-    }
   },
   watch: {
     cards: {
@@ -109,14 +105,16 @@ export default {
       //避免累加
       this.rowHeightArr = [];
       this.rowLeftX = [];
+
       this.screenWidth = document.documentElement.clientWidth; //获取实时减去滚动条的视口宽度
-      const { screenWidth, gutter, rowLeftX, rowHeightArr, columns } = this;
-      let oWidth;
+      const { screenWidth, gutter, rowLeftX, rowHeightArr } = this;
+      let oWidth, columns;
       const container = this.$refs.waterfall_container;
       this.preLoadImgs(eleNodeLists => {
         //图片加载完成
         if (eleNodeLists && eleNodeLists.length) {
           oWidth = eleNodeLists[0].offsetWidth;
+          columns = Math.floor(screenWidth / oWidth);
           for (let i = 0; i < columns; i++) {
             if (i < columns) {
               //第一行
@@ -142,6 +140,11 @@ export default {
           });
         }
         container.style.height = Math.max.apply(null, rowHeightArr) + "px";
+        if (this.isloadedMore()) {
+          //防止 刚载入页面时的留白现象
+          this.canLoad = false;
+          this.loadData();
+        }
       });
     },
     isloadedMore() {

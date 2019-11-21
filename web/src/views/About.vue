@@ -42,7 +42,7 @@
             <p>6.了解TCP/IP协议以及位于其上的HTTP协议和常见的HTTP状态码</p>
             <p>7.熟练使用VueJs前端框架,对其中的响应式数据原理,虚拟DOM,依赖收集有过深入了解,并自己进行了实现</p>
             <p>8.熟练使用jQuery, 阅读过部分源码,了解其整体封装思想,自己封装过一个简易版的jQuery,利用jQuery写过轮播图插件,翻页插件等等小demo</p>
-            <p>9.熟悉Git常见命令的使用, 有自己的GitHub主页: https://github.com/Pumpumpkin</p>
+            <p>9.熟悉Git常见命令的使用, 有自己的GitHub主页: <a href="https://github.com/pumpkinduan" target="blank">https://github.com/pumpkinduan</a></p>
           </section>
         </li>
         <li>
@@ -73,8 +73,8 @@
 <style scoped>
 .about header {
   height: 300px;
-  background: url("https://lingmissing.github.io/712f4187084b9f0445b814cbc8c2a1f6.gif")
-    0 0 no-repeat;
+  background: url("../assets/image/cv.jpg")
+    center center no-repeat;
   background-size: cover;
 }
 .about aside {
@@ -85,7 +85,7 @@
   padding-top: 5rem;
   top: 0;
   left: 0;
-  background: url("http://demo.cssmoban.com/cssthemes6/cpts_1894_dfi/images/banner-1.jpg")
+  background: url("../assets/image/cv.jpg")
     0 0 no-repeat;
   background-size: cover;
   text-align: center;

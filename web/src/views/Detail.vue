@@ -1,9 +1,6 @@
 <template>
   <div class="detail">
     <main>
-      <header class="pic">
-        <img :src="serverUrl+'/'+details.cover" v-if="details.cover">
-      </header>
       <section>
         <h2>{{details.title}}</h2>
         <ul class="info">
@@ -24,7 +21,6 @@
 
 <script>
 import api from "@/api/index.js";
-import config from "@/config.js";
 import Comment from "@/components/Comment";
 export default {
   components: {
@@ -49,7 +45,6 @@ export default {
       stayTime: 0,
       browse: 0,
       second: 0,
-      serverUrl: config.serverUrl,
       timer: null,
       readingTime: 0 //阅读时长，大于该值访问量才会+1
     };
@@ -78,7 +73,6 @@ export default {
       this.details = data;
       this.readingTime = Math.floor(data.total_char / 20);
       this.browse = data.browse;
-      this.$store.state.showLoading = false; //加载动画
     }
   }
 };
@@ -91,7 +85,7 @@ export default {
 }
 .detail main {
   background: #fff;
-  padding: 0 2rem;
+  padding-right: 12rem;
 }
 .detail main section .info {
   display: flex;
@@ -129,7 +123,7 @@ export default {
 }
 @media screen and (min-width: 920px) {
   .detail {
-    padding: 3rem 12rem;
+    padding: 2rem 12rem;
     width: 90%;
     margin: 0 auto;
   }

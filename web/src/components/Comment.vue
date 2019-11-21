@@ -92,8 +92,8 @@
         ></textarea>
       </div>
       <div class="clearfix">
-        <button @click="send" class="fl">send comment</button>
-        <button @click="cancle" class="fr">取消</button>
+        <button @click="send" class="fl">发布留言</button>
+        <button @click="cancle" class="fl cancle">取消发布</button>
       </div>
     </section>
   </div>
@@ -413,7 +413,7 @@ export default {
 }
 textarea {
   width: 100%;
-  height: 200px;
+  height: 150px;
   resize: none;
   padding: 0.5em;
 }
@@ -446,7 +446,6 @@ input:focus {
 }
 button {
   margin: 0.5rem 0;
-  /* width: 12rem; */
   padding: 0.7rem 0.8rem;
   border: none;
   text-align: center;
@@ -454,6 +453,10 @@ button {
   font-weight: 500;
   background-color: #ff9d00;
   cursor: pointer;
+}
+button.cancle {
+  background-color: #e2b266;
+  margin-left: 1rem;
 }
 button:hover {
   opacity: 0.8;

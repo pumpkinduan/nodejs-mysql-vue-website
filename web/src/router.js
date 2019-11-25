@@ -16,7 +16,7 @@ export default new Router({
       component: () => import('./views/Article.vue'),
       children: [
         {
-          path: 'details/:articleId',
+          path: 'detail/:articleId',
           name: 'detail',
           component: () => import('./views/Detail.vue') 
         }

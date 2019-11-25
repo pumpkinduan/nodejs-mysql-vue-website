@@ -18,7 +18,7 @@
               <span class="user-name">{{item.name}}</span>
             </header>
             <section class="wrapper">
-              <div class="content">{{item.comment}}</div>
+              <div class="content">{{item.content}}</div>
               <div class="clearfix" style="padding-top: 0.5em;">
                 <span class="fl time">{{item.created_at}}</span>
                 <span class="fr time">{{ (index+1) }}楼</span>
@@ -120,7 +120,6 @@ export default {
       isReply: false, //是否回复  默认 否
       curIndex: "",
       page: 1,
-      articleId: "",
       prompt: "Hey,guys,come and say something"
     };
   },
@@ -134,7 +133,6 @@ export default {
   },
   created() {
     this.getData();
-    this.articleId = this.$route.params.articleId;
     let parse1 =
       sessionStorage.getItem("name") &&
       JSON.parse(sessionStorage.getItem("name"))[this.articleId];
@@ -158,7 +156,7 @@ export default {
   methods: {
     getData() {
       api
-        .getArticleComments(this.articleId, this.page)
+        .getArticleComments(this.$route.params.articleId, this.page)
         .then(res => {
           if (res.data) {
             this.loading_gif = false;
@@ -169,8 +167,8 @@ export default {
             }
             this.words.push(...data);
             this.pageSize = parseInt(res.data.meta.pageSize);
-            this.totalComments += parseInt(res.data.meta.totalComments);
-            this.totalReplies += parseInt(res.data.meta.totalReplies);
+            this.totalComments = parseInt(res.data.meta.totalComments);
+            this.totalReplies = parseInt(res.data.meta.totalReplies);
           }
         })
         .catch(err => {
@@ -180,7 +178,7 @@ export default {
           this.loading_gif = false;
         });
       let self = this;
-      this.debounceComment = debounce((newVal) => {
+      this.debounceComment = debounce(newVal => {
         sessionStorage.setItem(
           "name",
           JSON.stringify({
@@ -210,16 +208,17 @@ export default {
     send() {
       if (this.comment && this.name) {
         if (!this.isReply) {
+          let data = {
+            name: this.name,
+            content: this.comment,
+            article_id: this.$route.params.articleId
+          };
           api
-            .createComment({
-              name: this.name,
-              comment: this.comment,
-              article_id: this.$route.params.articleId
-            })
+            .createComment(data)
             .then(res => {
-              let data = res.data.data;
               let newComment = Object.assign(data, {
-                created_at: format()
+                created_at: format(),
+                replies: []
               });
               this.words.push(newComment);
               this.totalComments++;
@@ -230,22 +229,18 @@ export default {
               this.$refs.focusInput.focus();
             });
         } else {
-          api
-            .createReply({
-              name: this.name,
-              content: this.comment,
-              comment_id: this.comment_id
-            })
-            .then(res => {
-              this.words[this.curIndex].replies.push({
-                name: this.name,
-                content: this.comment,
-                created_at: format(),
-                replies: []
-              });
-              this.totalReplies++;
-              this.resetComment();
-            });
+          let reply = {
+            name: this.name,
+            content: this.comment,
+            comment_id: this.comment_id
+          };
+          api.createReply(reply).then(res => {
+            this.words[this.curIndex].replies.push(
+              Object.assign(reply, { created_at: format()})
+            );
+            this.totalReplies++;
+            this.resetComment();
+          });
         }
       } else if (!this.comment) {
         this.prompt = "留言不能为空噢";

@@ -2,7 +2,7 @@
 主要是为了记录学习与生活的美好
 ----------
 ## 所使用的技术栈
-Node.js + Express + MySQL + Vue.js 开发一套完整的个人网站项目
+	Node.js + Express + MySQL + Vue.js 开发一套完整的个人网站项目
 ---------------------------
 ### 项目包含的功能
 #### 服务端
@@ -30,27 +30,27 @@ Node.js + Express + MySQL + Vue.js 开发一套完整的个人网站项目
 ### 根据自己的偏好修改express项目下的数据库配置
 请在[app/core/dbConfig.js](https://github.com/pumpkinduan/nodejs-mysql-vue-website/blob/master/app/core/dbConfig.js)修改
 
-# 克隆项目代码
-$ git clone https://github.com/pumpkinduan/nodejs-mysql-vue-website.git
+	# 克隆项目代码
+	$ git clone https://github.com/pumpkinduan/nodejs-mysql-vue-website.git
 
-# 进入项目根目录
-$ cd nodejs-mysql-vue-website
+	# 进入项目根目录
+	$ cd nodejs-mysql-vue-website
 
-# 安装依赖包
-$ npm install
+	# 安装依赖包
+	$ npm install
 
-# 启动 Node.js + Express 项目
-$ nodemon index
+	# 启动 Node.js + Express 项目
+	$ nodemon index
 
-# 启动前端项目
-1. 在根目录下进入web项目：cd web，
-2. 安装包，执行: npm install 命令，
-3. 启动服务: npm run server, 浏览器会自动开启页面
+	# 启动前端项目
+	1. 在根目录下进入web项目：cd web，
+	2. 安装包，执行: npm install 命令，
+	3. 启动服务: npm run server, 浏览器会自动开启页面
 
-# 启动后台管理系统
-1. 在根目录下进入admin项目：cd admin，
-2. 安装包，执行: npm install 命令，
-3. 启动服务: npm run server;  浏览器会自动开启页面
+	# 启动后台管理系统
+	1. 在根目录下进入admin项目：cd admin，
+	2. 安装包，执行: npm install 命令，
+	3. 启动服务: npm run server;  浏览器会自动开启页面
 
 
 ## 后端代码 文件夹结构

@@ -53,11 +53,11 @@
 	3. 启动服务: npm run server;  浏览器会自动开启页面
 
 ## 接口文档说明(*****)
-* (管理员与验证接口)[documents/admin.md]
-* (文章管理接口)[documents/article.md]
-* (留言接口)[documents/comment.md]
-*(回复接口)[documents/reply.md]
-* (每日一句接口)
+* (管理员与验证接口)[https://github.com/pumpkinduan/nodejs-mysql-vue-website/blob/master/documents/admin.md]
+* (文章管理接口)[https://github.com/pumpkinduan/nodejs-mysql-vue-website/blob/master/documents/article.md]
+* (留言接口)[https://github.com/pumpkinduan/nodejs-mysql-vue-website/blob/master/documents/comment.md]
+*(回复接口)[https://github.com/pumpkinduan/nodejs-mysql-vue-website/blob/master/documents/reply.md]
+* (每日一句接口)[https://github.com/pumpkinduan/nodejs-mysql-vue-website/blob/master/documents/quotation.md]
 ## 后端代码 文件夹结构
 ###  根目录下的
     *  index.js

@@ -48,7 +48,6 @@ class quotationDao {
         })
     }
     static updateQuotationById(id, info, success) {
-        console.log(id)
         Quotation.findOne({
             where: {
                 q_id: id

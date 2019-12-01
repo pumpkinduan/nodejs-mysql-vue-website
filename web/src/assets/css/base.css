@@ -162,3 +162,8 @@ img {
     padding: 5rem 0;
     background: url('../../assets/image/loading_big.gif') center center no-repeat;
 }
+/* pre.ql-syntax {
+    background-color: #23241f;
+    color: #f8f8f2;
+    overflow: visible;
+  } */

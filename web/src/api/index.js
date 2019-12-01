@@ -7,7 +7,7 @@ export default {
         return axiosInstance.get('https://v1.hitokoto.cn/?c=d')
     },
     getArticleList(params) {
-        return axiosInstance.get('/api/article/', {
+        return axiosInstance.get('/api/article', {
             params: {
                 page: params
             }

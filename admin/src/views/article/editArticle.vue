@@ -1,5 +1,5 @@
 <template>
-  <div class="edit-article ">
+  <div class="edit-article">
     <Publish
       ref="edit"
       :labels="labels"
@@ -14,37 +14,39 @@
         <el-upload
           class="upload-demo"
           drag
+          ref="upload"
+          :auto-upload="false"
           :action="`${serverUrl}/api/upload`"
-          multiple
-          name="picture"
-          :on-success="uploadSuccess"
-          :on-error="uploadErr"
+          :on-change="fileChange"
+          :http-request="uploadCompressImage"
         >
           <i class="el-icon-upload"></i>
-          <div class="el-upload__text">来换一张精致的封面图片吧，有利于吸引ta人的眼球噢</div>
-          <div class="el-upload__tip" slot="tip">只能上传jpg/png文件，且不超过500kb</div>
+          <div class="el-upload__text">来换一张精致的封面图片吧</div>
         </el-upload>
+        <el-button :disabled="!flag" style="margin-top: 1rem;" type="success" @click="submitUpload">上传到服务器</el-button>
       </template>
     </Publish>
   </div>
 </template>
 
-<script>
+<script>import axios from "axios";
 import Publish from "@/components/Publish";
 import api from "@/api/article.js";
-import config from '@/config.js';
+import config from "@/config.js";
+import {compress} from '@/util/compress.js';
 export default {
   components: {
     Publish
   },
   data() {
     return {
+      file: "",
+      flag: true,
       edit: false,
       serverUrl: config.serverUrl,
       title: "发布文章",
       labels: {
         tag: "标签",
-        cover: "封面",
         title: "标题",
         description: "描述"
       },
@@ -81,11 +83,29 @@ export default {
     }
   },
   methods: {
-    uploadErr() {
-      this.$message.error("upload failed");
+    submitUpload() {
+      this.flag = false;
+      this.uploadCompressImage(this.file);
     },
-    uploadSuccess(response, file) {
-      this.tableData[0].cover = response.path.replace(/\\/gi, "/");
+    uploadCompressImage(file) {
+      let formData = new FormData();
+     formData.append("picture", file.blob, file.name);
+     api.uploadImg(formData).then( res => {
+       this.tableData[0].cover = res.data && res.data.path.replace(/\\/gi, "/");
+     })
+    },
+    fileChange(file) {
+      this.file = file.raw;
+      this.flag = true;
+      compress({
+        target: file.raw,
+        target_size: 100,
+        maxWidth: 400,
+        maxHeight: 600,
+        onSuccess: data => {
+          this.file = data;
+        }
+      });
     },
     submit(data) {
       api
@@ -106,7 +126,7 @@ export default {
         message: data.msg,
         duration: 1000
       });
-      this.$router.push({name: 'ArticleList'})
+      this.$router.push({ name: "ArticleList" });
     },
     resetDialog() {
       for (var i in this.tableData[0]) {

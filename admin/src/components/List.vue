@@ -17,7 +17,7 @@
       ></el-table-column>
       <el-table-column min-width="240" label="封面" align="center" v-if="hasCover">
         <template slot-scope="scope">
-          <img style="width:100%" v-if="scope.row.cover" :src="`${serverUrl}/${scope.row.cover}`" />
+          <img style="max-width: 100%;" v-if="scope.row.cover" :src="`${serverUrl}/${scope.row.cover}`" />
         </template>
       </el-table-column>
 

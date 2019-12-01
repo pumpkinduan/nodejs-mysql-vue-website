@@ -76,7 +76,7 @@ export default {
       }, 400);
     },
     preLoadImg(img, fn) {
-      if (img.complete) {
+      if (img && img.complete) {
         fn(img);
       } else {
         img.onload = () => {
@@ -88,8 +88,8 @@ export default {
       }
     },
     preLoadImgs(fn) {
-      let imgs = this.$refs.waterfall_container.getElementsByTagName("img");
-      let totalCount = imgs.length,
+      let imgs = this.$refs.waterfall_container && this.$refs.waterfall_container.getElementsByTagName("img");
+      let totalCount = imgs && imgs.length,
         count = 0;
       for (let i = 0; i < totalCount; i++) {
         this.preLoadImg(imgs[i], img => {
@@ -105,7 +105,6 @@ export default {
       //避免累加
       this.rowHeightArr = [];
       this.rowLeftX = [];
-
       this.screenWidth = document.documentElement.clientWidth; //获取实时减去滚动条的视口宽度
       const { screenWidth, gutter, rowLeftX, rowHeightArr } = this;
       let oWidth, columns;
@@ -155,8 +154,9 @@ export default {
           this.$refs.waterfall_item.length - 1
         ];
         const minHeight = Math.min.apply(null, rowHeightArr);
+        const lastDomHeight = lastDom && lastDom.offsetHeight;
         if (
-          lastDom.offsetHeight / 2 + minHeight <
+          lastDomHeight / 2 + minHeight <
           window.innerHeight +
             document.documentElement.scrollTop +
             document.body.scrollTop -

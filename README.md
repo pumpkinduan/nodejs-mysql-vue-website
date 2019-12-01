@@ -52,7 +52,7 @@
 	2. 安装包，执行: npm install 命令，
 	3. 启动服务: npm run server;  浏览器会自动开启页面
 
-## 接口文档说明(*****)
+## 接口文档说明
 * [管理员与验证接口](https://github.com/pumpkinduan/nodejs-mysql-vue-website/blob/master/documents/admin.md)
 * [文章管理接口](https://github.com/pumpkinduan/nodejs-mysql-vue-website/blob/master/documents/article.md)
 * [留言接口](https://github.com/pumpkinduan/nodejs-mysql-vue-website/blob/master/documents/comment.md)

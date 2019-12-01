@@ -12,7 +12,7 @@
       ></el-table-column>
         <el-table-column min-width="240" fixed="right" label="封面" align="center">
        <template slot-scope="scope">
-          <img style="width:100%" :src="`${serverUrl}/${scope.row.cover}`" alt="待上传">
+          <img style="max-width: 100%;" :src="`${serverUrl}/${scope.row.cover}`" alt="待上传">
        </template>
       </el-table-column>
       <el-table-column align="center" min-width="160" fixed="right">
@@ -44,12 +44,12 @@
       <slot :serverUrl="serverUrl"></slot>
       <el-upload
         class="picture-upload"
+        :show-file-list="false"
         ref="upload"
-        :action="`${serverUrl}/api/upload`"
-        name="picture"
-        :file-list="fileList"
-        :on-success="uploadSuccess"
-        :on-error="uploadErr"
+        :auto-upload="false"
+        action=""
+        :on-change="handleFileChange"
+        :http-request="uploadCompressImage"
       ></el-upload>
       <quill-editor ref="quillEditor" :options="editorOption"></quill-editor>
       <el-dropdown @command="submit" trigger="click" v-if="!edit">
@@ -79,11 +79,12 @@ const toolbarOptions = [
   [{ font: [] }, { align: [] }],
   ["clean", "link", "image"] // add upload image btn
 ];
-import Quill from "quill";
 import { quillEditor } from "vue-quill-editor";
 import "quill/dist/quill.core.css";
 import "quill/dist/quill.snow.css";
-import config from "@/config.js"
+import config from "@/config.js";
+import api from "@/api/article.js";
+import {compress} from '@/util/compress.js';
 export default {
   components: {
     quillEditor
@@ -129,23 +130,28 @@ export default {
     uploadErr() {
       this.$message.error("upload failed");
     },
-    submitUpload() {
-      this.$confirm("即将开始上传图片, 是否继续?", "提示", {
-        confirmButtonText: "确定",
-        cancelButtonText: "取消",
-        type: "warning"
+    uploadCompressImage(file) {
+      let formData = new FormData();
+      file.blob && formData.append('picture', file.blob, file.name);
+      api.uploadImg(formData).then( res => {
+        res.data && this.uploadSuccess(res.data)
+      }).catch( err => {
+        this.uploadErr();
       })
-        .then(() => {
-          this.$refs.upload.submit(); //开始上传
-        })
-        .catch(() => {
-          this.$message({
-            type: "info",
-            message: "已取消删除"
-          });
-        });
     },
-    uploadSuccess(response, file, fileList) {
+    handleFileChange(file) {
+      let _self = this;
+      compress({
+        target: file.raw,
+        target_size: 450,
+        maxWidth: 650,
+        maxHeight: 500,
+        onSuccess: (data) => {
+          _self.uploadCompressImage(data)
+        }
+      })
+    },
+    uploadSuccess(response) {
       let quill = this.$refs.quillEditor.quill;
       //获取光标的位置
       let position = quill.getSelection().index;

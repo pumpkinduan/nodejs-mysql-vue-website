@@ -1,6 +1,6 @@
 <template>
   <div class="detail">
-    <main>
+    <main class="ql-snow">
       <section>
         <h2>{{details.title}}</h2>
         <ul class="info">
@@ -11,7 +11,7 @@
         </ul>
         <div class="description">{{ details.description }}</div>
       </section>
-      <div v-html="details.content" class="content"></div>
+      <div v-html="details.content" class="content ql-editor"></div>
       <section class="wrap-comment">
         <Comment />
       </section>
@@ -89,13 +89,11 @@ export default {
 }
 .detail main section .info {
   display: flex;
-  justify-content: center;
 }
 .detail main section h2 {
   font-size: 1.5rem;
   font-weight: 500;
   color: #444;
-  text-align: center;
   margin-bottom: 0.8rem;
 }
 .detail main section .info > li {
@@ -105,7 +103,6 @@ export default {
   color: #999;
 }
 .detail main .content {
-  text-indent: 1em;
   margin: 3rem 0;
   line-height: 1.5rem;
   padding-bottom: 2rem;
@@ -113,10 +110,9 @@ export default {
   font-size: 1.5em;
 }
 .detail main .description {
-  text-align: center;
   color: #555;
   font-size: 1rem;
-  font-weight: 700;
+  font-weight: 400;
   line-height: 1.5rem;
   margin-top: 1rem;
   word-break: break-all;

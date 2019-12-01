@@ -72,7 +72,6 @@ header {
   border-bottom: 1px solid #ccc;
   box-shadow: 0 0 1px 1px #ddd;
   background-color: #fff;
-  margin-bottom: 1.2rem;
 }
 header .logo {
   font-family: cursive;

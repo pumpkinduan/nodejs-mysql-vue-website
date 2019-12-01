@@ -74,6 +74,7 @@ export default {
   width: 100%;
   padding: 0 3rem;
   position: relative;
+  margin-top: 1.2rem;
 }
 .wrap {
   position: relative;

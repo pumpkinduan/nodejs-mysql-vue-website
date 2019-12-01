@@ -275,7 +275,7 @@ export default {
             document.documentElement.clientHeight ||
             document.body.clientHeight ||
             window.innerHeight,
-          { bottom } = ele.getBoundingClientRect();
+          { bottom } = ele && ele.getBoundingClientRect();
         if (bottom - 100 < viewHeight) {
           //最后几条留言快要离开可视区时，加载留言
           //100 为预留 距离，提前一点加载留言

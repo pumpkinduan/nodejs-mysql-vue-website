@@ -1,4 +1,5 @@
 import Vue from 'vue'
+import '@/assets/css/quill.css'
 import '@/assets/css/base.css'
 import router from './router'
 import '@/js/generateHeart.js'

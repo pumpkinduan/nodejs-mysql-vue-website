@@ -190,12 +190,11 @@ export default {
   height: 100%;
 }
 .wrapper {
-  height: 100%;
-  margin: 25px 0;
+  margin-top: 25px;
 }
-.wrapper .quill-editor {
+/* .wrapper .quill-editor {
   height: 600px !important;
-}
+} */
 .el-dropdown-link {
   cursor: pointer;
   color: #fff;
@@ -214,6 +213,6 @@ export default {
 }
 .edit-btn {
   position: relative;
-  top: 50px;
+  top: 15px;
 }
 </style>

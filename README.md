@@ -21,11 +21,13 @@
 * 采用jwt对登录用户的验证机制，增加安全性
 * 前端网站采用vue-cli3搭建，编写可重复使用的组件，简单且易于维护
 * 后台管理系统使用 element-ui组件库，快速、简单、清晰的管理与构建
+* 图片上传前利用canvas进行压缩，减少图片体积
 
 ## 如何使用呢？
 ### 首先是数据库的创建
-在跑起项目之前一定要创建好	my_website  数据库，不然会出现一推报错信息，页面上空空如也
-	1.  登录数据库
+在跑起项目之前一定要创建好my_website数据库，不然会出现一推报错信息，页面上空空如也
+	
+	# 登录数据库
 	$ mysql -u root -p 密码
 ### 根据自己的偏好修改express项目下的数据库配置
 请在[app/core/dbConfig.js](https://github.com/pumpkinduan/nodejs-mysql-vue-website/blob/master/app/core/dbConfig.js)修改

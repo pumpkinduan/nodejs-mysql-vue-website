@@ -2,15 +2,10 @@
   <div class="article">
     <transition name="fade">
       <div class="wrapper">
-        <header>
-          <Header />
-        </header>
+        <Header />
         <main class="box">
           <router-view></router-view>
         </main>
-        <footer>
-          <Footer />
-        </footer>
       </div>
     </transition>
   </div>
@@ -22,15 +17,18 @@ import Footer from "@/components/Footer";
 export default {
   components: {
     Header,
-    Footer,
+    Footer
   },
   data() {
     return {};
-  },
+  }
 };
 </script>
 
 <style scoped>
+.box {
+  background-color: #f1f1f1;
+}
 .fade-enter-active,
 .fade-leave-active {
   transition: opacity 0.5s;

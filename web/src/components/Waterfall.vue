@@ -97,6 +97,7 @@ export default {
           if (count === totalCount) {
             //所有图片加载完成
             fn(this.$refs.waterfall_item); //表示可以获取包含图片的元素的实际高度
+            imgs = null;
           }
         });
       }

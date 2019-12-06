@@ -28,13 +28,11 @@ export default {
   },
   beforeRouteEnter(to, from, next) {
     //请求数据
-    api
-      .getArticleDetail(to.params.articleId)
-      .then(res => {
-        if (res.data && res.data.data) {
-          next(vm => vm.setData(res.data.data));
-        }
-      })
+    api.getArticleDetail(to.params.articleId).then(res => {
+      if (res.data && res.data.data) {
+        next(vm => vm.setData(res.data.data));
+      }
+    });
   },
   mounted() {
     this.startCount();
@@ -71,7 +69,7 @@ export default {
     },
     setData(data) {
       this.details = data;
-      this.readingTime = Math.floor(data.total_char / 20);
+      this.readingTime = Math.floor(data.total_char / 40);
       this.browse = data.browse;
     }
   }
@@ -85,15 +83,15 @@ export default {
 }
 .detail main {
   background: #fff;
-  padding-right: 12rem;
+  /* padding-right: 10rem; */
 }
 .detail main section .info {
   display: flex;
 }
 .detail main section h2 {
   font-size: 1.5rem;
-  font-weight: 500;
-  color: #444;
+  font-weight: 600;
+  color: #333;
   margin-bottom: 0.8rem;
 }
 .detail main section .info > li {
@@ -108,6 +106,7 @@ export default {
   padding-bottom: 2rem;
   border-bottom: 1px solid #eee;
   font-size: 1.5em;
+  overflow: hidden;
 }
 .detail main .description {
   color: #555;
@@ -119,9 +118,10 @@ export default {
 }
 @media screen and (min-width: 920px) {
   .detail {
-    padding: 2rem 12rem;
-    width: 90%;
+    padding: 2rem 6rem;
+    width: 70%;
     margin: 0 auto;
+    background-color: #ffffff;
   }
   .detail main h1 {
     width: 100%;
@@ -134,6 +134,7 @@ export default {
     margin-bottom: 1rem;
   }
   .detail {
+    width: 100%;
     padding: 2rem 2.5rem;
   }
 }

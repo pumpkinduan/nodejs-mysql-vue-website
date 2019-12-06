@@ -7,7 +7,7 @@
       <el-aside style="width: 240px;">
         <SideMenu />
       </el-aside>
-      <el-main style="padding: 10px; margin-bottom: 20px;">
+      <el-main style="padding: 10px; margin-bottom: 20px; overflow: hidden;">
           <router-view />
       </el-main>
     </el-container>

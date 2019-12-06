@@ -20,8 +20,12 @@ function compress({
     _context,
     _name = target.name,
     _mimeType = target.type,
-    originalSize = target.size,
+    originalSize = Math.floor(target.size / 1024 /1024),
     srcImgData = URL.createObjectURL(target);
+  if (originalSize < 3) { //2M以上 的图片才压缩
+    onSuccess({blob: target, name: _name, type: _mimeType})
+    return;
+  }
   img.src = srcImgData;
   img.onload = () => {
     URL.revokeObjectURL(srcImgData);

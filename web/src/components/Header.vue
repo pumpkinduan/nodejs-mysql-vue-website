@@ -68,7 +68,7 @@ header {
   top: 0;
   z-index: 999;
   width: 100%;
-  padding: 1.2rem 3rem;
+  padding: 0rem 3rem;
   border-bottom: 1px solid #ccc;
   box-shadow: 0 0 1px 1px #ddd;
   background-color: #fff;

@@ -142,6 +142,6 @@ export default {
   height: 100%;
 }
 .wrapper {
-  margin: 25px 0;
+  margin-top: 25px;
 }
 </style>

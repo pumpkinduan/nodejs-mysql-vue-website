@@ -1,0 +1,87 @@
+/* 
+    针对博客文章的共有样式
+*/
+
+.post-date {
+    position: absolute;
+    top: -1.5rem;
+    left: -1.5rem;
+    width: 5rem;
+    height: 5rem;
+    padding-top: 1rem;
+    border-radius: 50%;
+    box-shadow: 2px 2px 2px rgba(0, 0, 0, 0.14);
+    background-color: #97dffd;
+    text-align: center;
+}
+
+.post-date>div {
+    color: #fff;
+    font-size: bold;
+}
+
+.post-date .post-month {
+    font-size: 0.8rem;
+}
+
+.post-date .post-day {
+    font-size: 2rem;
+}
+
+.post-badge {
+    text-align: center;
+    cursor: pointer;
+    position: absolute;
+    top: 2.5rem;
+    right: -1rem;
+    width: 5rem;
+    line-height: 2rem;
+    box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.4);
+    background-color: #97dffd;
+}
+
+.post-badge:hover {
+    opacity: 0.8;
+}
+
+.post-badge::after {
+    content: "";
+    display: block;
+    position: absolute;
+    top: 100%;
+    right: 0;
+    width: 0;
+    height: 0;
+    border-right: solid 1rem transparent;
+    border-left: solid 0 transparent;
+    border-top: solid 1rem rgba(0, 0, 0, 0.6);
+    border-bottom: solid 0rem transparent;
+}
+
+.post-badge .post-tag {
+    color: #fff;
+    font-size: 0.8rem;
+    font-weight: 500;
+}
+
+.post-meta {
+    display: flex;
+    margin-top: 1rem;
+}
+
+.post-meta li {
+    margin-right: 1rem;
+    font-size: 0.8rem;
+}
+
+.post-meta .post-time {
+    color: #00a7e0;
+}
+
+.post-meta .post-words {
+    color: #222;
+}
+
+.post-meta .post-browse {
+    color: #ff8a00;
+}

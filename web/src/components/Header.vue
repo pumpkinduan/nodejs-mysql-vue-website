@@ -39,13 +39,8 @@ export default {
         },
         {
           class: "iconfont icon-xingxing1",
-          component: "home",
-          name: "作品集"
-        },
-        {
-          class: "iconfont icon-biaoqian3",
-          component: "blog",
-          name: "博客"
+          component: "photoWall",
+          name: "相册墙"
         },
         {
           class: "iconfont icon-guanyuwo",
@@ -64,12 +59,9 @@ export default {
 <style scoped>
 /* ----头部样式开始---- */
 header {
-  position: sticky;
-  top: 0;
-  z-index: 999;
   width: 100%;
+  height: 90px;
   padding: 0rem 3rem;
-  border-bottom: 1px solid #ccc;
   box-shadow: 0 0 1px 1px #ddd;
   background-color: #fff;
 }
@@ -122,6 +114,7 @@ header nav ul li a:hover:after {
   height: 100vh;
   position: fixed;
   top: 0;
+  z-index: 6;
   right: 0;
   background-color: #666;
   padding: 2rem 1.5rem 2.5rem 2rem;
@@ -131,11 +124,6 @@ header nav ul li a:hover:after {
   /* 而fixed定位则不会出现上述情况 */
   /* position: absolute; */
   /* transform: translateX(100%); */
-}
-@media screen and (max-width: 768px) {
-  .menu {
-    width: 100%;
-  }
 }
 .menu .close {
   font-size: 2rem;

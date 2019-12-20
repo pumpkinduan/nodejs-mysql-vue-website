@@ -1,6 +1,7 @@
 import Vue from 'vue'
 import '@/assets/css/quill.css'
 import '@/assets/css/base.css'
+import '@/assets/css/post-blog.css'
 import router from './router'
 import '@/js/generateHeart.js'
 import '@/js/backToTop.js'

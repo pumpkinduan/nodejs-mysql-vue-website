@@ -2,70 +2,110 @@
   <div class="blog-list">
     <div class="wrapper">
       <section v-for="(item, index) in blogLists" :key="index">
+        <div class="post-date">
+          <div class="post-month">11月</div>
+          <div class="post-day">24</div>
+        </div>
+        <div class="post-badge">
+          <router-link
+            :to="{name: 'detail', params: {articleId: item.article_id, showLoading: false}}"
+            class="post-tag"
+          >{{item.tag}}</router-link>
+        </div>
         <router-link
           class="title"
           :to="{name: 'detail', params: {articleId: item.article_id, showLoading: false}}"
         >
-          <span>
-            {{item.title}}
-          </span>
+          <span>{{item.title}}</span>
         </router-link>
-        <ul class="info">
-          <li>发表于: {{item.created_at}}</li>
-          <li>访问量: {{item.browse}}</li>
-          <li>字数: {{item.total_char}}</li>
+        <ul class="post-meta">
+          <li class="post-time">发表于: {{item.created_at}}</li>
+          <li class="post-browse">访问量: {{item.browse}}</li>
+          <li class="post-words">字数: {{item.total_char}}</li>
         </ul>
         <div class="description">{{item.description}}</div>
         <div class="bottom">
           <router-link
             :to="{name: 'detail', params: {articleId: item.article_id, showLoading: false}}"
-            class="tag fl"
-          >{{item.tag}}</router-link>
-          <router-link
-            :to="{name: 'detail', params: {articleId: item.article_id, showLoading: false}}"
-            class="read-more fr"
+            class="read-more"
           >
-            <i class="iconfont icon-gengduo" style="font-size: 1.5rem;"></i>
             <em>阅读更多</em>
+            <i class="iconfont icon-gengduo" style="font-size: 1.5rem;"></i>
           </router-link>
         </div>
       </section>
-      <Pagination
-        :totalData="commentSize"
-        :pageSize="pageSize"
-        @current-change="getCurrentPage"
-        @next-page="nextPage"
-        @prev-page="prevPage"
-      />
+      <section class="pagination-nav">
+        <Pagination
+          :totalData="commentSize"
+          :pageSize="pageSize"
+          @current-change="getCurrentPage"
+          @next-page="nextPage"
+          @prev-page="prevPage"
+        />
+      </section>
     </div>
   </div>
 </template>
 
 <script>
 import Pagination from "@/components/Pagination";
+import api from "@/api/index.js";
 export default {
   components: {
     Pagination
   },
   props: {
-    blogLists: Array,
-    article_id: Number,
-    commentSize: Number,
-    pageSize: Number,
-    cachedBlogs: Map
+    // blogLists: Array,
+    // article_id: Number,
+    // commentSize: Number,
+    // pageSize: Number,
+    // cachedBlogs: Map
   },
   data() {
-    return {};
+    return {
+       blogLists: [],
+      pageSize: 5,
+      curPage: 1,
+      commentSize: 0,
+      cachedBlogs: new Map()
+    };
+  },
+  created() {
+     api
+      .getBlogList(1)
+      .then(result => {
+        this.blogLists = result.data.data;
+        this.cachedBlogs.set(1, this.blogLists); //缓存第一页数据
+        this.pageSize = parseInt(result.data.meta.pageSize);
+        this.commentSize = parseInt(result.data.meta.count);
+      })
+      .catch(err => {
+        this.blogList = []; //数据为空
+      });
   },
   methods: {
-    getCurrentPage(page) {
-      this.$emit("getData", page);
+     getCurrentPage(page = 1) {
+      if (this.cachedBlogs.has(page)) {
+        this.blogLists = this.cachedBlogs.get(page);
+      } else {
+        api.getBlogList(page).then(res => {
+          if (res.data) {
+            this.blogLists = res.data.data;
+            this.cachedBlogs.set(page, this.blogLists); //缓存第一页数据
+          }
+        });
+      }
     },
+    // getCurrentPage(page) {
+    //   this.$emit("getData", page);
+    // },
     nextPage(page) {
-      this.$emit("getData", page);
+      // this.$emit("getData", page);
+      this.getCurrentPage(page)
     },
     prevPage(page) {
-      this.$emit("getData", page);
+      // this.$emit("getData", page);
+      this.getCurrentPage(page)
     }
   }
 };
@@ -73,31 +113,25 @@ export default {
 
 <style scoped>
 .blog-list {
-  background-color: #f9f9f9;
-  padding: 0 10rem;
+  width: 100%;
 }
 .blog-list .wrapper {
-  background: #fff;
-  padding: 3rem 8rem;
+  perspective: 800px;
+  transform-style: preserve-3d;
 }
 .blog-list .wrapper > section {
+  background: #fff;
   position: relative;
-  padding-top: 1rem;
+  padding-top: 2rem;
   margin-bottom: 5rem;
-  padding-bottom: 4rem;
+  padding-bottom: 2rem;
   text-align: center;
+  border-radius: 8px;
+  transition: all 0.3s;
 }
-.blog-list .wrapper > section::after {
-  position: absolute;
-  content: "";
-  bottom: 0;
-  left: 50%;
-  width: 20%;
-  transform: translateX(-50%);
-  border-bottom: 1px solid #e4e4e4;
-}
-.blog-list .wrapper > section:last-of-type::after {
-  width: 0;
+.blog-list .wrapper > section:hover {
+  transform: translate3d(0, 0, 10px);
+  box-shadow: 0 0 40px #dcdbff;
 }
 .blog-list .wrapper > section .title span {
   display: inline-block;
@@ -121,50 +155,42 @@ export default {
 .blog-list .wrapper > section .title span:hover::after {
   transform: translateX(0);
 }
-.blog-list .wrapper > section .info {
+.blog-list .wrapper > section .post-meta {
   display: flex;
   justify-content: center;
   margin-top: 1rem;
 }
-
-.blog-list .wrapper > section .info li {
-  margin-left: 15px;
-  font-size: 0.8rem;
-  color: #999;
-}
 .blog-list .wrapper > section .description {
-  padding: 1rem 2rem;
+  padding: 1rem 3rem;
   color: #333;
   font-size: 1rem;
   text-align: left;
   line-height: 1.5rem;
 }
 .blog-list .wrapper > section .bottom {
-  padding: 1rem 2rem;
+  margin-top: 5rem;
 }
-.blog-list .wrapper > section .bottom a {
+.blog-list .wrapper > section .bottom .read-more {
   font-size: 0.8rem;
-  color: #777;
-}
-.blog-list .wrapper > section .bottom a.tag {
-  padding: 0.5rem;
-  border-radius: 20px;
-  transition: all 0.1s;
-  background: #f1f1f1;
-  font-weight: 700;
-}
-.blog-list .wrapper > section .bottom a.tag:hover {
-  color: #ff8a00;
+  color: #fff;
+  background-color: #97dffd;
+  padding: 5px;
+  border-radius: 4px;
+  transition: background-color 0.3s;
 }
 .blog-list .wrapper > section .bottom .read-more em {
-  color: #999;
   margin-left: 2px;
 }
-.blog-list .wrapper > section .bottom .read-more em:hover {
-  color: #ff8a00;
+.blog-list .wrapper > section .bottom .read-more:hover {
+  background-color: #666;
 }
 .blog-list .wrapper > section .bottom .icon-gengduo {
-  color: #666;
   vertical-align: -5px;
+}
+.blog-list .wrapper > section.pagination-nav {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 0;
+  padding: 1rem 0;
 }
 </style>

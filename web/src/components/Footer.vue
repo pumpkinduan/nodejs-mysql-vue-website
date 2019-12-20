@@ -36,7 +36,6 @@
   background-color: #eee;
   padding: 2.5rem 4rem;
   font: 500 1.4rem cursive !important;
-  margin-top: 2rem;
 }
 /* --底部关于开始-- */
 .footer .about {

@@ -3,12 +3,31 @@ import Router from 'vue-router'
 import Home from './views/Home.vue'
 Vue.use(Router)
 export default new Router({
-  mode: 'hash',
+  mode: 'history',
   routes: [
     {
       path: '/',
       name: 'home',
-      component: Home,
+      components: {
+        default: Home
+      },
+      children: [
+        {
+          path: '/',
+          name: 'blogList',
+          component: () => import('./components/BlogList.vue')
+        },
+        {
+          path: '/category',
+          name: 'category',
+          component: () => import('./components/Category.vue')
+        }
+      ]
+    },
+    {
+      path: '/photoWall',
+      name: 'photoWall',
+      component: () => import('./views/PhotoWall.vue')
     },
     {
       path: '/article',
@@ -21,11 +40,6 @@ export default new Router({
           component: () => import('./views/Detail.vue') 
         }
       ]
-    },
-    {
-      path: '/blog',
-      name: 'blog',
-      component: () => import('./views/Blog.vue')
     },
     {
       path: '/about',

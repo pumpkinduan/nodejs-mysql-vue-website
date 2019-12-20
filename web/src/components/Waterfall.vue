@@ -12,8 +12,7 @@
   </div>
 </template>
 <script>
-import { debounce } from "@/lib/debounce.js";
-import { throttle } from "@/lib/throttle.js";
+import {debounce, throttle, addEvent, removeEvent} from "@/lib/tool.js";
 export default {
   activated() {
     //解决 失活的瀑布流组件 再次被激活时 定位发生错乱的bug
@@ -45,14 +44,28 @@ export default {
       rowHeightArr: [],
       width: 240,
       loadPage: 1,
-      canLoad: true
+      canLoad: true,
+      handleDebounce: "",
+      handleThrottle: ""
     };
   },
-  updated() {
-    this.setPostion();
+  created() {
+    let _self = this;
+    this.handleDebounce = debounce(function() {
+      _self.setPostion();
+    }, 550);
+    this.handleThrottle = throttle(function() {
+      if (_self.isloadedMore()) {
+        _self.canLoad = false;
+        _self.loadData();
+      }
+    }, 400);
   },
   mounted() {
     this.init();
+  },
+  updated() {
+    this.setPostion();
   },
   watch: {
     cards: {
@@ -64,16 +77,8 @@ export default {
   },
   methods: {
     init() {
-      let _self = this;
-      window.onresize = debounce(function() {
-        _self.setPostion();
-      }, 550);
-      window.onscroll = throttle(function() {
-        if (_self.isloadedMore()) {
-          _self.canLoad = false;
-          _self.loadData();
-        }
-      }, 400);
+      addEvent(window, "resize", this.handleDebounce);
+      addEvent(window, "scroll", this.handleThrottle);
     },
     preLoadImg(img, fn) {
       if (img && img.complete) {
@@ -88,7 +93,9 @@ export default {
       }
     },
     preLoadImgs(fn) {
-      let imgs = this.$refs.waterfall_container && this.$refs.waterfall_container.getElementsByTagName("img");
+      let imgs =
+        this.$refs.waterfall_container &&
+        this.$refs.waterfall_container.getElementsByTagName("img");
       let totalCount = imgs && imgs.length,
         count = 0;
       for (let i = 0; i < totalCount; i++) {
@@ -172,6 +179,10 @@ export default {
       this.loadPage++;
       this.$emit("loadData", this.loadPage);
     }
+  },
+  destroy() {
+    removeEvent(window, "resize", this.handleDebounce);
+    removeEvent(window, "scroll", this.handleThrottle);
   }
 };
 </script>

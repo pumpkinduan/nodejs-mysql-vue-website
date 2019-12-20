@@ -102,8 +102,7 @@
 <script>
 import { format } from "@/lib/formatTime.js";
 import api from "@/api/index.js";
-import { debounce } from "@/lib/debounce.js";
-import { throttle } from "@/lib/throttle.js";
+import {throttle, debounce, addEvent, removeEvent} from "@/lib/tool.js";
 export default {
   data() {
     return {
@@ -132,6 +131,14 @@ export default {
     }
   },
   created() {
+    let self = this;
+    this.handleThrottle = throttle(function() {
+      if (self.loadMoreComment()) {
+        self.page++;
+        self.loading_gif = true;
+        self.getData();
+      }
+    }, 400);
     this.getData();
     let parse1 =
       sessionStorage.getItem("name") &&
@@ -144,14 +151,7 @@ export default {
   },
   mounted() {
     let self = this;
-    window.onscroll = throttle(function() {
-      //懒加载留言
-      if (self.loadMoreComment()) {
-        self.page++;
-        self.loading_gif = true;
-        self.getData();
-      }
-    }, 400);
+    addEvent(window, "scroll", this.handleThrottle);
   },
   methods: {
     getData() {
@@ -236,7 +236,7 @@ export default {
           };
           api.createReply(reply).then(res => {
             this.words[this.curIndex].replies.push(
-              Object.assign(reply, { created_at: format()})
+              Object.assign(reply, { created_at: format() })
             );
             this.totalReplies++;
             this.resetComment();

@@ -1,4 +1,5 @@
-import {animate} from '@/lib/animate.js'
+import { animate } from '@/lib/animate.js'
+import { throttle } from "@/lib/tool.js";
 (function (window, document) {
     var timerId = null;
     init();
@@ -9,35 +10,34 @@ import {animate} from '@/lib/animate.js'
     }
     function move() {
         clearInterval(timerId);
-        timerId = setInterval(function() {
+        timerId = setInterval(function () {
             let begin = document.documentElement.scrollTop;
             let end = 0;
             let speed = (end - begin) * 0.3;
-            if ( Math.abs(end - begin) <= Math.abs(speed) ) {
+            if (Math.abs(end - begin) <= Math.abs(speed)) {
                 document.documentElement.scrollTop = end;
                 clearInterval(timerId);
             }
-             //注意:给 document.documentElement.scrollTop设置值时不能带单位
-             document.documentElement.scrollTop += speed;
-        }, 40)
+            //注意:给 document.documentElement.scrollTop设置值时不能带单位
+            document.documentElement.scrollTop += speed;
+        }, 30)
     }
     function bindEvent() {
         var btn = document.getElementById('backToTop');
-        btn.addEventListener('click', function() {
+        btn.addEventListener('click', function () {
             move();
         }, false);
-        document.addEventListener('scroll', function() {
-            let speed = 5;
-            if ( document.documentElement.scrollTop <=0 ) {
-                animate(btn,{
+        document.addEventListener('scroll', throttle(function () {
+            if (document.documentElement.scrollTop <= 0) {
+                animate(btn, {
                     bottom: -80
                 })
             } else {
-                animate(btn,{
+                animate(btn, {
                     bottom: 40
                 })
             }
-        },false);
+        }, 100), false);
     }
     function createBtn() {
         var div = document.createElement('div');

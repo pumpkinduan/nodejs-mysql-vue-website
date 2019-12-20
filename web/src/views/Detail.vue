@@ -1,29 +1,61 @@
 <template>
-  <div class="detail">
-    <main class="ql-snow">
-      <section>
-        <h2>{{details.title}}</h2>
-        <ul class="info">
-          <li>发布于: {{ details.created_at}}</li>
-          <li>标签: {{ details.tag}}</li>
-          <li>浏览量: {{ details.browse}}</li>
-          <li>字数: {{ details.total_char}}</li>
-        </ul>
-        <div class="description">{{ details.description }}</div>
-      </section>
-      <div v-html="details.content" class="content ql-editor"></div>
-      <section class="wrap-comment">
-        <Comment />
-      </section>
-    </main>
+  <div class="clearfix">
+    <div class="detail fl">
+      <div class="post-date">
+        <div class="post-month">11月</div>
+        <div class="post-day">24</div>
+      </div>
+      <div class="post-badge">
+        <router-link :to="{name: 'detail'}" class="post-tag">{{details.tag}}</router-link>
+      </div>
+      <main class="ql-snow">
+        <section>
+          <h1>{{details.title}}</h1>
+          <ul class="post-meta">
+            <li class="post-time">发表于: {{details.created_at}}</li>
+            <li class="post-browse">访问量: {{details.browse}}</li>
+            <li class="post-words">字数: {{details.total_char}}</li>
+          </ul>
+          <div class="description">{{ details.description }}</div>
+        </section>
+        <div ref="detail" v-html="details.content" class="content ql-editor"></div>
+        <section class="wrap-comment">
+          <Comment />
+        </section>
+      </main>
+    </div>
+    <aside class="fr right-catalog">
+      <AsideBar>
+        <template>
+          <ul class="catalog-wrap">
+            <h2>文章目录</h2>
+            <li v-for="(item, index) in catalogs" :key="index">
+              <a
+                :class="[curIndex == index ? 'active': '']"
+                :href="item.id"
+                @click="handleClick(item._top, index)"
+              >{{index + 1}}.{{item.text}}</a>
+            </li>
+          </ul>
+        </template>
+      </AsideBar>
+    </aside>
   </div>
 </template>
 
 <script>
+import AsideBar from "@/components/AsideBar";
 import api from "@/api/index.js";
 import Comment from "@/components/Comment";
+import {
+  throttle,
+  addEvent,
+  removeEvent,
+  getElementPosition
+} from "@/lib/tool.js";
 export default {
   components: {
+    AsideBar,
     Comment
   },
   beforeRouteEnter(to, from, next) {
@@ -34,18 +66,29 @@ export default {
       }
     });
   },
-  mounted() {
-    this.startCount();
-  },
   data() {
     return {
+      curIndex: null,
+      catalogDoms: "",
       details: {},
+      catalogs: [],
       stayTime: 0,
       browse: 0,
       second: 0,
       timer: null,
+      timerId: null,
       readingTime: 0 //阅读时长，大于该值访问量才会+1
     };
+  },
+  mounted() {
+    this.startCount();
+    setTimeout(() => { 
+      this.$nextTick(() => {
+        //只有等到页面的DOM全部加载完毕后在进行DOM的获取与操作
+        //setTimeout不能省，它的延迟时间是测试出来的，最好不低于100
+        this.init();
+      });
+    }, 100);
   },
   beforeRouteLeave(to, from, next) {
     if (this.second > this.readingTime) {
@@ -57,6 +100,93 @@ export default {
     next();
   },
   methods: {
+    init() {
+      this.catalogDoms = this.$refs.detail && this.$refs.detail.getElementsByTagName("h3");
+      this.createCatalog(this.catalogDoms); 
+      this.handleScroll = throttle(this.onScroll, 30);
+      addEvent(window, "scroll", this.handleScroll);
+    },
+    createCatalog(elements) {//生成文章目录
+      let len = elements && elements.length;
+      this.preLoadImgs(() => {
+        for (var i = 0; i < len; i++) {
+          var text = elements[i].innerText.trim();
+          elements[i].id = text;
+          this.catalogs.push({
+            text,
+            id: "#" + text,
+            _top: getElementPosition(elements[i]).y
+          });
+        }
+      });
+    },
+    preLoadImg(img, fn) {
+      if (img && img.complete) {
+        fn(img);
+      } else {
+        img.onload = () => {
+          fn(img);
+        };
+        img.onerror = () => {
+          fn(img);
+        };
+      }
+    },
+    preLoadImgs(fn) {
+      let imgs =
+        this.$refs.detail && this.$refs.detail.getElementsByTagName("img");
+      let totalCount = imgs && imgs.length,
+        count = 0;
+      for (let i = 0; i < totalCount; i++) {
+        this.preLoadImg(imgs[i], img => {
+          count++;
+          if (count === totalCount) {
+            //所有图片加载完成
+            fn(this.$refs.detail); //表示可以获取包含图片的元素的实际高度
+            imgs = null;
+          }
+        });
+      }
+    },
+    scrollAnimate(end) {
+      let k = 4;
+      let speed_ms = 30;
+      let _html = document.documentElement;
+      let scroll_top = _html.scrollTop;
+      let scrollInterval = null;
+      if (scroll_top !== end) {
+        clearInterval(scrollInterval);
+        scrollInterval = setInterval(function() {
+          let speed = (end - scroll_top) / k;
+          speed = speed > 0 ? Math.ceil(speed) : Math.floor(speed);
+          scroll_top += speed;
+          _html.scrollTop = scroll_top;
+          if (Math.abs(end - scroll_top) <= Math.abs(speed)) {
+            _html.scrollTop = end;
+            clearInterval(scrollInterval);
+          }
+        }, speed_ms);
+      }
+    },
+    onScroll() {//实现目录导航滚动效果
+      let _html = document.documentElement;
+      let items = this.catalogs;
+      let len = items.length;
+      // 100为预留距离
+      if (_html.scrollTop + 100 < items[0]._top) {
+        this.curIndex = null;
+        return;
+      }
+      for (var i = 0; i < len; i++) {
+        if (_html.scrollTop + 100 >= items[i]._top) {
+          this.curIndex = i;
+        }
+      }
+    },
+    handleClick(end, index) {//实现目录导航点击动画效果
+      this.curIndex = index;
+      this.scrollAnimate(end);
+    },
     startCount() {
       clearInterval(this.timer);
       this.timer = setInterval(() => {
@@ -71,6 +201,9 @@ export default {
       this.details = data;
       this.readingTime = Math.floor(data.total_char / 40);
       this.browse = data.browse;
+    },
+    destroy() {
+      removeEvent(window, "scroll", this.handleScroll);
     }
   }
 };
@@ -81,25 +214,7 @@ export default {
   width: 100%;
   margin-bottom: 3rem;
 }
-.detail main {
-  background: #fff;
-  /* padding-right: 10rem; */
-}
-.detail main section .info {
-  display: flex;
-}
-.detail main section h2 {
-  font-size: 1.5rem;
-  font-weight: 600;
-  color: #333;
-  margin-bottom: 0.8rem;
-}
-.detail main section .info > li {
-  margin-right: 0.8rem;
-  font-size: 0.9rem;
-  font-weight: 540;
-  color: #999;
-}
+
 .detail main .content {
   margin: 3rem 0;
   line-height: 1.5rem;
@@ -116,15 +231,43 @@ export default {
   margin-top: 1rem;
   word-break: break-all;
 }
+.right-catalog {
+  width: 320px;
+}
+.right-catalog .catalog-wrap h2 {
+  color: #555;
+  font-size: 1rem;
+  padding-bottom: 1.2rem;
+  padding-top: 0.5rem;
+}
+.right-catalog .catalog-wrap li {
+  padding: 0.4rem 0;
+}
+.right-catalog .catalog-wrap li a {
+  font-size: 0.9rem;
+  width: 100%;
+  transition: color 0.3s;
+  text-overflow: ellipsis;
+  overflow: hidden;
+  white-space: nowrap;
+}
+.right-catalog .catalog-wrap li a.active {
+  color: #ff8a00;
+}
+.right-catalog .catalog-wrap li a:hover {
+  color: #ff8a00;
+}
 @media screen and (min-width: 920px) {
   .detail {
-    padding: 2rem 6rem;
-    width: 70%;
-    margin: 0 auto;
+    padding: 2rem 5rem;
+    width: 780px;
     background-color: #ffffff;
+    position: relative;
+    box-shadow: 0 0 40px #dcdbff;
   }
   .detail main h1 {
     width: 100%;
+    font-size: 1.5rem;
   }
 }
 @media screen and (max-width: 920px) {

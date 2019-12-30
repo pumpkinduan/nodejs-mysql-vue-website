@@ -1,5 +1,5 @@
 <template>
-  <header class="clearfix">  
+  <header id="nav_header" class="clearfix">  
     <h1 class="fl">
       <router-link to="/">
         <img src="../assets/image/pumpkin.png" style="width: 5em;" />
@@ -34,7 +34,7 @@ export default {
       navLinks: [
         {
           class: "iconfont icon-shouye",
-          component: "home",
+          component: "articleList",
           name: "首页"
         },
         {

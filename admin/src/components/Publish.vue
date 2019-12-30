@@ -10,11 +10,6 @@
         v-for="(value, attr, index) in labels"
         :key="index"
       ></el-table-column>
-        <el-table-column min-width="240" fixed="right" label="封面" align="center">
-       <template slot-scope="scope">
-          <img style="max-width: 100%;" :src="`${serverUrl}/${scope.row.cover}`" alt="待上传">
-       </template>
-      </el-table-column>
       <el-table-column align="center" min-width="160" fixed="right">
         <template slot-scope="scope">
           <el-button type="info" @click="dialogFormVisible = true">{{btnText}}</el-button>
@@ -31,7 +26,11 @@
           :rules="[{required: true, message: `${val}不能为空`}]"
           :prop="attr"
         >
-          <el-input :disabled="attr == 'cover'" v-model="tableData[0][attr]" autocomplete="off">{{ attr }}</el-input>
+          <el-input
+            :disabled="attr == 'cover'"
+            v-model="tableData[0][attr]"
+            autocomplete="off"
+          >{{ attr }}</el-input>
         </el-form-item>
       </el-form>
       <div slot="footer" class="dialog-footer">
@@ -41,28 +40,18 @@
       </div>
     </el-dialog>
     <div class="wrapper">
-      <slot :serverUrl="serverUrl"></slot>
       <el-upload
         class="picture-upload"
         :show-file-list="false"
         ref="upload"
         :auto-upload="false"
-        action=""
+        action
         :on-change="handleFileChange"
         :http-request="uploadCompressImage"
       ></el-upload>
+      <el-button class="submit-btn" @click="handleSumbit" v-if="!edit" type="primary">发布文章</el-button>
+      <el-button class="submit-btn" type="primary" @click="handleSumbit" v-else>修改完成，点击提交</el-button>
       <quill-editor ref="quillEditor" :options="editorOption"></quill-editor>
-      <el-dropdown @command="submit" trigger="click" v-if="!edit">
-        <span class="el-dropdown-link">
-          请选择发表文章类型
-          <i class="el-icon-arrow-down el-icon--right"></i>
-        </span>
-        <el-dropdown-menu slot="dropdown">
-          <el-dropdown-item :command="0">普通文章</el-dropdown-item>
-          <el-dropdown-item :command="1">博客文章</el-dropdown-item>
-        </el-dropdown-menu>
-      </el-dropdown>
-      <el-button class="edit-btn" type="primary" @click="submit" v-else>修改完成，点击提交</el-button>
     </div>
   </div>
 </template>
@@ -71,8 +60,6 @@ const toolbarOptions = [
   // toolbar btns
   ["bold", "italic", "underline", "strike", "blockquote", "code-block"], // toggled buttons
   [{ list: "ordered" }, { list: "bullet" }],
-  [{ script: "sub" }, { script: "super" }], // superscript/subscript
-  [{ indent: "-1" }, { indent: "+1" }], // outdent/indent
   [{ size: [false, "large", "huge"] }], // custom dropdown
   [{ header: [1, 2, 3, 4, 5, 6, false] }],
   [{ color: [] }, { background: [] }], // dropdown with defaults from theme
@@ -84,7 +71,7 @@ import "quill/dist/quill.core.css";
 import "quill/dist/quill.snow.css";
 import config from "@/config.js";
 import api from "@/api/article.js";
-import {compress} from '@/util/compress.js';
+import { compress } from "@/util/compress.js";
 export default {
   components: {
     quillEditor
@@ -108,6 +95,9 @@ export default {
         placeholder: "让你的手动起来吧！！！",
         theme: "snow",
         modules: {
+          history: {
+            delay: 1500
+          },
           toolbar: {
             container: toolbarOptions,
             handlers: {
@@ -132,12 +122,15 @@ export default {
     },
     uploadCompressImage(file) {
       let formData = new FormData();
-      file.blob && formData.append('picture', file.blob, file.name);
-      api.uploadImg(formData).then( res => {
-        res.data && this.uploadSuccess(res.data)
-      }).catch( err => {
-        this.uploadErr();
-      })
+      file.blob && formData.append("picture", file.blob, file.name);
+      api
+        .uploadImg(formData)
+        .then(res => {
+          res.data && this.uploadSuccess(res.data);
+        })
+        .catch(err => {
+          this.uploadErr();
+        });
     },
     handleFileChange(file) {
       let _self = this;
@@ -146,10 +139,10 @@ export default {
         target_size: 450,
         maxWidth: 650,
         maxHeight: 500,
-        onSuccess: (data) => {
-          _self.uploadCompressImage(data)
+        onSuccess: data => {
+          _self.uploadCompressImage(data);
         }
-      })
+      });
     },
     uploadSuccess(response) {
       let quill = this.$refs.quillEditor.quill;
@@ -164,8 +157,8 @@ export default {
       //光标到最后
       quill.setSelection(position + 1);
     },
-    submit(type) {
-      const data = this.edit ? {} : { type },//修改文章不用传递type值
+    handleSumbit(type) {
+      const data = {},
         regSpecialCharacter = /[^\u4e00-\u9fa5\w]/gim;
       Object.assign(data, this.tableData[0], {
         content: this.$refs.quillEditor.quill.root.innerHTML,
@@ -177,7 +170,7 @@ export default {
       if (!this.$refs.quillEditor.quill.root.innerText.trim()) {
         return this.$message.error("内容不能为空");
       }
-      this.$emit("submit", data);
+      this.$emit("handleSumbit", data);
     },
     resetDialog() {
       this.$emit("resetDialog");
@@ -192,27 +185,10 @@ export default {
 .wrapper {
   margin-top: 25px;
 }
-/* .wrapper .quill-editor {
-  height: 600px !important;
-} */
-.el-dropdown-link {
-  cursor: pointer;
-  color: #fff;
-  font-weight: 800;
+.el-button {
+  border: none;
 }
-.el-dropdown {
-  font-size: 16px;
-  background-color: #409eff;
-  padding: 1em;
-  border-radius: 5px;
-  top: 50px;
-}
-.el-dropdown:hover,
-.el-button:hover {
-  opacity: 0.8;
-}
-.edit-btn {
-  position: relative;
-  top: 15px;
+.submit-btn {
+  margin-bottom: 15px;
 }
 </style>

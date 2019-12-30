@@ -25,6 +25,14 @@ Article.init({
         type: Sequelize.INTEGER,
         defaultValue: +Date.now().toString().slice(5)
     },
+    year: {
+        type: Sequelize.STRING,
+        defaultValue: moment(Date()).format('YYYY')
+    },
+    date: {
+        type: Sequelize.STRING,
+        defaultValue: moment(Date()).format('MM-DD')
+    },
     created_at: {
         type: Sequelize.DATE,
         get() {
@@ -41,7 +49,7 @@ Article.init({
     sequelize,
     tableName: 'Article'
 })
-// .sync({alter: true});//增加或删除字段时自动适应数据表
+.sync({alter: false});//增加或删除字段时自动适应数据表
 module.exports = {
     Article
 }

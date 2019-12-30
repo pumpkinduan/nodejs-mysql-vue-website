@@ -180,7 +180,7 @@ export default {
       this.$emit("loadData", this.loadPage);
     }
   },
-  destroy() {
+  destroyed() {
     removeEvent(window, "resize", this.handleDebounce);
     removeEvent(window, "scroll", this.handleThrottle);
   }

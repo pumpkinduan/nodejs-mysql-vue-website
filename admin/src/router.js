@@ -15,6 +15,7 @@ const router = new Router({
       path: '/admin',
       name: 'home',//主页面
       component: Home,
+      redirect: '/admin/auth',
       children: [
         {
           path: 'auth',
@@ -37,14 +38,14 @@ const router = new Router({
           component: () => import("./views/article/editArticle")
         },
         {
-          path: 'publishQuotation',
-          name: 'PublishQuotation',
-          component: () => import("./views/quotation/publishQuotation")
+          path: 'photoPublish',
+          name: 'PhotoPublish',
+          component: () => import("./views/photo/photoPublish")
         },
         {
-          path: 'quotationList',
-          name: 'QuotationList',
-          component: () => import("./views/quotation/quotationList")
+          path: 'photoList',
+          name: 'PhotoList',
+          component: () => import("./views/photo/photoList")
         },
         {
           path: 'commentList',
@@ -59,12 +60,12 @@ const router = new Router({
       ]
     },
     {
-      path: '/admin/login',//登录
+      path: '/login',
       name: 'login',
       component: () => import('./views/admin/login')
     },
     {
-      path: '/admin/register',//注册
+      path: '/register',
       name: 'register',
       component: () => import('./views/admin/register')
     },
@@ -77,7 +78,7 @@ const router = new Router({
 })
 //全局路由守卫，须先登录后访问主页面
 router.beforeEach((to, from, next) => {
-  if (to.path == '/admin/login' || to.path == '/admin/register') {
+  if (to.path == '/login' || to.path == '/register') {
     next();
   } else {
     localStorage.getItem('token') && localStorage.getItem('isAuthenticated') ? next() : next({name: 'login'});

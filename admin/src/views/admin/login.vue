@@ -6,15 +6,9 @@
         <el-form-item label="账号:" prop="account" class="propmt">
           <el-input v-model.number="loginForm.account"></el-input>
         </el-form-item>
-
         <el-form-item label="密码:" prop="pwd" class="propmt">
           <el-input type="password" v-model="loginForm.pwd" autocomplete="off"></el-input>
         </el-form-item>
-
-        <!-- <el-form-item label="记住密码">
-          <el-switch v-model="isRemember"></el-switch>
-        </el-form-item>-->
-
         <el-form-item>
           <el-button type="success" @click="submitForm">登录</el-button>
         </el-form-item>
@@ -63,7 +57,6 @@ export default {
         pwd: "",
         account: ""
       },
-      // isRemember: false,
       rules: {
         pwd: [{ validator: validatePwd, trigger: "blur", required: true }],
         account: [
@@ -115,7 +108,7 @@ export default {
               showClose: true,
               duration: 1500
             });
-            this.$router.push({ name: "auth" });
+            this.$router.push({ name: "home" });
           }
         },
         err => {

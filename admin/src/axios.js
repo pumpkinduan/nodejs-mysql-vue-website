@@ -46,7 +46,7 @@ axiosInstance.interceptors.response.use((response) => {
         if (err.response.data.msg == "账号不存在，请先注册") {
             Message.error(err.response.data.msg);
             setTimeout(() => {
-                window.location = '/#/admin/register';
+                window.location = '/#/register';
             }, 1000);
         } else {
             Message.error(err.response.data.msg);

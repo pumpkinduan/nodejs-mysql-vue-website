@@ -1,9 +1,9 @@
 <template>
-  <div class="clearfix">
-    <div class="detail fl">
+  <div class="clearfix detail" ref="main">
+    <div class="detail-inner fl">
       <div class="post-date">
-        <div class="post-month">11月</div>
-        <div class="post-day">24</div>
+        <div class="post-month">{{ details.created_at && details.created_at.split('-')[1] }}月</div>
+        <div class="post-day">{{ details.created_at && details.created_at.split('-')[2] }}</div>
       </div>
       <div class="post-badge">
         <router-link :to="{name: 'detail'}" class="post-tag">{{details.tag}}</router-link>
@@ -173,6 +173,7 @@ export default {
       let items = this.catalogs;
       let len = items.length;
       // 100为预留距离
+      if ( len <= 0 ) return;
       if (_html.scrollTop + 100 < items[0]._top) {
         this.curIndex = null;
         return;
@@ -202,7 +203,7 @@ export default {
       this.readingTime = Math.floor(data.total_char / 40);
       this.browse = data.browse;
     },
-    destroy() {
+    destroyed() {
       removeEvent(window, "scroll", this.handleScroll);
     }
   }
@@ -210,12 +211,15 @@ export default {
 </script>
 
 <style scoped>
-.detail header img {
+.detail {
+  position: relative;
+}
+.detail-inner header img {
   width: 100%;
   margin-bottom: 3rem;
 }
 
-.detail main .content {
+.detail-inner main .content {
   margin: 3rem 0;
   line-height: 1.5rem;
   padding-bottom: 2rem;
@@ -223,7 +227,7 @@ export default {
   font-size: 1.5em;
   overflow: hidden;
 }
-.detail main .description {
+.detail-inner main .description {
   color: #555;
   font-size: 1rem;
   font-weight: 400;
@@ -232,6 +236,8 @@ export default {
   word-break: break-all;
 }
 .right-catalog {
+  position: sticky;
+  top: 40px;
   width: 320px;
 }
 .right-catalog .catalog-wrap h2 {
@@ -258,25 +264,25 @@ export default {
   color: #ff8a00;
 }
 @media screen and (min-width: 920px) {
-  .detail {
+  .detail-inner {
     padding: 2rem 5rem;
     width: 780px;
     background-color: #ffffff;
     position: relative;
     box-shadow: 0 0 40px #dcdbff;
   }
-  .detail main h1 {
+  .detail-inner main h1 {
     width: 100%;
     font-size: 1.5rem;
   }
 }
 @media screen and (max-width: 920px) {
-  .detail main h1 {
+  .detail-inner main h1 {
     width: 100%;
     margin-right: 0;
     margin-bottom: 1rem;
   }
-  .detail {
+  .detail-inner {
     width: 100%;
     padding: 2rem 2.5rem;
   }

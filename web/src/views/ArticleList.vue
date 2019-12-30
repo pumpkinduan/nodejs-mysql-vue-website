@@ -1,20 +1,20 @@
 <template>
-  <div class="blog-list">
+  <div class="blogs">
     <div class="wrapper">
-      <section v-for="(item, index) in blogLists" :key="index">
+      <section v-for="(item, index) in articleLists" :key="index">
         <div class="post-date">
-          <div class="post-month">11月</div>
-          <div class="post-day">24</div>
+          <div class="post-month">{{item.date | getMonth}}</div>
+          <div class="post-day">{{item.date | getDate}}</div>
         </div>
         <div class="post-badge">
           <router-link
-            :to="{name: 'detail', params: {articleId: item.article_id, showLoading: false}}"
+            :to="{name: 'detail', params: {articleId: item.article_id}}"
             class="post-tag"
           >{{item.tag}}</router-link>
         </div>
         <router-link
           class="title"
-          :to="{name: 'detail', params: {articleId: item.article_id, showLoading: false}}"
+          :to="{name: 'detail', params: {articleId: item.article_id}}"
         >
           <span>{{item.title}}</span>
         </router-link>
@@ -26,7 +26,7 @@
         <div class="description">{{item.description}}</div>
         <div class="bottom">
           <router-link
-            :to="{name: 'detail', params: {articleId: item.article_id, showLoading: false}}"
+            :to="{name: 'detail', params: {articleId: item.article_id}}"
             class="read-more"
           >
             <em>阅读更多</em>
@@ -54,30 +54,32 @@ export default {
   components: {
     Pagination
   },
-  props: {
-    // blogLists: Array,
-    // article_id: Number,
-    // commentSize: Number,
-    // pageSize: Number,
-    // cachedBlogs: Map
-  },
   data() {
     return {
-       blogLists: [],
+      articleLists: [],
       pageSize: 5,
       curPage: 1,
       commentSize: 0,
       cachedBlogs: new Map()
     };
   },
+  filters: {
+    getDate(value = '') {
+      return value.split('-')[1];
+    },  
+    getMonth(value = '') {
+       return value.split('-')[0] + '月';
+    }
+  },
   created() {
      api
-      .getBlogList(1)
+      .getArticleList(1)
       .then(result => {
-        this.blogLists = result.data.data;
-        this.cachedBlogs.set(1, this.blogLists); //缓存第一页数据
-        this.pageSize = parseInt(result.data.meta.pageSize);
-        this.commentSize = parseInt(result.data.meta.count);
+        this.articleLists = result.data.data;
+        this.cachedBlogs.set(1, this.articleLists); //缓存第一页数据
+        this.pageSize = +result.data.meta.pageSize;
+        this.commentSize = +result.data.meta.count;
+        localStorage.setItem('count', this.commentSize);// 与侧边栏view共享数据
       })
       .catch(err => {
         this.blogList = []; //数据为空
@@ -86,25 +88,20 @@ export default {
   methods: {
      getCurrentPage(page = 1) {
       if (this.cachedBlogs.has(page)) {
-        this.blogLists = this.cachedBlogs.get(page);
+        this.articleLists = this.cachedBlogs.get(page);
       } else {
         api.getBlogList(page).then(res => {
           if (res.data) {
-            this.blogLists = res.data.data;
-            this.cachedBlogs.set(page, this.blogLists); //缓存第一页数据
+            this.articleLists = res.data.data;
+            this.cachedBlogs.set(page, this.articleLists); //缓存第一页数据
           }
         });
       }
     },
-    // getCurrentPage(page) {
-    //   this.$emit("getData", page);
-    // },
     nextPage(page) {
-      // this.$emit("getData", page);
       this.getCurrentPage(page)
     },
     prevPage(page) {
-      // this.$emit("getData", page);
       this.getCurrentPage(page)
     }
   }
@@ -112,14 +109,14 @@ export default {
 </script>
 
 <style scoped>
-.blog-list {
+.blogs {
   width: 100%;
 }
-.blog-list .wrapper {
+.blogs .wrapper {
   perspective: 800px;
   transform-style: preserve-3d;
 }
-.blog-list .wrapper > section {
+.blogs .wrapper > section {
   background: #fff;
   position: relative;
   padding-top: 2rem;
@@ -129,11 +126,11 @@ export default {
   border-radius: 8px;
   transition: all 0.3s;
 }
-.blog-list .wrapper > section:hover {
+.blogs .wrapper > section:hover {
   transform: translate3d(0, 0, 10px);
   box-shadow: 0 0 40px #dcdbff;
 }
-.blog-list .wrapper > section .title span {
+.blogs .wrapper > section .title span {
   display: inline-block;
   font-size: 1.6rem;
   font-weight: bold;
@@ -141,7 +138,7 @@ export default {
   position: relative;
   overflow: hidden;
 }
-.blog-list .wrapper > section .title span::after {
+.blogs .wrapper > section .title span::after {
   content: "";
   display: inline-block;
   border-bottom: 2px solid orange;
@@ -152,25 +149,25 @@ export default {
   left: 0;
   transform: translateX(-100%);
 }
-.blog-list .wrapper > section .title span:hover::after {
+.blogs .wrapper > section .title span:hover::after {
   transform: translateX(0);
 }
-.blog-list .wrapper > section .post-meta {
+.blogs .wrapper > section .post-meta {
   display: flex;
   justify-content: center;
   margin-top: 1rem;
 }
-.blog-list .wrapper > section .description {
+.blogs .wrapper > section .description {
   padding: 1rem 3rem;
   color: #333;
   font-size: 1rem;
   text-align: left;
   line-height: 1.5rem;
 }
-.blog-list .wrapper > section .bottom {
+.blogs .wrapper > section .bottom {
   margin-top: 5rem;
 }
-.blog-list .wrapper > section .bottom .read-more {
+.blogs .wrapper > section .bottom .read-more {
   font-size: 0.8rem;
   color: #fff;
   background-color: #97dffd;
@@ -178,16 +175,16 @@ export default {
   border-radius: 4px;
   transition: background-color 0.3s;
 }
-.blog-list .wrapper > section .bottom .read-more em {
+.blogs .wrapper > section .bottom .read-more em {
   margin-left: 2px;
 }
-.blog-list .wrapper > section .bottom .read-more:hover {
+.blogs .wrapper > section .bottom .read-more:hover {
   background-color: #666;
 }
-.blog-list .wrapper > section .bottom .icon-gengduo {
+.blogs .wrapper > section .bottom .icon-gengduo {
   vertical-align: -5px;
 }
-.blog-list .wrapper > section.pagination-nav {
+.blogs .wrapper > section.pagination-nav {
   display: flex;
   justify-content: center;
   margin-bottom: 0;

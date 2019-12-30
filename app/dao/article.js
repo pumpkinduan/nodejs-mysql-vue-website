@@ -1,6 +1,7 @@
 const { Article } = require('../model/Article');
 const { ImgsDao } = require('../dao/img.js');
 const { sequelize } = require('../core/db');
+const { handleGroupBy, transformToArr } = require('../util/handleGroupBy');
 class ArticleDao {
     static createArticle(info, success) {//创建文章
         Article.findOne({
@@ -31,20 +32,22 @@ class ArticleDao {
             console.log(err);
         })
     }
-    static getAllList(page = 1, desc = "created_at", success) {//获取文章列表
-        const pageSize = 5; //每页的文章数量
-        Article.scope('a_list').findAndCountAll({
-            //分页
-            limit: pageSize,
-            offset: pageSize * (page - 1),
-            order: [[desc, 'DESC']] //按照文章创建的时间倒序查找
-        }).then((article) => {
-            if (article.rows.length !== 0) {
+    static getArchives(success) {
+        sequelize.query(
+            'select `article_id`, `year`, count(`year`) as count, group_concat(`date`) as dates, group_concat(`title`) as titles from article group by year order by `created_at`;',
+            {
+                nest: true,
+            }
+        ).then((articles) => {
+            if (articles.length !== 0) {
+                let count = 0;
+                for (let i = 0; i < articles.length; i ++) {
+                    count += articles[i].count
+                }
                 success(false, {
-                    data: article.rows,
+                    data: handleGroupBy(articles),
                     meta: {
-                        count: article.count,
-                        pageSize: pageSize,
+                        count,
                         success: true
                     }
                 });
@@ -61,7 +64,7 @@ class ArticleDao {
         Article.scope('a_list').findAndCountAll({
             //分页
             where: {//查找文章
-                type: 0
+                type: 1
             },
             limit: pageSize,
             offset: pageSize * (page - 1),
@@ -72,34 +75,6 @@ class ArticleDao {
                     data: article.rows,
                     meta: {
                         count: article.count,
-                        pageSize: pageSize,
-                        success: true
-                    }
-                });
-            } else {
-                success(new global.errs.NotFound('数据为空'));
-            }
-        }).catch(err => {
-            success(new global.errs.HttpException());
-            console.log(err)
-        })
-    }
-    static getBlogList(page = 1, desc = "created_at", success) {//获取文章列表
-        const pageSize = 5; //每页的文章数量
-        Article.scope('a_list').findAndCountAll({
-            //分页
-            where: {//查找博客
-                type: 1
-            },
-            limit: pageSize,
-            offset: pageSize * (page - 1),
-            order: [[desc, 'DESC']] //按照文章创建的时间倒序查找
-        }).then((blog) => {
-            if (blog.rows.length !== 0) {
-                success(false, {
-                    data: blog.rows,
-                    meta: {
-                        count: blog.count,
                         pageSize: pageSize,
                         success: true
                     }

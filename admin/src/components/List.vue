@@ -15,12 +15,6 @@
         :sortable="attr == 'created_at' || attr == 'total_char' || attr=='browse'"
         :sort-method="attr == 'total_char' ? sortByAmount : attr == 'browse' ? sortByBrowse : null"
       ></el-table-column>
-      <el-table-column min-width="240" label="封面" align="center" v-if="hasCover">
-        <template slot-scope="scope">
-          <img style="max-width: 100%;" v-if="scope.row.cover" :src="`${serverUrl}/${scope.row.cover}`" />
-        </template>
-      </el-table-column>
-
       <el-table-column min-width="220" align="center" fixed="right">
         <template slot="header" slot-scope="scope">
           <el-input v-model="search" placeholder="输入关键字搜索" />
@@ -50,7 +44,6 @@ export default {
       type: Boolean,
       default: false
     },
-    hasCover: Boolean,
     tableData: Array,
     amount: Number, //总条数-
     pageSize: Number, //每页的条数

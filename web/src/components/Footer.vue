@@ -33,7 +33,7 @@
 
 <style scoped>
 .footer {
-  background-color: #eee;
+  background-color: #fff2931c;
   padding: 2.5rem 4rem;
   font: 500 1.4rem cursive !important;
 }

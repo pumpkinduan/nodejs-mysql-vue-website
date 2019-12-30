@@ -7,7 +7,7 @@ export default {
         return axiosInstance.put("/api/article/update/" + id, data);
     },
     getAllLists(params) {
-        return axiosInstance.get("/api/article/list", {params});
+        return axiosInstance.get("/api/article/lists", {params});
     },
     getArticleDetail(id) {
         return axiosInstance.get('/api/article/detail/' + id);

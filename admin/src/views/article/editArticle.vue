@@ -5,36 +5,18 @@
       :labels="labels"
       :edit="true"
       :tableData="tableData"
-      @submit="submit"
+      @handleSumbit="handleSumbit"
       @resetDialog="resetDialog"
       title="编辑文章"
       btnText="开始编辑"
-    >
-      <template>
-        <el-upload
-          class="upload-demo"
-          drag
-          ref="upload"
-          :auto-upload="false"
-          :action="`${serverUrl}/api/upload`"
-          :on-change="fileChange"
-          :http-request="uploadCompressImage"
-        >
-          <i class="el-icon-upload"></i>
-          <div class="el-upload__text">来换一张精致的封面图片吧</div>
-        </el-upload>
-        <el-button :disabled="!flag" style="margin-top: 1rem;" type="success" @click="submitUpload">上传到服务器</el-button>
-      </template>
-    </Publish>
+    ></Publish>
   </div>
 </template>
-
-<script>import axios from "axios";
+<script>
 import Publish from "@/components/Publish";
 import api from "@/api/article.js";
-import config from "@/config.js";
-import {compress} from '@/util/compress.js';
 export default {
+  name: "EditArticle",
   components: {
     Publish
   },
@@ -43,7 +25,6 @@ export default {
       file: "",
       flag: true,
       edit: false,
-      serverUrl: config.serverUrl,
       title: "发布文章",
       labels: {
         tag: "标签",
@@ -54,7 +35,6 @@ export default {
         {
           tag: "",
           title: "",
-          cover: "",
           description: ""
         }
       ]
@@ -83,31 +63,7 @@ export default {
     }
   },
   methods: {
-    submitUpload() {
-      this.flag = false;
-      this.uploadCompressImage(this.file);
-    },
-    uploadCompressImage(file) {
-      let formData = new FormData();
-     formData.append("picture", file.blob, file.name);
-     api.uploadImg(formData).then( res => {
-       this.tableData[0].cover = res.data && res.data.path.replace(/\\/gi, "/");
-     })
-    },
-    fileChange(file) {
-      this.file = file.raw;
-      this.flag = true;
-      compress({
-        target: file.raw,
-        target_size: 100,
-        maxWidth: 400,
-        maxHeight: 600,
-        onSuccess: data => {
-          this.file = data;
-        }
-      });
-    },
-    submit(data) {
+    handleSumbit(data) {
       api
         .updateArticle(data, this.$route.params.article.article_id)
         .then(res => {

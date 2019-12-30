@@ -9,10 +9,9 @@ function createArticle(req, res, next) {
         reactToClient(res, err, data)
     })
 }
-//获取文章和博客所有列表
-function getAllList(req, res, next) {
-    const {page, desc} = req.query;
-    const data = ArticleDao.getAllList(page, desc, (err, data) => {
+//获取所有文章
+function getArchives(req, res, next) {
+    const data = ArticleDao.getArchives((err, data) => {
         reactToClient(res, err, data)
     });
 }
@@ -20,13 +19,6 @@ function getAllList(req, res, next) {
 function getArticleList(req, res, next) {
     const {page, desc} = req.query;
     const data = ArticleDao.getArticleList(page, desc, (err, data) => {
-        reactToClient(res, err, data)
-    });
-}
-//获取博客列表
-function getBlogList(req, res, next) {
-    const {page, desc} = req.query;
-    const data = ArticleDao.getBlogList(page, desc, (err, data) => {
         reactToClient(res, err, data)
     });
 }
@@ -58,8 +50,7 @@ function updateArticleById(req, res, next) {
 }
 map.set('createArticle', createArticle);
 map.set('getArticleList', getArticleList);
-map.set('getBlogList', getBlogList);
-map.set('getAllList', getAllList);
+map.set('getArchives', getArchives);
 map.set('getArticleDetailById', getArticleDetailById);
 map.set('deleteArticleById', deleteArticleById);
 map.set('updateArticleById', updateArticleById);

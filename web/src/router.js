@@ -7,20 +7,24 @@ export default new Router({
   routes: [
     {
       path: '/',
-      name: 'home',
       components: {
         default: Home
       },
       children: [
         {
           path: '/',
-          name: 'blogList',
-          component: () => import('./components/BlogList.vue')
+          name: 'articleList',
+          component: () => import('./views/ArticleList.vue')
         },
         {
           path: '/category',
           name: 'category',
-          component: () => import('./components/Category.vue')
+          component: () => import('./views/Categories.vue')
+        },
+         {
+          path: '/archive',
+          name: 'archive',
+          component: () => import('./views/Archives.vue')
         }
       ]
     },
@@ -51,5 +55,13 @@ export default new Router({
       name: 'error',
       component: () => import('./views/NotFound.vue') 
     }
-  ]
+  ],
+  scrollBehavior (to, from, savedPosition) {
+    if (savedPosition) {return savedPosition} 
+    return new Promise((resolve) => {
+      setTimeout(() => {
+       resolve({ x: 0, y: 0 });
+      }, 0);
+     });
+  }
 })

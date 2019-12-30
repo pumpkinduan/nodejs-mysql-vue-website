@@ -27,16 +27,6 @@ export default {
     };
   },
   created() {
-    api
-      .getQuotationList()
-      .then(result => { //获取自己数据库中quotation的总条数
-        if (result.data) {
-          this.total = result.data.meta.count;
-        }
-      })
-      .catch(err => {
-        console.log(err);
-      });
     this.getHitokoto();
     this.timer = setInterval(() => {
       this.getHitokoto();
@@ -56,39 +46,13 @@ export default {
               clearInterval(this.timer);
             } else {
               this.quotations.push(res.data);
-              if (this.total <= 10) { //大于10条则不往自己的数据库中添加
-                this.publishQuotation({
-                  //发到自己的后台数据库中去
-                  author: res.data.from,
-                  content: res.data.hitokoto
-                });
-              }
             }
-          } else {
-            this.getQuotation();
           }
         })
         .catch(err => {
-          console.log(err);
-          this.getQuotation();
+          
         });
     },
-    publishQuotation(data) {
-      api.publishQuotation(data);
-    },
-    getQuotation() {
-      //自己的数据库中获取
-      api
-        .getQuotationList()
-        .then(result => {
-          if (result.data && result.data.data.length) {
-            this.quotations = result.data.data;
-          }
-        })
-        .catch(err => {
-          console.log(err);
-        });
-    }
   }
 };
 </script>

@@ -7,7 +7,7 @@ let date = new Date();
 var storage = multer.diskStorage({//将上传的文件(文件是二进制数据格式)存在磁盘中
     destination:  `pictures/${date.getFullYear()}-${date.getMonth()+1}-${date.getDate()}`,
     filename: function(req, file, cb) {//指定文件名
-        cb(null, `${Date.now()+''.slice(5)}_${file.originalname}`)
+        cb(null, `${Date.now()+''.slice(4)}_${file.originalname}`)
     }
 })
 let upload = multer({

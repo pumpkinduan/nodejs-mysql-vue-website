@@ -72,23 +72,23 @@ function getElementPosition(ele) {
     }
 }
 //封装一个事件函数来兼容各个浏览器addEvent();
-function addEvent(elem, type, handle) {
+function addEvent(elem, type, handler) {
     //elem为元素，type为事件类型，handle为处理事件的函数
     if (elem.addEventListener) {
-        return elem.addEventListener(type, handle, false);
+        return elem.addEventListener(type, handler, false);
     } else if (elem.attatchEvent) {
         return elem.attatchEvent("on" + type, function () {
-            handle.call(elem);//真正处理代码的函数放在handle里
+            handler.call(elem);//真正处理代码的函数放在handle里
             //由于该方法中的this指向的是window，则把该方法中的this指向转变为元素
         });
     } else {
-        return elem["on" + type] = handle;
+        return elem["on" + type] = handler;
     }
 }
 //注:若绑定匿名函数，则无法解除
 function removeEvent(ele, type, handler) {
     if (ele.removeEventListener) {
-        return ele.removeEventListener(type, handle, false);
+        return ele.removeEventListener(type, handler, false);
     } else if (ele.detachEvent) {
         return ele.detachEvent('on' + type, handler)
     } else {

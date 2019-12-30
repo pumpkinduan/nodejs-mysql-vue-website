@@ -102,7 +102,7 @@
 <script>
 import { format } from "@/lib/formatTime.js";
 import api from "@/api/index.js";
-import {throttle, debounce, addEvent, removeEvent} from "@/lib/tool.js";
+import { throttle, debounce, addEvent, removeEvent } from "@/lib/tool.js";
 export default {
   data() {
     return {
@@ -150,8 +150,10 @@ export default {
     this.comment = parse2 && parse2.comment;
   },
   mounted() {
-    let self = this;
     addEvent(window, "scroll", this.handleThrottle);
+  },
+  destroyed() {
+    removeEvent(window, "scroll", this.handleThrottle);
   },
   methods: {
     getData() {
@@ -269,6 +271,7 @@ export default {
       this.prompt = "Hey,guys,come and say something";
     },
     loadMoreComment() {
+      console.log(222)
       if (this.canLoad) {
         const ele = document.getElementsByClassName("words")[0],
           viewHeight =
@@ -276,6 +279,8 @@ export default {
             document.body.clientHeight ||
             window.innerHeight,
           { bottom } = ele && ele.getBoundingClientRect();
+        console.log(ele);
+        console.log(bottom);
         if (bottom - 100 < viewHeight) {
           //最后几条留言快要离开可视区时，加载留言
           //100 为预留 距离，提前一点加载留言

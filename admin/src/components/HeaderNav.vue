@@ -3,7 +3,7 @@
     <el-row>
       <el-col :span="6">
         <div class="left-nav">
-          <i class="el-icon-s-fold"></i>
+          <i :class="[!isCollapse ? 'el-icon-s-fold' : 'el-icon-s-unfold', 'el-icon']" @click="toggleCollapse"></i>
           <h3>后台管理系统</h3>
         </div>
       </el-col>
@@ -44,10 +44,15 @@ export default {
   data() {
     return {
       userName: "",
-      content: "全屏显示"
+      content: "全屏显示",
+      isCollapse: false
     };
   },
   methods: {
+    toggleCollapse() {
+      this.isCollapse = !this.isCollapse;
+      this.$emit('handleCollapse', this.isCollapse);
+    },
     handleUser(command) {
       if (command == "logout") {
         //退出登录
@@ -81,27 +86,28 @@ export default {
 .header-nav {
   width: 100%;
   height: 70px;
-  background-color: #2a3646;
+  background: #F5F7F9;
   padding-right: 30px;
-  color: #bfcbd9;
+  color: #333;
+  border-bottom: 1px solid #eee;
 }
 .header-nav .left-nav {
   font-size: 24px;
 }
-.header-nav .left-nav .el-icon-s-fold {
+.header-nav .left-nav .el-icon {
   padding: 0 20px;
   line-height: 70px;
   transition: all 0.3s;
+  cursor: pointer;
   font-weight: 400;
 }
-.header-nav .left-nav .el-icon-s-fold:hover {
-  cursor: pointer;
-  background-color: rgb(42, 55, 85);
+.header-nav .left-nav .el-icon:hover {
+  background-color: #e3eef9;
 }
 .header-nav .left-nav h3 {
   display: inline-block;
-  font-size: 24px;
-  font-weight: 400;
+  font-size: 22px;
+  font-weight: 600;
 }
 .header-nav .right-nav {
   height: 70px;
@@ -124,7 +130,7 @@ export default {
 .el-icon-caret-bottom,
 .user-name {
   margin-left: 5px;
-  color: #bfcbd9;
+  color: #333;
   font-size: 20px;
   font-weight: 400;
 }
@@ -136,8 +142,4 @@ export default {
 .el-dropdown:hover {
   cursor: pointer;
 }
-/* --头部导航结束-- */
-
-/* --左边侧边栏开始-- */
-/* --左边侧边栏结束-- */
 </style>

@@ -4,16 +4,11 @@
       <el-col :span="24">
         <el-menu
           class="el-menu-vertical-demo"
-          background-color="#324157"
-          text-color="#fff"
-          active-text-color="#ffd04b"
+          background-color="#F5F7F9"
+          text-color="#333"
+          active-text-color="#fb31cf"
+          :collapse="isCollapse"
         >
-          <router-link :to="{name: 'Auth'}">
-            <el-menu-item index="0">
-              <i class="el-icon-s-home"></i>
-              <span style="color: #fff">首页</span>
-            </el-menu-item>
-          </router-link>
           <template v-for="(f_item, f_index) in menu">
             <el-submenu v-if="f_item.children" :key="f_index" :index="f_index + ''">
               <template slot="title">
@@ -24,15 +19,17 @@
                 <router-link
                   v-for="(c_item, c_index) in f_item.children"
                   :key="c_index"
-                  :to="{name: c_item.component, params: {publish: c_item.publish}}"
+                  :to="{name: c_item.component}"
                 >
                   <el-menu-item :index="f_index + '-' + c_index">{{ c_item.name }}</el-menu-item>
                 </router-link>
               </el-menu-item-group>
             </el-submenu>
-            <el-menu-item :index="f_index + ''" v-else :key="f_item.icon">
-              <i :class="f_item.icon"></i>
-              <span>{{ f_item.name }}</span>
+            <el-menu-item v-else :index="f_index + ''" :key="f_item.icon + ''">
+              <router-link :to="{name: f_item.component}" tag="span">
+                <i :class="f_item.icon"></i>
+                <span>{{ f_item.name }}</span>
+              </router-link>
             </el-menu-item>
           </template>
         </el-menu>
@@ -43,17 +40,22 @@
 
 <script>
 export default {
+  props: ["isCollapse"],
   data() {
     return {
       menu: [
+        {
+          icon: "el-icon-s-home",
+          name: "首页",
+          component: "Auth"
+        },
         {
           icon: "el-icon-document",
           name: "文章管理",
           children: [
             {
               name: "文章发布",
-              component: "PublishArticle",
-              publish: true
+              component: "PublishArticle"
             },
             {
               name: "文章信息",
@@ -63,37 +65,27 @@ export default {
         },
         {
           icon: "el-icon-ice-tea",
-          name: "每日一句",
+          name: "相册墙",
           children: [
             {
-              name: "语录发布",
-              component: "PublishQuotation"
+              name: "图片发布",
+              component: "PhotoPublish"
             },
             {
-              name: "语录数据",
-              component: "QuotationList"
+              name: "相册数据",
+              component: "PhotoList"
             }
           ]
         },
         {
           icon: "el-icon-chat-dot-round",
           name: "评论",
-          children: [
-            {
-              name: "评论数据",
-              component: "CommentList"
-            }
-          ]
+          component: "CommentList"
         },
         {
           icon: "el-icon-chat-line-square",
           name: "回复",
-          children: [
-            {
-              name: "回复列表",
-              component: "ReplyList"
-            }
-          ]
+          component: "ReplyList"
         }
       ]
     };
@@ -104,9 +96,15 @@ export default {
 <style scoped>
 .side-menu {
   height: 100%;
-  background-color: #324157;
+  background-color: #f5f7f9;
+  border-right: 1px solid #eee;
+  font-weight: 600;
 }
 .el-menu {
   border: none;
+}
+.el-menu-vertical-demo:not(.el-menu--collapse) {
+  width: 220px;
+  /* min-height: 400px; */
 }
 </style>

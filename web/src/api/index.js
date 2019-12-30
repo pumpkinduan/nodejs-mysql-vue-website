@@ -7,27 +7,20 @@ export default {
         return axiosInstance.get('https://v1.hitokoto.cn/?c=d')
     },
     getArticleList(params) {
-        return axiosInstance.get('/api/article', {
+        return axiosInstance.get('/api/article/lists', {
             params: {
                 page: params
             }
         });
     },
-    getBlogList(params) {
-        return axiosInstance.get('/api/article/blog', {
-            params: {
-                page: params
-            }
-        });
+    getArchives() {
+        return axiosInstance.get('/api/article/archives');
     },
     getArticleDetail(id) {
         return axiosInstance.get('/api/article/detail/' + id);
     },
     getAboutMe() {
         return axiosInstance.get('/api/me/exact');
-    },
-    getQuotationList(params) {
-        return axiosInstance.get('/api/quotation/list', { params });
     },
     getArticleComments(article_id, page) {
         return axiosInstance.get('/api/comment/list', {

@@ -22,6 +22,9 @@ const sequelize = new Sequelize(database, user, password, {
             attributes: { //只查找attributes里规定的字段
               exclude: ['content', 'updated_at', 'deleted_at', 'id'] //排除这些字段不查找
             }
+          },
+          a_archives: {
+            attributes: ['title', 'year', 'date']
           }
         },
         id: {

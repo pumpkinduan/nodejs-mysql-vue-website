@@ -15,7 +15,5 @@ export default {
     deleteArticle(id) {
         return axiosInstance.delete("/api/article/delete/" + id);
     },
-    uploadImg(data) {
-        return axiosInstance.post("/api/upload", data);
-    }   
+    
 }

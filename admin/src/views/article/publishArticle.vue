@@ -16,7 +16,6 @@
 <script>
 import api from "@/api/article.js";
 import Publish from "@/components/Publish";
-// import { compress } from "@/util/compress.js";
 export default {
   name: "PublishArticle",
   components: {
@@ -40,29 +39,6 @@ export default {
     };
   },
   methods: {
-    // submitUpload() {
-    //   this.uploadCompressImage(this.file);
-    // },
-    // fileChange(file) {
-    //   this.file = file && file.raw;
-    //   compress({
-    //     target: file.raw,
-    //     target_size: 100,
-    //     maxWidth: 400,
-    //     maxHeight: 600,
-    //     onSuccess: data => {
-    //       this.file = data;
-    //     }
-    //   });
-    // },
-    // uploadCompressImage(file) {
-    //   let formData = new FormData();
-    //   formData.append("picture", file.blob, file.name);
-    //   api.uploadImg(formData).then(res => {
-    //     this.tableData[0].cover =
-    //       res.data && res.data.path.replace(/\\/gi, "/");
-    //   });
-    // },
     handleSumbit(data) {
       api
         .publishArticle(data)

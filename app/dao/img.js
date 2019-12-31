@@ -3,8 +3,9 @@ const { Imgs } = require('../model/Imgs');
 const { sequelize } = require('../core/db');
 const fs = require('fs');
 class ImgsDao {
-    static uploadPictureInfo(file, success) {
+    static uploadPictureInfo(file, type, success) {
         let imgInfo = new Imgs();
+        imgInfo.type = type;
         imgInfo.path = file.path;
         imgInfo.originalname = file.originalname;
         imgInfo.size = file.size;
@@ -15,7 +16,25 @@ class ImgsDao {
         }, err => console.log(err))
 
     }
-    static _delete(path, success) {
+    //默认获取 相册墙 的图片
+    static getAllImgs(type = 1, success) {
+        Imgs.findAll({
+            attributes: ['path'],
+            where: {
+                type
+            }
+        }).then((imgs) => {
+            if (imgs && imgs.length !== 0) {
+                imgs.forEach( (item, index) => {
+                    item.path = item.path.replace(/\\/gi, '/');
+                })
+                success(false, { msg: '获取成功', success: true, imgs: imgs });
+            }
+        }).catch((err) => {
+            console.log(err)
+        })
+    }
+    static deleteImg(path, success) {
         Imgs.findOne({
             where: {
                 path

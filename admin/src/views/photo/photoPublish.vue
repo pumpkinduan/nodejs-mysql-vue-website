@@ -1,34 +1,28 @@
 <template>
   <div class="photoPublish">
     <el-container>
-      <el-form :label-position="labelPosition" label-width="100px" :model="formLabelAlign">
-        <!-- <el-form-item label="拍摄地点：">
-          <el-input v-model="formLabelAlign.name"></el-input>
-        </el-form-item>
-        <el-form-item label="简单描述：">
-          <el-input v-model="formLabelAlign.region"></el-input>
-        </el-form-item>-->
+      <el-form :label-position="labelPosition" label-width="100px">
         <el-form-item label="上传的相片：">
-          <el-upload action="#" list-type="picture-card" :auto-upload="false">
-            <i slot="default" class="el-icon-plus"></i>
+          <el-upload
+            action
+            list-type="picture-card"
+            :auto-upload="false"
+            :on-change="handleFileChange"
+            :http-request="uploadCompressImage"
+          >
+            <div class="el-upload__text">
+              <em>选择上传的图片吧</em>
+            </div>
             <div slot="file" slot-scope="{file}">
               <img class="el-upload-list__item-thumbnail" :src="file.url" alt />
               <span class="el-upload-list__item-actions">
                 <span class="el-upload-list__item-preview" @click="handlePictureCardPreview(file)">
                   <i class="el-icon-zoom-in"></i>
                 </span>
-                <span
-                  v-if="!disabled"
-                  class="el-upload-list__item-delete"
-                  @click="handleDownload(file)"
-                >
+                <span class="el-upload-list__item-delete" @click="handleDownload(file)">
                   <i class="el-icon-download"></i>
                 </span>
-                <span
-                  v-if="!disabled"
-                  class="el-upload-list__item-delete"
-                  @click="handleRemove(file)"
-                >
+                <span class="el-upload-list__item-delete" @click="handleRemove(file)">
                   <i class="el-icon-delete"></i>
                 </span>
               </span>
@@ -38,38 +32,88 @@
             <img width="100%" :src="dialogImageUrl" alt />
           </el-dialog>
         </el-form-item>
+        <el-form-item label="上传进度：">
+          <el-progress type="dashboard" :percentage="percentage" :color="colors"></el-progress>
+        </el-form-item>
       </el-form>
     </el-container>
-    <el-button type="primary">开始上传</el-button>
   </div>
 </template>
 
 <script>
+import api from "@/api/upload.js";
+import { compress } from "@/util/compress.js";
+import download from "@/util/download.js";
 export default {
   name: "photoPublish",
   data() {
     return {
+      percentage: 0,
+      colors: [
+        { color: "#f56c6c", percentage: 20 },
+        { color: "#e6a23c", percentage: 40 },
+        { color: "#5cb87a", percentage: 60 },
+        { color: "#1989fa", percentage: 80 },
+        { color: "#6f7ad3", percentage: 100 }
+      ],
       labelPosition: "right",
-      formLabelAlign: {
-        name: "",
-        region: "",
-        type: ""
-      },
       dialogImageUrl: "",
       dialogVisible: false,
-      disabled: false
+      deleted: false
     };
   },
   methods: {
-    handleRemove(file) {
-      console.log(file);
+    handleFileChange(file) {
+      let _self = this;
+      compress({
+        target: file.raw,
+        target_size: 450,
+        maxWidth: 650,
+        maxHeight: 500,
+        onSuccess: data => {
+          _self.uploadCompressImage(data);
+        }
+      });
+    },
+    uploadErr() {
+      this.$message.error("upload failed");
+    },
+    uploadCompressImage(file) {
+      let formData = new FormData();
+      file.blob && formData.append("picture", file.blob, file.name);
+      formData.append("type", 1);
+      api
+        .uploadImg(formData, {
+          // `onUploadProgress` 允许为上传处理进度事件
+          onUploadProgress: progressEvent => {
+            this.percentage =
+              (progressEvent.loaded / progressEvent.total) * 100;
+          }
+        })
+        .then(res => {
+          this.$message.success("图片上传成功");
+          setTimeout(() => {
+            this.percentage = 0;
+          }, 1000);
+          console.log(res.data);
+        })
+        .catch(err => {
+          this.uploadErr();
+        });
     },
     handlePictureCardPreview(file) {
       this.dialogImageUrl = file.url;
       this.dialogVisible = true;
     },
+    beforeRemove(file, fileList) {
+      this.$confirm(`确定移除 ${file.name}？`);
+    },
+    handleRemove(file) {
+      this.deleted = true;
+    },
     handleDownload(file) {
-      console.log(file);
+      if (!file || !file.raw) return;
+      download.download(file.raw);
     }
   }
 };
@@ -78,5 +122,12 @@ export default {
 <style scoped>
 .photoPublish {
   padding: 20px;
+}
+.el-form-item {
+  display: flex;
+  align-items: center;
+}
+.el-form-item >>> .el-form-item__content {
+  margin-left: 0 !important;
 }
 </style> 

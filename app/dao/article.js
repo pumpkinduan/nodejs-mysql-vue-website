@@ -63,9 +63,6 @@ class ArticleDao {
         const pageSize = 5; //每页的文章数量
         Article.scope('a_list').findAndCountAll({
             //分页
-            where: {//查找文章
-                type: 1
-            },
             limit: pageSize,
             offset: pageSize * (page - 1),
             order: [[desc, 'DESC']] //按照文章创建的时间倒序查找

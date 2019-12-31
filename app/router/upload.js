@@ -7,7 +7,8 @@ let date = new Date();
 var storage = multer.diskStorage({//将上传的文件(文件是二进制数据格式)存在磁盘中
     destination:  `pictures/${date.getFullYear()}-${date.getMonth()+1}-${date.getDate()}`,
     filename: function(req, file, cb) {//指定文件名
-        cb(null, `${Date.now()+''.slice(4)}_${file.originalname}`)
+        let timestamp = Date.now() + '';
+        cb(null, `${timestamp.slice(-6)}_${file.originalname}`)
     }
 })
 let upload = multer({
@@ -15,5 +16,6 @@ let upload = multer({
 })
 //一次性上传一张图片
 uploadRouter.post('/', upload.single('picture'), loader.get('upload'));
+uploadRouter.get('/getAllImgs', loader.get('upload/getAllImgs'));
 uploadRouter.delete('/delete/:path', loader.get('upload/delete'));
 module.exports = uploadRouter

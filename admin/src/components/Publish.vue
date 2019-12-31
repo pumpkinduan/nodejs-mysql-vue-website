@@ -70,7 +70,7 @@ import { quillEditor } from "vue-quill-editor";
 import "quill/dist/quill.core.css";
 import "quill/dist/quill.snow.css";
 import config from "@/config.js";
-import api from "@/api/article.js";
+import api from "@/api/upload.js";
 import { compress } from "@/util/compress.js";
 export default {
   components: {

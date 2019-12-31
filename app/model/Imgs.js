@@ -9,6 +9,10 @@ Imgs.init({
     size: Sequelize.INTEGER,
     filename: Sequelize.STRING,
     mimetype: Sequelize.STRING,
+    type: { // 0: 文章下的图片；1：相册墙的图片
+        type: Sequelize.INTEGER,
+        defaultValue: 0
+    },
     created_at: {
         type: Sequelize.DATE,
         get() {

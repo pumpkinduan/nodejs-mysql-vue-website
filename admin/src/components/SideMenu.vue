@@ -26,7 +26,7 @@
               </el-menu-item-group>
             </el-submenu>
             <el-menu-item v-else :index="f_index + ''" :key="f_item.icon + ''">
-              <router-link :to="{name: f_item.component}" tag="span">
+              <router-link :to="{name: f_item.component}" tag="div">
                 <i :class="f_item.icon"></i>
                 <span>{{ f_item.name }}</span>
               </router-link>
@@ -99,12 +99,12 @@ export default {
   background-color: #f5f7f9;
   border-right: 1px solid #eee;
   font-weight: 600;
+  overflow: hidden;
 }
 .el-menu {
   border: none;
 }
 .el-menu-vertical-demo:not(.el-menu--collapse) {
   width: 220px;
-  /* min-height: 400px; */
 }
 </style>

@@ -8,9 +8,9 @@
         <SideMenu :isCollapse="isCollapse" />
       </el-aside>
       <el-main style="padding: 10px; margin-bottom: 20px; overflow: hidden;">
-        <keep-alive include="PublishArticle,EditArticle">
+        <!-- <keep-alive include="PublishArticle,EditArticle,PhotoList"> -->
           <router-view />
-        </keep-alive>
+        <!-- </keep-alive> -->
       </el-main>
     </el-container>
   </el-container>

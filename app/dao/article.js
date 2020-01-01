@@ -67,7 +67,7 @@ class ArticleDao {
             offset: pageSize * (page - 1),
             order: [[desc, 'DESC']] //按照文章创建的时间倒序查找
         }).then((article) => {
-            if (article.rows.length !== 0) {
+            if (article.rows && article.rows.length !== 0) {
                 success(false, {
                     data: article.rows,
                     meta: {

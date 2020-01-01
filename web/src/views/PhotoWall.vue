@@ -6,31 +6,33 @@
       <div class="wrap">
         <Waterfall :cards="cards" ref="waterfall" @loadData="loadData" :gap="gap">
           <template slot-scope="{data}">
-            <ArticleCard
-              :title="data.title"
-              :article_id="data.article_id"
-              :created_at="data.created_at"
-              :description="data.description"
-              :browse="data.browse"
-              :cover="data.cover"
-            />
+            <div class="el-image" style="border-radius: 5px;">
+              <img style="width: 100%;border-radius: 5px;" :src="`${serverUrl}/${data.path}`" alt="加载失败" />
+              <span class="el-image__item-actions">
+                <span class="el-image__item-preview" @click="handlePreview(data.path)">
+                  <i class="el-icon-zoom-in"></i>
+                </span>
+              </span>
+            </div>
           </template>
         </Waterfall>
       </div>
     </main>
+    <el-dialog :visible.sync="dialogVisible">
+      <img width="100%" :src="dialogImageUrl" alt />
+    </el-dialog>
   </div>
 </template>
 
 <script>
 import Header from "@/components/Header.vue";
 import Quotation from "@/components/Quotation.vue";
-import ArticleCard from "@/components/ArticleCard.vue";
+import config from "@/config.js";
 import Waterfall from "@/components/Waterfall";
 import api from "@/api/index.js";
 export default {
   components: {
     Quotation,
-    ArticleCard,
     Waterfall,
     Header
   },
@@ -38,7 +40,10 @@ export default {
     return {
       cards: [],
       gap: 300,
-      page: 1
+      page: 1,
+      serverUrl: config.serverUrl,
+      dialogImageUrl: '',
+      dialogVisible: false
     };
   },
   created() {
@@ -49,12 +54,19 @@ export default {
       this.gap = gap;
     },
     getData(page) {
-      api.getArticleList(page).then(result => {
-        this.cards.push(...result.data.data);
+      api.getAllImgs(page).then(result => {
+        if (result.data) {
+          console.log(result.data)
+          this.cards.push(...result.data.imgs);
+        }
       });
     },
     loadData(page) {
       this.getData(page);
+    },
+     handlePreview(path) {
+      this.dialogImageUrl = this.serverUrl + "/" + path;
+      this.dialogVisible = !this.dialogVisible;
     }
   }
 };
@@ -67,5 +79,31 @@ main {
   position: relative;
   padding-top: 2rem;
   background: #f5f7f9;
+}
+.el-image {
+  display: inline-block;
+  position: relative;
+  overflow: hidden;
+}
+.el-image__item-actions {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  left: 0;
+  top: 0;
+  color: #fff;
+  opacity: 0;
+  font-size: 20px;
+  background-color: rgba(0, 0, 0, 0.5);
+  transition: opacity 0.3s;
+}
+.el-image__item-actions:hover {
+  opacity: 1;
+}
+.el-image__item-actions span {
+  margin: 0 10px;
 }
 </style>

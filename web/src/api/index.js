@@ -41,5 +41,12 @@ export default {
     },
     createReply(data) {
         return axiosInstance.post("/api/reply/create", data);
-    }
+    },
+    getAllImgs(page) {
+        return axiosInstance.get("/api/upload/getAllImgs", {
+            params: {
+                page
+            }
+        });
+    },
 }

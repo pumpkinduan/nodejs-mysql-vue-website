@@ -8,6 +8,7 @@
             list-type="picture-card"
             :auto-upload="false"
             :on-change="handleFileChange"
+            :on-remove="handleRemove"
             :http-request="uploadCompressImage"
           >
             <div class="el-upload__text">
@@ -91,7 +92,11 @@ export default {
           }
         })
         .then(res => {
-          this.$message.success("图片上传成功");
+          this.$message({
+              type: 'success',
+              duration: 400,
+              message: "图片上传成功"
+            });
           setTimeout(() => {
             this.percentage = 0;
           }, 1000);
@@ -104,9 +109,6 @@ export default {
     handlePictureCardPreview(file) {
       this.dialogImageUrl = file.url;
       this.dialogVisible = true;
-    },
-    beforeRemove(file, fileList) {
-      this.$confirm(`确定移除 ${file.name}？`);
     },
     handleRemove(file) {
       this.deleted = true;

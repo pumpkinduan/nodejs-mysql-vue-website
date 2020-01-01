@@ -10,13 +10,18 @@ function upload(req, res, next) {
 }
 
 function getAllImgs(req, res, next) {
-    const { type } = req.params;
-    ImgsDao.getAllImgs(type, (err, data) => {
+    const { type, page } = req.query;
+    ImgsDao.getAllImgs({type, page}, (err, data) => {
         reactToClient(res, err, data)
     });
 }
 function deleteImg(req, res, next) {
-    const { path } = req.params;
+    const { path } = req.query;
+    console.log(path)
+    console.log(path)
+    console.log(path)
+    console.log(path)
+    console.log(path)
     ImgsDao.deleteImg(path, (err, data) => {
         reactToClient(res, err, data)
     });

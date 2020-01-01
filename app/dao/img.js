@@ -17,18 +17,23 @@ class ImgsDao {
 
     }
     //默认获取 相册墙 的图片
-    static getAllImgs(type = 1, success) {
-        Imgs.findAll({
+    static getAllImgs({ type = 1, page = 1 }, success) {
+        const pageSize = 6; //每页的图片数量
+        Imgs.findAndCountAll({
+            limit: pageSize,
+            offset: pageSize * (page - 1),
             attributes: ['path'],
             where: {
                 type
             }
         }).then((imgs) => {
-            if (imgs && imgs.length !== 0) {
-                imgs.forEach( (item, index) => {
+            if (imgs.rows && imgs.rows.length !== 0) {
+                imgs.rows.forEach((item, index) => {
                     item.path = item.path.replace(/\\/gi, '/');
                 })
-                success(false, { msg: '获取成功', success: true, imgs: imgs });
+                success(false, { msg: '获取成功', success: true, imgs: imgs.rows });
+            } else {
+                success(new global.errs.NotFound('相册墙为空'));
             }
         }).catch((err) => {
             console.log(err)
@@ -41,8 +46,14 @@ class ImgsDao {
             }
         }).then((img) => {
             if (img) {
-                fs.unlink(path)//删除服务器上的图片资源
-                img.destroy()
+                fs.unlink(path, (err) => {
+                    if (err) throw err;
+                    img.destroy().then(suc => {
+                        success(false, { msg: '删除成功', success: true })
+                    })
+                });//删除服务器上的图片资源
+            } else {
+                success(new global.errs.NotFound('找不到图片资源'));
             }
         }).catch((err) => {
             console.log(err)

@@ -13,6 +13,13 @@ export default {
             }
         });
     },
+    getArticleListsByTag(tag) {
+        if (!tag) return;
+        return axiosInstance.get("/api/article/lists_tag", {params: {tag}});
+    },
+    getCategories() {
+        return axiosInstance.get('/api/article/categories');
+    },
     getArchives() {
         return axiosInstance.get('/api/article/archives');
     },
@@ -42,11 +49,12 @@ export default {
     createReply(data) {
         return axiosInstance.post("/api/reply/create", data);
     },
+   
     getAllImgs(page) {
         return axiosInstance.get("/api/upload/getAllImgs", {
             params: {
                 page
             }
         });
-    },
+    }
 }

@@ -15,10 +15,21 @@ function getArchives(req, res, next) {
         reactToClient(res, err, data)
     });
 }
+function getCategories(req, res, next) {
+    const data = ArticleDao.getCategories((err, data) => {
+        reactToClient(res, err, data)
+    });
+}
 //获取文章列表
 function getArticleList(req, res, next) {
     const {page, desc} = req.query;
     const data = ArticleDao.getArticleList(page, desc, (err, data) => {
+        reactToClient(res, err, data)
+    });
+}
+function getArticleListByTag(req, res, next) {
+    const {tag} = req.query;
+    const data = ArticleDao.getArticleListByTag(tag, (err, data) => {
         reactToClient(res, err, data)
     });
 }
@@ -50,6 +61,8 @@ function updateArticleById(req, res, next) {
 }
 map.set('createArticle', createArticle);
 map.set('getArticleList', getArticleList);
+map.set('getArticleListByTag', getArticleListByTag);
+map.set('getCategories', getCategories);
 map.set('getArchives', getArchives);
 map.set('getArticleDetailById', getArticleDetailById);
 map.set('deleteArticleById', deleteArticleById);

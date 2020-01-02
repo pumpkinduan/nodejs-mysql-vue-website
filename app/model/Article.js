@@ -10,7 +10,6 @@ Article.init({
     author: Sequelize.STRING(16),
     tag: Sequelize.STRING(16),
     content: Sequelize.TEXT,
-    cover: Sequelize.STRING,//文章封面
     description: Sequelize.TEXT,
     browse: {
         type: Sequelize.INTEGER,
@@ -45,7 +44,7 @@ Article.init({
     sequelize,
     tableName: 'Article'
 })
-// .sync({alter: true});//增加或删除字段时自动适应数据表
+.sync({alter: true});//增加或删除字段时自动适应数据表
 module.exports = {
     Article
 }

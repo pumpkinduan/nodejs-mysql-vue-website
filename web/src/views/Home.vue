@@ -5,28 +5,49 @@
       <div class="main-inner clearfix">
         <aside class="left-aside fl" ref="main">
           <transition appear name="fade" mode="out-in">
-            <router-view />
+            <router-view :archives="archives" :categories="categories" :categories_count="categories_count" :archive_count="archive_count" />
           </transition>
         </aside>
         <aside class="right-aside fr">
-          <AsideBar />
+          <AsideBar :categories_count="categories_count" :archive_count="archive_count" />
         </aside>
       </div>
     </main>
-    <footer>
-      <Footer />
-    </footer>
+    <Footer />
   </div>
 </template>
 <script>
 import AsideBar from "@/components/AsideBar";
 import Header from "@/components/Header.vue";
 import Footer from "@/components/Footer";
+import api from "@/api/index.js";
 export default {
   components: {
     Header,
     Footer,
     AsideBar
+  },
+  data() {
+    return {
+      archive_count: "",
+      categories_count: "",
+      categories: [],
+      archives: []
+    };
+  },
+  created() {
+    api.getCategories().then(res => {
+      if (res.data) {
+        this.categories_count = res.data.meta.categories_count;
+        this.categories = res.data.data;
+      }
+    });
+    api.getArchives().then(res => {
+      if (res.data) {
+        this.archive_count = res.data.meta.count;
+        this.archives = res.data.data;
+      }
+    });
   }
 };
 </script>

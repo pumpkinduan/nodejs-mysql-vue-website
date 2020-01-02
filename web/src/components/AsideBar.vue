@@ -1,50 +1,44 @@
 <template>
-    <div
-      class="aside-bar"
-    >
-      <slot>
-        <template>
-          <div class="site-overview-wrap">
-            <span class="site-logo orange">pumpkin</span>
-            <p class="site-description">Everything is Ok</p>
-            <div class="site-author">
-              <section class="site-author-img">
-                <img src="../assets/image/cv.jpg" />
-              </section>
-              <p class="site-author-words">
-                This is my personal blog where I share a lot of stuffs about my life and work
-                everything i do in between.
-              </p>
-            </div>
-            <nav class="site-state">
-              <div class="site-state-item site-posts">
-                <router-link :to="{name: 'archive'}">
-                  <span class="site-state-item-count">{{count}}</span>
-                  <span class="site-state-item-name">文章</span>
-                </router-link>
-              </div>
-              <span class="separate-line"></span>
-              <div class="site-state-item site-catalogs">
-                <router-link :to="{name: 'category'}">
-                  <span class="site-state-item-count">{{sort}}</span>
-                  <span class="site-state-item-name">分类</span>
-                </router-link>
-              </div>
-            </nav>
+  <div class="aside-bar">
+    <slot>
+      <template>
+        <div class="site-overview-wrap">
+          <span class="site-logo orange">pumpkin</span>
+          <p class="site-description">Everything is Ok</p>
+          <div class="site-author">
+            <section class="site-author-img">
+              <img src="../assets/image/cv.jpg" />
+            </section>
+            <p class="site-author-words">
+              This is my personal blog where I share a lot of stuffs about my life and work
+              everything i do in between.
+            </p>
           </div>
-        </template>
-      </slot>
-    </div>
+          <nav class="site-state">
+            <div class="site-state-item site-posts">
+              <router-link :to="{name: 'archive', params: {tag: 'index'}}">
+                <span class="site-state-item-count">{{archive_count}}</span>
+                <span class="site-state-item-name">文章</span>
+              </router-link>
+            </div>
+            <span class="separate-line"></span>
+            <div class="site-state-item site-catalogs">
+              <router-link :to="{name: 'category'}">
+                <span class="site-state-item-count">{{categories_count}}</span>
+                <span class="site-state-item-name">分类</span>
+              </router-link>
+            </div>
+          </nav>
+        </div>
+      </template>
+    </slot>
+  </div>
 </template>
 
 <script>
+
 export default {
-  data() {
-    return {
-      count: localStorage.getItem("count"),
-      sort: localStorage.getItem("sort"),
-    };
-  }
+  props: ['archive_count', 'categories_count']
 };
 </script>
 
@@ -123,5 +117,10 @@ export default {
 }
 .site-overview-wrap .site-state .site-catalogs .site-state-item-name {
   color: #ff8a00;
+}
+@media screen and (max-width: 1280px) {
+  .aside-bar {
+    display: none;
+  }
 }
 </style>

@@ -5,6 +5,8 @@ let articleRouter = app.Router();// return a mini-app
 const passport = require('passport');
 articleRouter.post('/create', passport.authenticate('jwt', {session: false}), loader.get('createArticle'));
 articleRouter.get('/lists', loader.get('getArticleList'));
+articleRouter.get('/lists_tag', loader.get('getArticleListByTag'));
+articleRouter.get('/categories', loader.get('getCategories'));
 articleRouter.get('/archives', loader.get('getArchives'));
 articleRouter.get('/detail/:id', loader.get('getArticleDetailById'));
 articleRouter.delete('/delete/:id',passport.authenticate('jwt', {session: false}), loader.get('deleteArticleById'));

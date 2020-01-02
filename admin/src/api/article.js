@@ -6,7 +6,7 @@ export default {
     updateArticle(data, id) {
         return axiosInstance.put("/api/article/update/" + id, data);
     },
-    getAllLists(params) {
+    getArticleLists(params) {
         return axiosInstance.get("/api/article/lists", {params});
     },
     getArticleDetail(id) {
@@ -14,6 +14,5 @@ export default {
     },
     deleteArticle(id) {
         return axiosInstance.delete("/api/article/delete/" + id);
-    },
-    
+    }
 }

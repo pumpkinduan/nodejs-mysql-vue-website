@@ -11,9 +11,14 @@
             Author:
             <a href="#">Pumpkin</a>
           </span>
+          <span class="line"></span>
+          <span class="timestamp">
+            时间戳:
+            <span style="color: #333;">{{timestamp}}</span>
+          </span>
         </section>
       </li>
-      <li class="link fl">
+      <li class="link fr">
         <h2>F O L L O W</h2>
         <div>
           <a
@@ -30,24 +35,32 @@
     </ul>
   </div>
 </template>
-
+<script>
+import { format } from "@/lib/formatTime";
+export default {
+  data() {
+    return {
+      timestamp: ""
+    };
+  },
+  created() {
+    this.timestamp = format();
+  }
+};
+</script>
 <style scoped>
 .footer {
-  background-color: #fff2931c;
-  padding: 2.5rem 4rem;
-  font: 500 1.4rem cursive !important;
+  background-color: #b1b3b32e;
+  padding: 2rem 4rem 1rem;
 }
 /* --底部关于开始-- */
-.footer .about {
-  /* margin-bottom: 1.5rem; */
-  margin-right: 32%;
-}
 .footer .about h1,
 .footer .link h2 {
   color: #333;
-  font: inherit;
+   font: normal 500 1.4rem cursive;
 }
 .footer .about p {
+  font-family: cursive;
   color: #666;
   font-size: 1.2rem;
   margin: 2rem 0;
@@ -96,4 +109,9 @@
   font-size: 2rem;
 }
 /* --底部链接结束-- */
+@media screen and (max-width: 995px) {
+  .footer .link {
+    display: none;
+  }
+}
 </style>

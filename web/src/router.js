@@ -1,6 +1,8 @@
 import Vue from 'vue'
 import Router from 'vue-router'
 import Home from './views/Home.vue'
+import Categories from './views/Categories.vue'
+import Archives from './views/Archives.vue'
 Vue.use(Router)
 export default new Router({
   mode: 'history',
@@ -19,12 +21,12 @@ export default new Router({
         {
           path: '/category',
           name: 'category',
-          component: () => import('./views/Categories.vue')
+          component: Categories
         },
-         {
-          path: '/archive',
+        {
+          path: '/archive/:tag',
           name: 'archive',
-          component: () => import('./views/Archives.vue')
+          component: Archives
         }
       ]
     },
@@ -41,7 +43,7 @@ export default new Router({
         {
           path: 'detail/:articleId',
           name: 'detail',
-          component: () => import('./views/Detail.vue') 
+          component: () => import('./views/Detail.vue')
         }
       ]
     },
@@ -53,15 +55,15 @@ export default new Router({
     {//捕获404页面，该路由须放置在最后，当其他路由未匹配到时将捕获404
       path: '/*',
       name: 'error',
-      component: () => import('./views/NotFound.vue') 
+      component: () => import('./views/NotFound.vue')
     }
   ],
-  scrollBehavior (to, from, savedPosition) {
-    if (savedPosition) {return savedPosition} 
+  scrollBehavior(to, from, savedPosition) {
+    if (savedPosition) { return savedPosition }
     return new Promise((resolve) => {
       setTimeout(() => {
-       resolve({ x: 0, y: 0 });
+        resolve({ x: 0, y: 0 });
       }, 0);
-     });
+    });
   }
 })

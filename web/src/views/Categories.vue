@@ -1,12 +1,12 @@
 <template>
   <div class="category">
     <h1 class="category-header">分类</h1>
-    <p class="category-description">目前共计 5 个分类</p>
+    <p class="category-description">目前共计 {{categories_count}} 个分类</p>
     <ol class="category-nav">
-      <li class="category-nav-item">
-        <router-link to="/">
-          <span class="category-nav-item-name">category-nav-item</span>
-          <span class="category-nav-item-count">(7)</span>
+      <li class="category-nav-item" v-for="(item, index) in categories" :key="index">
+        <router-link :to="{name: 'archive', params: {tag: item.tag}}">
+          <span class="category-nav-item-name">{{item.tag}}</span>
+          <span class="category-nav-item-count">({{item.count}})</span>
         </router-link>
       </li>
     </ol>
@@ -14,8 +14,15 @@
 </template>
 
 <script>
+import api from "@/api/index.js";
 export default {
-  name: "category"
+  name: "category",
+  props: ['categories_count', 'categories'],
+  data() {
+    return {
+      tag: ""
+    };
+  }
 };
 </script>
 
@@ -44,14 +51,14 @@ export default {
   list-style-type: circle;
   padding: 0.8rem 0;
 }
-.category .category-nav .category-nav-item a .category-nav-item-name {
+.category .category-nav .category-nav-item .category-nav-item-name {
   color: rgb(153, 47, 9);
 }
-.category .category-nav .category-nav-item a .category-nav-item-name:hover {
+.category .category-nav .category-nav-item .category-nav-item-name:hover {
   color: #ff4d00;
 }
 
-.category .category-nav .category-nav-item a .category-nav-item-count {
+.category .category-nav .category-nav-item .category-nav-item-count {
   color: #ccc;
 }
 </style>

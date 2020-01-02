@@ -29,7 +29,7 @@ import List from "@/components/List";
 export default {
   created() {
     api
-      .getAllLists()
+      .getArticleLists()
       .then(res => {
         if (res.data && res.data.data) {
           this.tableData = res.data.data;

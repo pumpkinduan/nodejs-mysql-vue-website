@@ -32,9 +32,55 @@ class ArticleDao {
             console.log(err);
         })
     }
+    static getArticleListByTag(tag, success) {
+        Article.findAll({
+            order: [['created_at', 'DESC']],
+            attributes: ['article_id', 'created_at', 'title'],
+            where: {
+                tag
+            }
+        }).then((articles) => {
+            if (articles.length !== 0) {
+                success(false, {
+                    data: articles,
+                    meta: {
+                        count: articles.length,
+                        success: true
+                    }
+                });
+            } else {
+                success(new global.errs.NotFound('数据为空'));
+            }
+        }).catch(err => {
+            success(new global.errs.HttpException());
+        })
+    }
+    static getCategories(success) {
+        sequelize.query(
+            'select `tag`, count(`tag`) as count from article group by tag;',
+            {
+                nest: true,
+            }
+        ).then((tags) => {
+            if (tags.length !== 0) {
+                success(false, {
+                    data: tags,
+                    meta: {
+                        categories_count: tags.length,
+                        success: true
+                    }
+                });
+            } else {
+                success(new global.errs.NotFound('数据为空'));
+            }
+        }).catch(err => {
+            success(new global.errs.HttpException());
+            console.log(err)
+        })
+    }
     static getArchives(success) {
         sequelize.query(
-            'select `article_id`, `year`, count(`year`) as count, group_concat(`date`) as dates, group_concat(`title`) as titles from article group by year order by `created_at`;',
+            'select `year`, count(`year`) as count, group_concat(`date`) as dates, group_concat(`title`) as titles, group_concat(`article_id`) as article_id from article group by year order by `created_at`;',
             {
                 nest: true,
             }

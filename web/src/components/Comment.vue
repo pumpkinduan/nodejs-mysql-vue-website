@@ -271,7 +271,6 @@ export default {
       this.prompt = "Hey,guys,come and say something";
     },
     loadMoreComment() {
-      console.log(222)
       if (this.canLoad) {
         const ele = document.getElementsByClassName("words")[0],
           viewHeight =
@@ -279,8 +278,6 @@ export default {
             document.body.clientHeight ||
             window.innerHeight,
           { bottom } = ele && ele.getBoundingClientRect();
-        console.log(ele);
-        console.log(bottom);
         if (bottom - 100 < viewHeight) {
           //最后几条留言快要离开可视区时，加载留言
           //100 为预留 距离，提前一点加载留言

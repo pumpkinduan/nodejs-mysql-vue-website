@@ -58,7 +58,6 @@ export default {
         article_id: "id",
         total_char: "字数",
         browse: "访问量",
-        type: "文章类型",
         tag: "标签",
         title: "标题",
         description: "描述"

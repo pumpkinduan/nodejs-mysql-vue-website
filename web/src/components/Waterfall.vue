@@ -12,7 +12,7 @@
   </div>
 </template>
 <script>
-import {debounce, throttle, addEvent, removeEvent} from "@/lib/tool.js";
+import { debounce, throttle, addEvent, removeEvent } from "@/lib/tool.js";
 export default {
   activated() {
     //解决 失活的瀑布流组件 再次被激活时 定位发生错乱的bug
@@ -157,10 +157,9 @@ export default {
     isloadedMore() {
       if (this.canLoad) {
         const { rowHeightArr } = this;
+        let lastIndex = this.$refs.waterfall_item && this.$refs.waterfall_item.length - 1;
         //获取最后一个插入到页面的DOM元素
-        const lastDom = this.$refs.waterfall_item[
-          this.$refs.waterfall_item.length - 1
-        ];
+        const lastDom = this.$refs.waterfall_item[lastIndex];
         const minHeight = Math.min.apply(null, rowHeightArr);
         const lastDomHeight = lastDom && lastDom.offsetHeight;
         if (

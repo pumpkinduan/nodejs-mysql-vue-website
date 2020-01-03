@@ -1,11 +1,11 @@
 <template>
   <div class="home">
     <Header />
-    <main class="main-bgc">
+    <main class="main-block">
       <div class="main-inner clearfix">
         <aside class="left-aside fl" ref="main">
           <transition appear name="fade" mode="out-in">
-            <router-view :archives="archives" :categories="categories" :categories_count="categories_count" :archive_count="archive_count" />
+            <router-view :categories="categories" :categories_count="categories_count" />
           </transition>
         </aside>
         <aside class="right-aside fr">
@@ -20,7 +20,7 @@
 import AsideBar from "@/components/AsideBar";
 import Header from "@/components/Header.vue";
 import Footer from "@/components/Footer";
-import api from "@/api/index.js";
+import api from "@/api/article.js";
 export default {
   components: {
     Header,

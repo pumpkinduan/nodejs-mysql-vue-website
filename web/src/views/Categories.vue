@@ -4,7 +4,7 @@
     <p class="category-description">目前共计 {{categories_count}} 个分类</p>
     <ol class="category-nav">
       <li class="category-nav-item" v-for="(item, index) in categories" :key="index">
-        <router-link :to="{name: 'archive', params: {tag: item.tag}}">
+        <router-link :to="{name: 'tag', params: {tag: item.tag}}">
           <span class="category-nav-item-name">{{item.tag}}</span>
           <span class="category-nav-item-count">({{item.count}})</span>
         </router-link>
@@ -14,15 +14,10 @@
 </template>
 
 <script>
-import api from "@/api/index.js";
+import api from "@/api/article.js";
 export default {
   name: "category",
-  props: ['categories_count', 'categories'],
-  data() {
-    return {
-      tag: ""
-    };
-  }
+  props: ['categories_count', 'categories']
 };
 </script>
 

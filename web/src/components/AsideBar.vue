@@ -16,7 +16,7 @@
           </div>
           <nav class="site-state">
             <div class="site-state-item site-posts">
-              <router-link :to="{name: 'archive', params: {tag: 'index'}}">
+              <router-link :to="{name: 'archive'}">
                 <span class="site-state-item-count">{{archive_count}}</span>
                 <span class="site-state-item-name">文章</span>
               </router-link>

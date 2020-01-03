@@ -101,7 +101,8 @@
 
 <script>
 import { format } from "@/lib/formatTime.js";
-import api from "@/api/index.js";
+import commenter from "@/api/comment.js";
+import replyer from "@/api/reply.js";
 import { throttle, debounce, addEvent, removeEvent } from "@/lib/tool.js";
 export default {
   data() {
@@ -140,14 +141,6 @@ export default {
       }
     }, 400);
     this.getData();
-    let parse1 =
-      sessionStorage.getItem("name") &&
-      JSON.parse(sessionStorage.getItem("name"))[this.articleId];
-    let parse2 =
-      sessionStorage.getItem("comment") &&
-      JSON.parse(sessionStorage.getItem("comment"))[this.articleId];
-    this.name = parse1 && parse1.name;
-    this.comment = parse2 && parse2.comment;
   },
   mounted() {
     addEvent(window, "scroll", this.handleThrottle);
@@ -157,7 +150,7 @@ export default {
   },
   methods: {
     getData() {
-      api
+      commenter
         .getArticleComments(this.$route.params.articleId, this.page)
         .then(res => {
           if (res.data) {
@@ -181,27 +174,11 @@ export default {
         });
       let self = this;
       this.debounceComment = debounce(newVal => {
-        sessionStorage.setItem(
-          "name",
-          JSON.stringify({
-            [this.articleId]: {
-              name: newVal
-            }
-          })
-        );
         newVal && newVal.length >= 128
           ? (self.errMessage = "留言的字符个数不能超过128噢")
           : (self.errMessage = "");
       });
       this.debounceName = debounce(newVal => {
-        sessionStorage.setItem(
-          "comment",
-          JSON.stringify({
-            [this.articleId]: {
-              comment: newVal
-            }
-          })
-        );
         newVal && newVal.length >= 12
           ? (self.errMessage = "昵称的字符个数不能超过12噢")
           : (self.errMessage = "");
@@ -215,12 +192,13 @@ export default {
             content: this.comment,
             article_id: this.$route.params.articleId
           };
-          api
+          commenter
             .createComment(data)
             .then(res => {
               let newComment = Object.assign(data, {
                 created_at: format(),
-                replies: []
+                replies: [],
+                id: res.data.comment_id
               });
               this.words.push(newComment);
               this.totalComments++;
@@ -236,7 +214,7 @@ export default {
             content: this.comment,
             comment_id: this.comment_id
           };
-          api.createReply(reply).then(res => {
+          replyer.createReply(reply).then(res => {
             this.words[this.curIndex].replies.push(
               Object.assign(reply, { created_at: format() })
             );
@@ -457,5 +435,10 @@ button.cancle {
 }
 button:hover {
   opacity: 0.8;
+}
+.block-loading {
+    width: 100%;
+    padding: 5rem 0;
+    background: url('../assets/image/loading_big.gif') center center no-repeat;
 }
 </style>

@@ -8,7 +8,7 @@
         </div>
         <div class="post-badge">
           <router-link
-            :to="{name: 'detail', params: {articleId: item.article_id}}"
+            :to="{name: 'tag', params: {tag: item.tag}}"
             class="post-tag"
           >{{item.tag}}</router-link>
         </div>
@@ -49,7 +49,7 @@
 
 <script>
 import Pagination from "@/components/Pagination";
-import api from "@/api/index.js";
+import api from "@/api/article.js";
 export default {
   components: {
     Pagination

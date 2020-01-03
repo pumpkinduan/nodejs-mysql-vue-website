@@ -14,7 +14,7 @@
   </div>
 </template>
 <script>
-import api from "@/api/index.js";
+import api from "@/api/hitokoto.js";
 import { format } from "@/lib/formatTime.js";
 export default {
   data() {

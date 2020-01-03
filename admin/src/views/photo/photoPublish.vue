@@ -4,6 +4,7 @@
       <el-form :label-position="labelPosition" label-width="100px">
         <el-form-item label="上传的相片：">
           <el-upload
+          ref="upload"
             action
             list-type="picture-card"
             :auto-upload="false"
@@ -59,8 +60,7 @@ export default {
       ],
       labelPosition: "right",
       dialogImageUrl: "",
-      dialogVisible: false,
-      deleted: false
+      dialogVisible: false
     };
   },
   methods: {
@@ -69,7 +69,7 @@ export default {
       compress({
         target: file.raw,
         target_size: 450,
-        maxWidth: 650,
+        maxWidth: 300,
         maxHeight: 500,
         onSuccess: data => {
           _self.uploadCompressImage(data);
@@ -111,7 +111,8 @@ export default {
       this.dialogVisible = true;
     },
     handleRemove(file) {
-      this.deleted = true;
+      //由于是单文件上传，所以upload组件内的uploadFiles数组只有一个上传的文件
+      this.$refs.upload.uploadFiles.pop();
     },
     handleDownload(file) {
       if (!file || !file.raw) return;

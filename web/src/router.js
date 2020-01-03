@@ -24,7 +24,12 @@ export default new Router({
           component: Categories
         },
         {
-          path: '/archive/:tag',
+          path: '/tag/:tag',
+          name: 'tag',
+          component: () => import('./views/Tag.vue'),
+        },
+        {
+          path: '/archive',
           name: 'archive',
           component: Archives
         }

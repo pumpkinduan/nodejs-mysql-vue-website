@@ -22,7 +22,7 @@ class ImgsDao {
         Imgs.findAndCountAll({
             limit: pageSize,
             offset: pageSize * (page - 1),
-            attributes: ['path'],
+            attributes: ['path', 'originalname'],
             where: {
                 type
             }

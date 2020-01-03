@@ -3,7 +3,7 @@
     <transition name="fade">
       <div class="wrapper">
         <Header />
-        <main class="main-bgc">
+        <main class="main-block">
           <router-view></router-view>
         </main>
       </div>

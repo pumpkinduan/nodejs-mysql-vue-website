@@ -13,6 +13,7 @@ function compress({
   onSuccess,
   quality = 1
 }) {
+  
   let img = new Image(),
     _width,
     _height,

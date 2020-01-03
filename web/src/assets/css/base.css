@@ -29,7 +29,7 @@ html, body {
 
 body {
     font-size: 62.5% !important;
-    cursor: url(../image/cursor.png),auto;
+    cursor: url(../image/cursor.png), auto;
 }
 
 address, cite, dfn, em, var {
@@ -148,41 +148,16 @@ hr {
 .fs-15 {
     font-size: 1.5rem;
 }
+
 img {
     display: block;
 }
-.detail img {
-    display: block;
-    margin: 3px 0;
-    max-width: 100%;
-    min-width: 80%;
-}
-
 .relative {
     position: relative;
 }
-
-.block-loading {
-    width: 100%;
-    padding: 5rem 0;
-    background: url('../../assets/image/loading_big.gif') center center no-repeat;
-}
-
-.ql-snow .ql-editor pre.ql-syntax {
-    padding: 10px;
-    background: #fafafa;
-    font: 12px / 18px Consolas, monospace, serif;
-    color: #444444;
-    word-wrap: break-word;
-    -moz-tab-size: 4;
-    tab-size: 4;
-    overflow: auto;
-    border: 1px solid #dddddd;
-    border-radius: 3px;
-}
-/* 中间部分的统一样式 */
-.main-bgc {
+.main-block {
     padding: 5rem 4rem;
     background: #f5f7f9;
     position: relative;
 }
+

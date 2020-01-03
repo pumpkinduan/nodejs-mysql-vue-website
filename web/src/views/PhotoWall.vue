@@ -29,7 +29,7 @@ import Header from "@/components/Header.vue";
 import Quotation from "@/components/Quotation.vue";
 import config from "@/config.js";
 import Waterfall from "@/components/Waterfall";
-import api from "@/api/index.js";
+import api from "@/api/img.js";
 export default {
   components: {
     Quotation,
@@ -56,7 +56,6 @@ export default {
     getData(page) {
       api.getAllImgs(page).then(result => {
         if (result.data) {
-          console.log(result.data)
           this.cards.push(...result.data.imgs);
         }
       });

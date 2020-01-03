@@ -27,8 +27,9 @@ class CommentDao {
                 c.article_id = info.article_id;
                 c.name = info.name;
                 c.save().then((res) => {
-                    //res.dataValues 添加的数据对象sss
-                    success(false, { msg: '添加成功', success: true });
+                   
+                    //res.dataValues 添加的数据对象
+                    success(false, { msg: '添加成功', success: true, comment_id: res.dataValues.id});
                 }).catch(err => { success(new global.errs.HttpException()); console.log(err); })
             })
 

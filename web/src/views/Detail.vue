@@ -6,7 +6,7 @@
         <div class="post-day">{{ details.created_at && details.created_at.split('-')[2] }}</div>
       </div>
       <div class="post-badge">
-        <router-link :to="{name: 'detail'}" class="post-tag">{{details.tag}}</router-link>
+        <router-link :to="{name: 'tag', params: {tag: details.tag}}" class="post-tag">{{details.tag}}</router-link>
       </div>
       <main class="ql-snow">
         <section>
@@ -40,12 +40,15 @@
         </template>
       </AsideBar>
     </aside>
+    <el-dialog :lock-scroll="false" width="75%" :visible.sync="dialogVisible">
+      <img width="100%" :src="dialogImageUrl" alt />
+    </el-dialog>
   </div>
 </template>
 
 <script>
 import AsideBar from "@/components/AsideBar";
-import api from "@/api/index.js";
+import api from "@/api/article.js";
 import Comment from "@/components/Comment";
 import {
   throttle,
@@ -68,8 +71,10 @@ export default {
   },
   data() {
     return {
+      dialogImageUrl: '',
+      dialogVisible: false,
       curIndex: null,
-      catalogDoms: "",
+      catalogDoms: '',
       details: {},
       catalogs: [],
       stayTime: 0,
@@ -82,7 +87,7 @@ export default {
   },
   mounted() {
     this.startCount();
-    setTimeout(() => { 
+    setTimeout(() => {
       this.$nextTick(() => {
         //只有等到页面的DOM全部加载完毕后在进行DOM的获取与操作
         //setTimeout不能省，它的延迟时间是测试出来的，最好不低于100
@@ -101,12 +106,14 @@ export default {
   },
   methods: {
     init() {
-      this.catalogDoms = this.$refs.detail && this.$refs.detail.getElementsByTagName("h3");
-      this.createCatalog(this.catalogDoms); 
+      this.catalogDoms =
+        this.$refs.detail && this.$refs.detail.getElementsByTagName("h3");
+      this.createCatalog(this.catalogDoms);
       this.handleScroll = throttle(this.onScroll, 30);
       addEvent(window, "scroll", this.handleScroll);
     },
-    createCatalog(elements) {//生成文章目录
+    createCatalog(elements) {
+      //生成文章目录
       let len = elements && elements.length;
       this.preLoadImgs(() => {
         for (var i = 0; i < len; i++) {
@@ -139,6 +146,12 @@ export default {
         count = 0;
       for (let i = 0; i < totalCount; i++) {
         this.preLoadImg(imgs[i], img => {
+          // 放大图片事件
+          img.style.cursor = 'zoom-in';
+          addEvent(img, 'click', () => {
+            this.dialogVisible = true;
+            this.dialogImageUrl = img.src;
+          }, false)
           count++;
           if (count === totalCount) {
             //所有图片加载完成
@@ -168,12 +181,13 @@ export default {
         }, speed_ms);
       }
     },
-    onScroll() {//实现目录导航滚动效果
+    onScroll() {
+      //实现目录导航滚动效果
       let _html = document.documentElement;
       let items = this.catalogs;
       let len = items.length;
       // 100为预留距离
-      if ( len <= 0 ) return;
+      if (len <= 0) return;
       if (_html.scrollTop + 100 < items[0]._top) {
         this.curIndex = null;
         return;
@@ -184,7 +198,8 @@ export default {
         }
       }
     },
-    handleClick(end, index) {//实现目录导航点击动画效果
+    handleClick(end, index) {
+      //实现目录导航点击动画效果
       this.curIndex = index;
       this.scrollAnimate(end);
     },
@@ -214,11 +229,12 @@ export default {
 .detail {
   position: relative;
 }
-.detail-inner header img {
-  width: 100%;
-  margin-bottom: 3rem;
+.detail img {
+  display: block;
+  margin: 3px 0;
+  max-width: 100%;
+  min-width: 80%;
 }
-
 .detail-inner main .content {
   margin: 3rem 0;
   line-height: 1.5rem;

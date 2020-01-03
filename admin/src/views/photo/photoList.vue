@@ -10,7 +10,7 @@
                 <i class="el-icon-zoom-in"></i>
               </span>
               <span class="el-image__item-delete" @click="handleRemove(data.item.path, data.index)">
-                  <i slot="reference" class="el-icon-delete"></i>
+                <i slot="reference" class="el-icon-delete"></i>
               </span>
             </span>
           </div>
@@ -30,6 +30,7 @@
 import api from "@/api/upload.js";
 import config from "@/config.js";
 import Waterfall from "@/components/Waterfall.vue";
+import download from "@/util/download.js";
 export default {
   components: {
     Waterfall
@@ -75,21 +76,24 @@ export default {
         confirmButtonText: "确定",
         cancelButtonText: "取消",
         type: "warning"
-      }).then( (res) => {
-        path = path.replace(/\//gi, '\\');
-        api.deleteOneImg(path).then( res => {
-          if( res.data ) {
-            this.$message({
-              type: 'success',
-              duration: 400,
-              message: res.data.msg
-            });
-            this.urls.splice(index, 1);
-          } 
-        }).catch( err => {
-          console.log(err)
-        })
-      })
+      }).then(res => {
+        path = path.replace(/\//gi, "\\");
+        api
+          .deleteOneImg(path)
+          .then(res => {
+            if (res.data) {
+              this.$message({
+                type: "success",
+                duration: 400,
+                message: res.data.msg
+              });
+              this.urls.splice(index, 1);
+            }
+          })
+          .catch(err => {
+            console.log(err);
+          });
+      });
     }
   }
 };

@@ -19,21 +19,6 @@
 import api from "@/api/comment.js";
 import List from "@/components/List";
 export default {
-  created() {
-    api
-      .getCommentAll()
-      .then(res => {
-        if (res.data && res.data.data) {
-          this.tableData = res.data.data;
-          this.amount = res.data.meta.count;
-          this.pageSize = res.data.meta.pageSize;
-          this.cacheData.set(1, res.data.data); //缓存第一页数据 {1 => [...]}
-        }
-      })
-      .catch(err => {
-        console.log(err);
-      });
-  },
   components: {
     List
   },
@@ -49,11 +34,23 @@ export default {
         created_at: "日期",
         id: "id",
         name: "名字",
-        content: "评论",
-        article_id: '文章id'
+        content: "留言",
+        article_title: "留言的文章标题"
       },
       curPage: 1
     };
+  },
+  created() {
+    api
+      .getCommentAll()
+      .then(res => {
+        if (res.data && res.data.data) {
+          this.tableData = res.data.data;
+          this.amount = res.data.meta.count;
+          this.pageSize = res.data.meta.pageSize;
+          this.cacheData.set(1, res.data.data); //缓存第一页数据 {1 => [...]}
+        }
+      })
   },
   methods: {
     handleDelete(index, row) {
@@ -67,6 +64,7 @@ export default {
             if (res.data && res.data.success) {
               this.$message.success(res.data.msg);
               this.tableData.splice(index, 1); //删除纪录
+              this.amount --;
             }
           });
         })
@@ -93,9 +91,6 @@ export default {
             this.cacheData.set(page, res.data.data); //缓存每次获取到的数据
           }
         })
-        .catch(err => {
-          console.log(err);
-        });
     }
   }
 };

@@ -105,6 +105,7 @@ import commenter from "@/api/comment.js";
 import replyer from "@/api/reply.js";
 import { throttle, debounce, addEvent, removeEvent } from "@/lib/tool.js";
 export default {
+  props: ['article_title'],
   data() {
     return {
       canLoad: true,
@@ -190,7 +191,8 @@ export default {
           let data = {
             name: this.name,
             content: this.comment,
-            article_id: this.$route.params.articleId
+            article_id: this.$route.params.articleId,
+            article_title: this.article_title
           };
           commenter
             .createComment(data)

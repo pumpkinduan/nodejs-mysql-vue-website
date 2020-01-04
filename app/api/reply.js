@@ -12,8 +12,8 @@ function createReply(req, res, next) {
 
 //获取全部留言
 function getReplyAll(req, res, next) {
-    const { page, desc } = req.query;
-    ReplyDao.getReplyAll(page, desc, (err, data) => {
+    const { page} = req.query;
+    ReplyDao.getReplyAll(page, (err, data) => {
         reactToClient(res, err, data)
     });
 }

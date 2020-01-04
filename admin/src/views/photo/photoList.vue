@@ -19,6 +19,7 @@
     </div>
     <div class="load-btn">
       <el-button type="primary" @click="loadMoreImgs" :disabled="disabled">加载更多</el-button>
+      <el-button type="info">一共{{totalCounts}}张图片</el-button>
     </div>
     <el-dialog :visible.sync="dialogVisible">
       <img width="100%" :src="dialogImageUrl" alt />
@@ -35,7 +36,6 @@ export default {
   components: {
     Waterfall
   },
-
   name: "PhotoList",
   data() {
     return {
@@ -44,7 +44,8 @@ export default {
       serverUrl: config.serverUrl,
       dialogImageUrl: "",
       dialogVisible: false,
-      disabled: false
+      disabled: false,
+      totalCounts: 0
     };
   },
   created() {
@@ -56,7 +57,8 @@ export default {
         .getAllImgs(page)
         .then(res => {
           if (res && res.data) {
-            this.urls.push(...res.data.imgs);
+            this.urls.push(...res.data.imgs.rows);
+            this.totalCounts = res.data.imgs.count;
           }
         })
         .catch(err => {
@@ -88,6 +90,7 @@ export default {
                 message: res.data.msg
               });
               this.urls.splice(index, 1);
+              this.totalCounts --;
             }
           })
           .catch(err => {

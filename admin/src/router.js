@@ -20,41 +20,73 @@ const router = new Router({
         {
           path: 'auth',
           name: 'Auth',
+          meta: {
+            title: '首页',
+            breadcrumb: false
+          },
           component: () => import("./views/admin/auth")
         },
         {
           path: 'publishArticle',
           name: 'PublishArticle',
+          meta: {
+            title: '发布文章',
+            breadcrumb: "文章管理"
+          },
           component: () => import("./views/article/publishArticle")
         },
         {
           path: 'articleList',
           name: 'ArticleList',
+          meta: {
+            title: '文章列表',
+            breadcrumb: "文章管理"
+          },
           component: () => import("./views/article/articleList")
         },
          {
           path: 'editArticle',
           name: 'EditArticle',
+          meta: {
+            title: '编辑文章',
+            breadcrumb: "文章管理"
+          },
           component: () => import("./views/article/editArticle")
         },
         {
           path: 'photoPublish',
           name: 'PhotoPublish',
+          meta: {
+            title: '发布图片',
+            breadcrumb: "相册墙"
+          },
           component: () => import("./views/photo/photoPublish")
         },
         {
           path: 'photoList',
           name: 'PhotoList',
+          meta: {
+            title: '相册数据',
+            breadcrumb: "相册墙"
+          },
           component: () => import("./views/photo/photoList")
         },
         {
           path: 'commentList',
           name: 'CommentList',
+          meta: {
+            title: '留言列表',
+            breadcrumb: false
+          },
           component: () => import("./views/comment/commentList")
         },
         {
           path: 'replyList',
           name: 'ReplyList',
+          meta: {
+            title: '回复列表',
+            breadcrumb: false
+          },
           component: () => import("./views/reply/replyList")
         }
       ]

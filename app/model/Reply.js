@@ -6,7 +6,6 @@ class Reply extends Model { }
 Reply.init({
     content: Sequelize.STRING(256),
     name: Sequelize.STRING(32),
-    email: Sequelize.STRING(64),
     created_at: {
         type: Sequelize.DATE,
         get() {
@@ -18,7 +17,6 @@ Reply.init({
     tableName: 'reply',
     modelName: 'reply'
 })
-// .sync({force: true});//增加或删除字段时自动适应数据表
 //一对多
 //一条留言对应多条回复
 Comment.hasMany(Reply, {//往Reply表中添加外键 字段comment_id

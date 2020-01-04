@@ -11,7 +11,6 @@ class ReplyDao {
             const r = new Reply();
             r.content = info.content;
             r.name = info.name;
-            r.email = info.email;
             r.comment_id = info.comment_id;
             r.save().then((res) => {
                 success(false, { msg: '添加成功', success: true });
@@ -19,13 +18,13 @@ class ReplyDao {
         })
     }
     //全部回复
-    static getReplyAll(page = 1, desc = "created_at", success) {
+    static getReplyAll(page = 1, success) {
         const pageSize = 5;
         Reply.findAndCountAll({
             //分页
             limit: pageSize,
             offset: pageSize * (page - 1),
-            order: [[desc]]
+            order: [["created_at", "DESC"]]
         }).then((reply) => {
             if (reply.rows.length !== 0) {
                 success(false, {

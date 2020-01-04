@@ -26,7 +26,10 @@
               </el-menu-item-group>
             </el-submenu>
             <el-menu-item v-else :index="f_index + ''" :key="f_item.icon + ''">
-              <router-link :to="{name: f_item.component}" tag="div">
+              <router-link 
+                :to="{name: f_item.component}" 
+                tag="div"
+              >
                 <i :class="f_item.icon"></i>
                 <span>{{ f_item.name }}</span>
               </router-link>
@@ -40,55 +43,17 @@
 
 <script>
 export default {
-  props: ["isCollapse"],
+  props: ["isCollapse", "menu"],
   data() {
     return {
-      menu: [
-        {
-          icon: "el-icon-s-home",
-          name: "首页",
-          component: "Auth"
-        },
-        {
-          icon: "el-icon-document",
-          name: "文章管理",
-          children: [
-            {
-              name: "文章发布",
-              component: "PublishArticle"
-            },
-            {
-              name: "文章信息",
-              component: "ArticleList"
-            }
-          ]
-        },
-        {
-          icon: "el-icon-ice-tea",
-          name: "相册墙",
-          children: [
-            {
-              name: "图片发布",
-              component: "PhotoPublish"
-            },
-            {
-              name: "相册数据",
-              component: "PhotoList"
-            }
-          ]
-        },
-        {
-          icon: "el-icon-chat-dot-round",
-          name: "评论",
-          component: "CommentList"
-        },
-        {
-          icon: "el-icon-chat-line-square",
-          name: "回复",
-          component: "ReplyList"
-        }
-      ]
+      
     };
+  },
+
+  methods: {
+    toggleCollapse() {
+      this.isCollapse = !this.isCollapse;
+    }
   }
 };
 </script>

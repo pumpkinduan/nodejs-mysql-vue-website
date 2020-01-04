@@ -37,8 +37,9 @@ axiosInstance.interceptors.response.use((response) => {
 }, function (err) {
     endLoading();
     //可以捕获到错误对象，并获取后端发过来的对象信息，不截取则无法获取
+    if ( !err.response ) return Promise.reject(err);
     const { status } = err.response;
-    if (status == 401) {
+    if (status == 401) {console.log(err.response)
         Message.error('登录失败,token已经失效');
         localStorage.removeItem('token');
         window.location = '/#/admin/login';

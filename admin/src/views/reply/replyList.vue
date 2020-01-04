@@ -50,7 +50,7 @@ export default {
         id: "id",
         name: "名字",
         content: "回复内容",
-        comment_id: '回复的留言id'
+        comment_id: "回复的留言id"
       },
       curPage: 1
     };
@@ -67,6 +67,7 @@ export default {
             if (res.data && res.data.success) {
               this.$message.success(res.data.msg);
               this.tableData.splice(index, 1); //删除纪录
+              this.amount--;
             }
           });
         })

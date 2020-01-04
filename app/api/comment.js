@@ -12,15 +12,15 @@ function createComment(req, res, next) {
 
 //获取文章下的留言
 function getArticleComments(req, res, next) {
-    const { page, article_id, desc } = req.query;
-    CommentDao.getArticleComments(article_id, page, desc, (err, data) => {
+    const { page, article_id } = req.query;
+    CommentDao.getArticleComments(article_id, page, (err, data) => {
         reactToClient(res, err, data)
     });
 }
 //获取全部留言
 function getCommentAll(req, res, next) {
-    const { page, desc } = req.query;
-    CommentDao.getCommentAll(page, desc, (err, data) => {
+    const { page} = req.query;
+    CommentDao.getCommentAll(page, (err, data) => {
         reactToClient(res, err, data)
     });
 }

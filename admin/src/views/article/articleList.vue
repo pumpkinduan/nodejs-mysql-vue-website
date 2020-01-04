@@ -76,6 +76,7 @@ export default {
             if (res.data && res.data.success) {
               this.$message.success(res.data.msg);
               this.tableData.splice(index, 1); //删除纪录
+              this.amount --;
             }
           });
         })
@@ -94,7 +95,7 @@ export default {
         return;
       }
       api
-        .getAllLists({ page })
+        .getArticleLists({ page })
         .then(res => {
           if (res.data && res.data.data) {
             this.tableData = res.data.data; //更新显示数据

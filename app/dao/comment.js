@@ -25,9 +25,9 @@ class CommentDao {
                 const c = new Comment();
                 c.content = info.content;
                 c.article_id = info.article_id;
+                c.article_title = info.article_title;
                 c.name = info.name;
                 c.save().then((res) => {
-                   
                     //res.dataValues 添加的数据对象
                     success(false, { msg: '添加成功', success: true, comment_id: res.dataValues.id});
                 }).catch(err => { success(new global.errs.HttpException()); console.log(err); })
@@ -37,7 +37,7 @@ class CommentDao {
 
     }
     //文章下的留言
-    static getArticleComments(article_id, page = 1, desc = "created_at", success) {
+    static getArticleComments(article_id, page = 1, success) {
         const pageSize = 5;
         Comment.findAndCountAll({
             where: {
@@ -46,16 +46,15 @@ class CommentDao {
             //分页
             limit: pageSize,
             offset: pageSize * (page - 1),
-            order: [[desc]],
             attributes: {
-                exclude: ['updated_at', 'email']
+                exclude: ['updated_at']
             },
             distinct: true,//去重，防止count出现错误，主表多少条数据count就是多少
             include: [ //获取查询到的每条留言下的回复，根据定义的外键关系查找
                 {
                     model: Reply,                  
                     attributes: {
-                        exclude: ['updated_at', 'email']
+                        exclude: ['updated_at']
                     }
                 }
             ]
@@ -76,6 +75,7 @@ class CommentDao {
                 });
             } else {
                 success(new global.errs.NotFound('数据为空'));
+                console.log(err)
             }
         }).catch(err => {
             success(new global.errs.HttpException());
@@ -83,13 +83,13 @@ class CommentDao {
         })
     }
     //全部留言
-    static getCommentAll(page = 1, desc = "created_at", success) {
+    static getCommentAll(page = 1, success) {
         const pageSize = 5;
         Comment.findAndCountAll({
             //分页
+            order: [["created_at", 'DESC']],
             limit: pageSize,
-            offset: pageSize * (page - 1),
-            order: [[desc]]
+            offset: pageSize * (page - 1)
         }).then((comments) => {
             if (comments.rows.length !== 0) {
                 success(false, {
@@ -102,10 +102,12 @@ class CommentDao {
                 });
             } else {
                 success(new global.errs.NotFound('数据为空'));
+                console.log(err)
             }
         }).catch(err => {
-            success(new global.errs.HttpException());
             console.log(err)
+            success(new global.errs.HttpException());
+            
         })
     }
     static deleteCommentById(id, success) {//删除文章

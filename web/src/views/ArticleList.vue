@@ -90,7 +90,7 @@ export default {
       if (this.cachedBlogs.has(page)) {
         this.articleLists = this.cachedBlogs.get(page);
       } else {
-        api.getBlogList(page).then(res => {
+        api.getArticleList(page).then(res => {
           if (res.data) {
             this.articleLists = res.data.data;
             this.cachedBlogs.set(page, this.articleLists); //缓存第一页数据

@@ -20,7 +20,9 @@
         </section>
         <div ref="detail" v-html="details.content" class="content ql-editor"></div>
         <section class="wrap-comment">
-          <Comment />
+          <Comment
+            :article_title="details.title"
+          />
         </section>
       </main>
     </div>

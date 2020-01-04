@@ -27,11 +27,11 @@ class ImgsDao {
                 type
             }
         }).then((imgs) => {
-            if (imgs.rows && imgs.rows.length !== 0) {
+            if (imgs && imgs.rows && imgs.rows.length !== 0) {
                 imgs.rows.forEach((item, index) => {
                     item.path = item.path.replace(/\\/gi, '/');
                 })
-                success(false, { msg: '获取成功', success: true, imgs: imgs.rows });
+                success(false, { msg: '获取成功', success: true, imgs: imgs });
             } else {
                 success(new global.errs.NotFound('相册墙为空'));
             }

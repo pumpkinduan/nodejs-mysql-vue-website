@@ -25,14 +25,16 @@
       </el-table-column>
     </el-table>
     <slot></slot>
-    <el-pagination
-      background
-      layout="prev, pager, next"
-      :total="amount"
-      :page-size="pageSize"
-      :pager-count="pageBtns"
-      @current-change="getCurrentItem"
-    ></el-pagination>
+    <div class="block">
+      <el-pagination
+        background
+        layout="total, prev, pager, next"
+        :total="amount"
+        :page-size="pageSize"
+        :pager-count="pageBtns"
+        @current-change="getCurrentItem"
+      ></el-pagination>
+    </div>
   </div>
 </template>
 
@@ -40,10 +42,6 @@
 import config from "@/config";
 export default {
   props: {
-    stay: {
-      type: Boolean,
-      default: false
-    },
     tableData: Array,
     amount: Number, //总条数-
     pageSize: Number, //每页的条数

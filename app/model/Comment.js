@@ -5,8 +5,8 @@ class Comment extends Model { }
 Comment.init({
     content: Sequelize.STRING(256),
     name: Sequelize.STRING(32),
-    email: Sequelize.STRING(64),
     article_id: Sequelize.INTEGER,
+    article_title: Sequelize.STRING(64),
     created_at: {
         type: Sequelize.DATE,
         get() {
@@ -18,7 +18,6 @@ Comment.init({
     tableName: 'comment',
     modelName: 'comment'
 })
-// .sync({alter: true});//增加或删除字段时自动适应数据表
 module.exports = {
     Comment
 }

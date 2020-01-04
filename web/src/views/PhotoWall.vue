@@ -55,8 +55,8 @@ export default {
     },
     getData(page) {
       api.getAllImgs(page).then(result => {
-        if (result.data) {
-          this.cards.push(...result.data.imgs);
+        if (result.data && result.data.imgs && result.data.imgs.rows) {
+          this.cards.push(...result.data.imgs.rows);
         }
       });
     },

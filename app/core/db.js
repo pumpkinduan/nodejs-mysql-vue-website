@@ -37,7 +37,7 @@ const sequelize = new Sequelize(database, user, password, {
 });
 // Sync all models that aren't already in the database
 // using `force: true` will drop the table if it already exists
-sequelize.sync({force: false,alter: false}).then(console.log('table has been created')).catch(e => console.log(e))
+sequelize.sync({force: false, alter: true}).then(console.log('table has been created')).catch(e => console.log(e))
 sequelize
   .authenticate()
   .then(() => {

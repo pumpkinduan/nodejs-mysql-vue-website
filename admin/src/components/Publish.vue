@@ -72,6 +72,7 @@ import "quill/dist/quill.snow.css";
 import config from "@/config.js";
 import api from "@/api/upload.js";
 import { compress } from "@/util/compress.js";
+import { debounce } from "@/util/debounce.js";
 export default {
   components: {
     quillEditor
@@ -88,15 +89,15 @@ export default {
   },
   data() {
     return {
+      quill: null,
       serverUrl: config.serverUrl,
       dialogFormVisible: false,
-      fileList: [],
       editorOption: {
         placeholder: "让你的手动起来吧！！！",
         theme: "snow",
         modules: {
           history: {
-            delay: 1500
+            delay: 2000
           },
           toolbar: {
             container: toolbarOptions,
@@ -116,9 +117,22 @@ export default {
       }
     };
   },
+  mounted() {
+    this.init();
+  },
+  destroyed() {
+    this.quill.off("text-change", this.handleTextChange);
+  },
   methods: {
-    uploadErr() {
-      this.$message.error("upload failed");
+    init() {
+      this.quill = this.$refs.quillEditor.quill;
+      this.handleTextChange = debounce((delta, oldDelta, source) => {
+        //实现文章内容html的缓存
+        sessionStorage.setItem("text", this.quill.root.innerHTML);
+      }, 600);
+      this.quill.on("text-change", this.handleTextChange);
+      //从缓存中提取
+      this.quill.root.innerHTML = sessionStorage.getItem("text");
     },
     uploadCompressImage(file) {
       let formData = new FormData();
@@ -129,7 +143,7 @@ export default {
           res.data && this.uploadSuccess(res.data);
         })
         .catch(err => {
-          this.uploadErr();
+          this.$message.error("upload failed");
         });
     },
     handleFileChange(file) {
@@ -145,8 +159,8 @@ export default {
       });
     },
     uploadSuccess(response) {
-      let quill = this.$refs.quillEditor.quill;
       //获取光标的位置
+      let quill = this.quill;
       let position = quill.getSelection().index;
       //插入img标签到光标显示处
       quill.insertEmbed(
@@ -157,7 +171,7 @@ export default {
       //光标到最后
       quill.setSelection(position + 1);
     },
-    handleSumbit(type) {
+    handleSumbit() {
       const data = {},
         regSpecialCharacter = /[^\u4e00-\u9fa5\w]/gim;
       Object.assign(data, this.tableData[0], {

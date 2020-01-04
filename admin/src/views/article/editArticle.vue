@@ -62,6 +62,11 @@ export default {
       });
     }
   },
+  beforeRouteLeave(to, from, next) {
+    //从编辑文章路由到发布文章时，清空编辑文章时所缓存的文章信息
+    sessionStorage.clear();
+    next();
+  },
   methods: {
     handleSumbit(data) {
       api
@@ -76,6 +81,7 @@ export default {
         });
     },
     submitSuccess(data) {
+      sessionStorage.clear();
       this.$refs.edit.$refs.quillEditor.quill.root.innerHTML = ""; //清空编辑器;
       this.resetDialog();
       this.$message({

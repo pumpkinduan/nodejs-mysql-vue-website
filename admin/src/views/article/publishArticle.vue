@@ -53,6 +53,7 @@ export default {
     },
     submitSuccess(data) {
       this.$refs.publish.$refs.quillEditor.quill.root.innerHTML = ""; //清空编辑器;
+      sessionStorage.clear();//清空缓存
       this.resetDialog();
       this.$message({
         message: data.msg,

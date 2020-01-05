@@ -12,6 +12,8 @@ class ReplyDao {
             r.content = info.content;
             r.name = info.name;
             r.comment_id = info.comment_id;
+            r.parent_comment = info.parent_comment;
+            r.parent_name = info.parent_name;
             r.save().then((res) => {
                 success(false, { msg: '添加成功', success: true });
             }).catch(err => { success(new global.errs.HttpException()); console.log(err); })
@@ -40,7 +42,6 @@ class ReplyDao {
             }
         }).catch(err => {
             success(new global.errs.HttpException());
-            console.log(err)
         })
     }
     static deleteReplyById(id, success) {//删除文章
@@ -53,7 +54,6 @@ class ReplyDao {
                 success(new global.errs.NotFound('数据为空'))
             }
         }).catch(err => {
-            console.log(err)
             success(new global.errs.HttpException());
         })
     }

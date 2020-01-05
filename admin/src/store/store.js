@@ -5,9 +5,16 @@ Vue.use(Vuex);
 
 const state = {
     isAuthenticated: false,
-    userInfo: ''
+    userInfo: '',
+    timelineList: [],
+    records: { //文章，文章动态时间线，留言，评论...总数量记录
+        timeline_count: 0,
+        comment_count: 0,
+        reply_count: 0,
+        photo_count: 0,
+        article_count: 0
+    }
 }
-
 const mutations = {
     [types.SET_AUTHENTICATED](state, payload) {
         localStorage.setItem('isAuthenticated', payload);
@@ -32,10 +39,11 @@ const actions = {
     clear_all({ commit }) {
         commit(types.CLEAR_ALL);
     }
+
 }
 const store = new Vuex.Store({
     state,
     mutations,
     actions
 })
-export default store
+export default store;

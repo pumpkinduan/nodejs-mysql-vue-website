@@ -19,6 +19,11 @@ function getReplyAll(req, res, next) {
 }
 function deleteReplyById(req, res, next) {
     const { id } = req.params;
+    console.log(req.params)
+     console.log(req.params)
+
+      console.log(req.params)
+      
     ReplyDao.deleteReplyById(id, (err, data) => {
         reactToClient(res, err, data)
     });

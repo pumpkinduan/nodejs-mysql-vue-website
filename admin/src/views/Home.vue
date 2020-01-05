@@ -1,5 +1,5 @@
 <template>
-  <el-container class="home">
+  <el-container class="home page-component__scroll" >
     <el-header style="height: auto; padding: 0;">
       <HeaderNav @handleCollapse="handleCollapse" />
     </el-header>
@@ -79,23 +79,24 @@ export default {
       levelList: []
     };
   },
-  created() {
-    this.getBreadcrumb();
-  },
   beforeRouteUpdate(to, from, next) {
     this.getBreadcrumb(to);
     next();
+  },
+  created() {
+    this.getBreadcrumb(this.$route);
   },
   methods: {
     handleCollapse(value) {
       this.isCollapse = value;
     },
     getBreadcrumb(route) {
+      if ( !route.meta ) return;
       let matched = route.matched.filter(
         item => item.meta && item.meta.title
       );
       const first = matched[0];
-      if (first.meta.breadcrumb) {
+      if (first && first.meta.breadcrumb) {
         matched = [{ meta: { title: first.meta.breadcrumb } }].concat(matched);
       }
       this.levelList = matched.filter(item => item.meta && item.meta.title);

@@ -9,13 +9,13 @@
       @resetDialog="resetDialog"
       title="发表文章"
       btnText="添加"
-    >
-    </Publish>
+    ></Publish>
   </div>
 </template>
 <script>
-import api from "@/api/article.js";
+import article from "@/api/article.js";
 import Publish from "@/components/Publish";
+import timeline from "@/api/timeline.js";
 export default {
   name: "PublishArticle",
   components: {
@@ -40,20 +40,23 @@ export default {
   },
   methods: {
     handleSumbit(data) {
-      api
+      article
         .publishArticle(data)
         .then(res => {
           if (res.data) {
             this.submitSuccess(res.data);
+            //更新动态
+             timeline.createOneTimeline({
+              title: data.title,
+              status: "发布文章",
+              description: data.description
+            })
           }
         })
-        .catch(err => {
-          console.log(err);
-        });
     },
     submitSuccess(data) {
       this.$refs.publish.$refs.quillEditor.quill.root.innerHTML = ""; //清空编辑器;
-      sessionStorage.clear();//清空缓存
+      sessionStorage.clear(); //清空缓存
       this.resetDialog();
       this.$message({
         message: data.msg,

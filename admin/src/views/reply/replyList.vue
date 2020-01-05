@@ -50,7 +50,6 @@ export default {
         id: "id",
         name: "名字",
         content: "回复内容",
-        comment_id: "回复的留言id"
       },
       curPage: 1
     };

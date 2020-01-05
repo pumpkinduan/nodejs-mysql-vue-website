@@ -14,7 +14,8 @@
 </template>
 <script>
 import Publish from "@/components/Publish";
-import api from "@/api/article.js";
+import article from "@/api/article.js";
+import timeline from "@/api/timeline.js";
 export default {
   name: "EditArticle",
   components: {
@@ -69,11 +70,21 @@ export default {
   },
   methods: {
     handleSumbit(data) {
-      api
+      article
         .updateArticle(data, this.$route.params.article.article_id)
         .then(res => {
           if (res.data) {
             this.submitSuccess(res.data);
+            timeline.createOneTimeline({
+              title: data.title,
+              status: "更新文章",
+              description: data.description
+            })
+            // this.create_one_timeline({
+            //   title: data.title,
+            //   created_at: createDate(),
+            //   status: "更新文章"
+            // });
           }
         })
         .catch(err => {

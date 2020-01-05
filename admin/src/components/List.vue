@@ -4,6 +4,26 @@
       :data="tableData.filter(data => !search || data.title.toLowerCase().includes(search.toLowerCase()))"
       style="width: 100%"
     >
+      <el-table-column type="expand" fixed="left" v-if="$route.name=='ArticleList'">
+        <template slot-scope="props">
+          <p>
+            <strong style="color: #E6A23C">描述:&nbsp; &nbsp;</strong>
+            {{ props.row.description }}
+          </p>
+        </template>
+      </el-table-column>
+      <el-table-column type="expand" fixed="left" v-if="$route.name=='ReplyList'">
+        <template slot-scope="props">
+          <p style="margin-bottom: 10px;">
+            <strong style="color: #E6A23C">被回复的留言者:&nbsp; &nbsp;</strong>
+            {{ props.row.parent_name }}
+          </p>
+          <p>
+            <strong style="color: #E6A23C">被回复的留言:&nbsp; &nbsp;</strong>
+            {{ props.row.parent_comment }}
+          </p>
+        </template>
+      </el-table-column>
       <el-table-column
         align="center"
         :label="value"

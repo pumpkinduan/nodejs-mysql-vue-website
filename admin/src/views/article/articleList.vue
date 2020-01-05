@@ -24,11 +24,12 @@
 </template>
 
 <script>
-import api from "@/api/article.js";
+import article from "@/api/article.js";
+import timeline from "@/api/timeline.js";
 import List from "@/components/List";
 export default {
   created() {
-    api
+    article
       .getArticleLists()
       .then(res => {
         if (res.data && res.data.data) {
@@ -55,12 +56,10 @@ export default {
       pageBtns: 5, //页码按钮显示数量
       labels: {
         created_at: "日期",
-        article_id: "id",
         total_char: "字数",
         browse: "访问量",
         tag: "标签",
-        title: "标题",
-        description: "描述"
+        title: "标题"
       }
     };
   },
@@ -72,11 +71,16 @@ export default {
         type: "warning"
       })
         .then(() => {
-          api.deleteArticle(row.article_id).then(res => {
+          article.deleteArticle(row.article_id).then(res => {
             if (res.data && res.data.success) {
               this.$message.success(res.data.msg);
               this.tableData.splice(index, 1); //删除纪录
-              this.amount --;
+              this.amount--;
+              timeline.createOneTimeline({
+                title: row.title,
+                status: "删除文章",
+                description: row.description
+              });
             }
           });
         })

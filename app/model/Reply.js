@@ -6,6 +6,8 @@ class Reply extends Model { }
 Reply.init({
     content: Sequelize.STRING(256),
     name: Sequelize.STRING(32),
+    parent_name: Sequelize.STRING(16),
+    parent_comment: Sequelize.STRING(256),
     created_at: {
         type: Sequelize.DATE,
         get() {

@@ -22,7 +22,7 @@
               <div class="clearfix" style="padding-top: 0.5em;">
                 <span class="fl time">{{item.created_at}}</span>
                 <span class="fr time">{{ (index+1) }}楼</span>
-                <i class="iconfont icon-pinglun fr" @click="handleReply(item.name, item.id, index)"></i>
+                <i class="iconfont icon-pinglun fr" @click="handleReply(item.name, item.id, index, item.content)"></i>
               </div>
               <template>
                 <section
@@ -116,6 +116,8 @@ export default {
       comment: "",
       totalReplies: 0,
       comment_id: null, //当前被回复的留言的id
+      parent_name: '',
+      parent_comment: '',
       totalComments: 0,
       errMessage: "",
       isReply: false, //是否回复  默认 否
@@ -214,7 +216,9 @@ export default {
           let reply = {
             name: this.name,
             content: this.comment,
-            comment_id: this.comment_id
+            comment_id: this.comment_id,
+            parent_comment: this.parent_comment,
+            parent_name: this.parent_name
           };
           replyer.createReply(reply).then(res => {
             this.words[this.curIndex].replies.push(
@@ -235,10 +239,12 @@ export default {
     cancle() {
       this.resetComment();
     },
-    handleReply(name, id, index) {
+    handleReply(name, id, index, content) {
       //代表 && index==key回复
       this.isReply = true;
       this.comment_id = id;
+      this.parent_name = name;
+      this.parent_comment = content;
       this.curIndex = index; //当前点击的那条留言
       this.prompt = `回复${name}:`;
       this.$refs.focusTextarea.focus();

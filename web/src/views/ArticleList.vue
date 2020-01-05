@@ -79,7 +79,6 @@ export default {
         this.cachedBlogs.set(1, this.articleLists); //缓存第一页数据
         this.pageSize = +result.data.meta.pageSize;
         this.commentSize = +result.data.meta.count;
-        localStorage.setItem('count', this.commentSize);// 与侧边栏view共享数据
       })
       .catch(err => {
         this.blogList = []; //数据为空
@@ -89,11 +88,13 @@ export default {
      getCurrentPage(page = 1) {
       if (this.cachedBlogs.has(page)) {
         this.articleLists = this.cachedBlogs.get(page);
+        document.getElementById('backToTop').click();
       } else {
         api.getArticleList(page).then(res => {
           if (res.data) {
             this.articleLists = res.data.data;
             this.cachedBlogs.set(page, this.articleLists); //缓存第一页数据
+            document.getElementById('backToTop').click();
           }
         });
       }

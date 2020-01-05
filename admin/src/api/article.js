@@ -14,5 +14,8 @@ export default {
     },
     deleteArticle(id) {
         return axiosInstance.delete("/api/article/delete/" + id);
+    },
+    getTimeline() {
+        return axiosInstance.get('/api/article/timeline');
     }
 }

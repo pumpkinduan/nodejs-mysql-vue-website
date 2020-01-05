@@ -21,8 +21,8 @@ const router = new Router({
           path: 'auth',
           name: 'Auth',
           meta: {
-            title: '首页',
-            breadcrumb: false
+            title: '个人中心',
+            breadcrumb: "首页"
           },
           component: () => import("./views/admin/auth")
         },

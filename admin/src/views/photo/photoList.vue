@@ -19,7 +19,9 @@
     </div>
     <div class="load-btn">
       <el-button type="primary" @click="loadMoreImgs" :disabled="disabled">加载更多</el-button>
-      <el-button type="info">一共{{totalCounts}}张图片</el-button>
+      <el-badge :value="totalCounts" :max="99">
+        <el-button>相片</el-button>
+      </el-badge>
     </div>
     <el-dialog :visible.sync="dialogVisible">
       <img width="100%" :src="dialogImageUrl" alt />
@@ -90,7 +92,7 @@ export default {
                 message: res.data.msg
               });
               this.urls.splice(index, 1);
-              this.totalCounts --;
+              this.totalCounts--;
             }
           })
           .catch(err => {
@@ -127,5 +129,9 @@ export default {
 }
 .el-image__item-actions span {
   margin: 0 10px;
+}
+.el-badge {
+  margin-left: 10px;
+  vertical-align: top;
 }
 </style>

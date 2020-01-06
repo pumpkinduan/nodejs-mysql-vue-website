@@ -6,8 +6,23 @@ import router from './router'
 import '@/js/generateHeart.js'
 import '@/js/backToTop.js'
 import { Carousel, CarouselItem, Dialog } from 'element-ui';
+import NProgress from 'nprogress'
+import 'nprogress/nprogress.css'
 import App from './App.vue';
-
+NProgress.configure({
+  easing: 'ease',
+  speed: 500,
+  showSpinner: false,
+  trickleSpeed: 200,
+  minimum: 0.3
+})
+router.beforeEach((to, from, next) => {
+  NProgress.start();
+  next();
+})
+router.afterEach(() => {
+  NProgress.done();
+})
 Vue.use(Carousel);
 Vue.use(CarouselItem);
 Vue.use(Dialog);

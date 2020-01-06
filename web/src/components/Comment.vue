@@ -4,9 +4,7 @@
       <h3>
         <i class="iconfont icon-liuyan"></i>
         <span v-if="words.length > 0">
-          一共有
-          <em class="orange">{{totalComments}}</em>条留言和
-          <em class="orange">{{totalReplies}}</em>条回复
+          一共有<em style="font-size: 1rem;" class="orange">{{totalComments}}</em>条留言和<em style="font-size: 1rem;" class="orange">{{totalReplies}}</em>条回复
         </span>
         <span v-else>目前还没有人留下ta的足迹噢,快来抢占一楼吧</span>
       </h3>
@@ -22,7 +20,10 @@
               <div class="clearfix" style="padding-top: 0.5em;">
                 <span class="fl time">{{item.created_at}}</span>
                 <span class="fr time">{{ (index+1) }}楼</span>
-                <i class="iconfont icon-pinglun fr" @click="handleReply(item.name, item.id, index, item.content)"></i>
+                <i
+                  class="iconfont icon-pinglun fr"
+                  @click="handleReply(item.name, item.id, index, item.content)"
+                ></i>
               </div>
               <template>
                 <section
@@ -33,7 +34,7 @@
                   <div class="replier">
                     <i class="iconfont orange fs-15 icon-github"></i>
                     <span class="user-name">{{reply.name}}</span>
-                    <small style="color: #666;">回复道</small>
+                    <small style="color: #666;">回复道:</small>
                     <span class="time fr">{{reply.created_at}}</span>
                   </div>
                   <p style="text-indent: 2rem;" class="content">{{reply.content}}</p>
@@ -93,7 +94,7 @@
       </div>
       <div class="clearfix">
         <button @click="send" class="fl">发布留言</button>
-        <button @click="cancle" class="fl cancle">取消发布</button>
+        <button @click="resetComment" class="fl cancle">取消发布</button>
       </div>
     </section>
   </div>
@@ -105,7 +106,7 @@ import commenter from "@/api/comment.js";
 import replyer from "@/api/reply.js";
 import { throttle, debounce, addEvent, removeEvent } from "@/lib/tool.js";
 export default {
-  props: ['article_title'],
+  props: ["article_title"],
   data() {
     return {
       canLoad: true,
@@ -116,8 +117,8 @@ export default {
       comment: "",
       totalReplies: 0,
       comment_id: null, //当前被回复的留言的id
-      parent_name: '',
-      parent_comment: '',
+      parent_name: "",
+      parent_comment: "",
       totalComments: 0,
       errMessage: "",
       isReply: false, //是否回复  默认 否
@@ -136,14 +137,10 @@ export default {
   },
   created() {
     let self = this;
-    this.handleThrottle = throttle(function() {
-      if (self.loadMoreComment()) {
-        self.page++;
-        self.loading_gif = true;
-        self.getData();
-      }
-    }, 400);
     this.getData();
+    this.handleThrottle = throttle(() => {
+      this.loadData();
+    }, 350);
   },
   mounted() {
     addEvent(window, "scroll", this.handleThrottle);
@@ -187,46 +184,52 @@ export default {
           : (self.errMessage = "");
       });
     },
+    sendComment() {
+      let data = {
+        name: this.name,
+        content: this.comment,
+        article_id: this.$route.params.articleId,
+        article_title: this.article_title
+      };
+      commenter
+        .createComment(data)
+        .then(res => {
+          let newComment = Object.assign(data, {
+            created_at: format(),
+            replies: [],
+            id: res.data.comment_id
+          });
+          this.words.push(newComment);
+          this.totalComments++;
+          this.resetComment();
+        })
+        .catch(err => {
+          this.errMessage = err.msg;
+          this.$refs.focusInput.focus();
+        });
+    },
+    sendReply() {
+      let reply = {
+        name: this.name,
+        content: this.comment,
+        comment_id: this.comment_id,
+        parent_comment: this.parent_comment,
+        parent_name: this.parent_name
+      };
+      replyer.createReply(reply).then(res => {
+        this.words[this.curIndex].replies.push(
+          Object.assign(reply, { created_at: format() })
+        );
+        this.totalReplies++;
+        this.resetComment();
+      });
+    },
     send() {
       if (this.comment && this.name) {
         if (!this.isReply) {
-          let data = {
-            name: this.name,
-            content: this.comment,
-            article_id: this.$route.params.articleId,
-            article_title: this.article_title
-          };
-          commenter
-            .createComment(data)
-            .then(res => {
-              let newComment = Object.assign(data, {
-                created_at: format(),
-                replies: [],
-                id: res.data.comment_id
-              });
-              this.words.push(newComment);
-              this.totalComments++;
-              this.resetComment();
-            })
-            .catch(err => {
-              this.errMessage = err.msg;
-              this.$refs.focusInput.focus();
-            });
+          this.sendComment();
         } else {
-          let reply = {
-            name: this.name,
-            content: this.comment,
-            comment_id: this.comment_id,
-            parent_comment: this.parent_comment,
-            parent_name: this.parent_name
-          };
-          replyer.createReply(reply).then(res => {
-            this.words[this.curIndex].replies.push(
-              Object.assign(reply, { created_at: format() })
-            );
-            this.totalReplies++;
-            this.resetComment();
-          });
+          this.sendReply();
         }
       } else if (!this.comment) {
         this.prompt = "留言不能为空噢";
@@ -235,9 +238,6 @@ export default {
         this.$refs.focusInput.focus();
         this.errMessage = "请留下阁下的大名吧";
       }
-    },
-    cancle() {
-      this.resetComment();
     },
     handleReply(name, id, index, content) {
       //代表 && index==key回复
@@ -256,7 +256,8 @@ export default {
       this.name = "";
       this.prompt = "Hey,guys,come and say something";
     },
-    loadMoreComment() {
+    loadData() {
+      if (this.totalComments <= this.words.length) return;
       if (this.canLoad) {
         const ele = document.getElementsByClassName("words")[0],
           viewHeight =
@@ -267,7 +268,9 @@ export default {
         if (bottom - 100 < viewHeight) {
           //最后几条留言快要离开可视区时，加载留言
           //100 为预留 距离，提前一点加载留言
-          return true;
+          this.page++;
+          this.loading_gif = true;
+          this.getData();
         }
       }
     }
@@ -306,14 +309,14 @@ export default {
   min-width: 300px;
 }
 .comment .words ul li section .time {
-  color: #888;
-  font-size: 0.8em;
+  color: #777;
+  font-size: 0.9em;
 }
 .comment .words ul li section.wrapper {
   margin-top: 0.6rem;
   padding-left: 2rem;
   position: relative;
-  color: #666;
+  color: #555;
   overflow: hidden;
 }
 .comment .words ul li section.wrapper .showMore {
@@ -327,21 +330,20 @@ export default {
   color: #ff9d00;
 }
 .comment .words ul li header .user-name {
-  font-size: 0.9rem;
+  font-size: 1rem;
   vertical-align: 2px;
   margin-left: 6px;
   font-weight: 500;
 }
 .comment .words ul li .content {
   word-break: break-all;
-  color: #334;
+  color: #666;
   font-weight: 400;
 }
 .comment .words ul li section .reply {
   padding: 0.8rem;
-}
-.comment .words ul li section .reply:hover {
-  background-color: #eeeeee57;
+  background-color: rgba(241,241,241,.4);
+  border-radius: 5px;
 }
 .comment .words ul li section .reply:last-child {
   border: none;
@@ -368,6 +370,9 @@ export default {
 .icon-quxiao:hover {
   color: #f40;
   cursor: pointer;
+}
+.icon-xiaolian- {
+  font-size: 1.3rem;
 }
 /* 字体图标样式结束 */
 .slide-enter {
@@ -445,8 +450,8 @@ button:hover {
   opacity: 0.8;
 }
 .block-loading {
-    width: 100%;
-    padding: 5rem 0;
-    background: url('../assets/image/loading_big.gif') center center no-repeat;
+  width: 100%;
+  padding: 5rem 0;
+  background: url("../assets/image/loading_big.gif") center center no-repeat;
 }
 </style>

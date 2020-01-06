@@ -7,7 +7,11 @@
         <Waterfall :cards="cards" ref="waterfall" @loadData="loadData" :gap="gap">
           <template slot-scope="{data}">
             <div class="el-image" style="border-radius: 5px;">
-              <img style="width: 100%;border-radius: 5px;" :src="`${serverUrl}/${data.path}`" alt="加载失败" />
+              <img
+                style="width: 100%;border-radius: 5px;"
+                :src="`${serverUrl}/${data.path}`"
+                alt="加载失败"
+              />
               <span class="el-image__item-actions">
                 <span class="el-image__item-preview" @click="handlePreview(data.path)">
                   <i class="el-icon-zoom-in"></i>
@@ -42,8 +46,9 @@ export default {
       gap: 300,
       page: 1,
       serverUrl: config.serverUrl,
-      dialogImageUrl: '',
-      dialogVisible: false
+      dialogImageUrl: "",
+      dialogVisible: false,
+      totalPhotoes: null
     };
   },
   created() {
@@ -55,15 +60,20 @@ export default {
     },
     getData(page) {
       api.getAllImgs(page).then(result => {
-        if (result.data && result.data.imgs && result.data.imgs.rows) {
+        if (result.data && result.data.imgs) {
+          !this.totalPhotoes
+            ? (this.totalPhotoes = result.data.imgs.count)
+            : "";
           this.cards.push(...result.data.imgs.rows);
         }
       });
     },
     loadData(page) {
+      // 减少一次请求
+      if (this.totalPhotoes <= this.cards.length) return;
       this.getData(page);
     },
-     handlePreview(path) {
+    handlePreview(path) {
       this.dialogImageUrl = this.serverUrl + "/" + path;
       this.dialogVisible = !this.dialogVisible;
     }

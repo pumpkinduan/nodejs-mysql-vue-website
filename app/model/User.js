@@ -15,7 +15,6 @@ User.init({//初始化管理员信息
   sequelize,
   tableName: 'User'
 })
-// .sync({force: true}) 当我们改动数据表的字段时，想要更新数据表则需要加上该方法
 module.exports = {
     User
 }

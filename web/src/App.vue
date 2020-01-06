@@ -7,11 +7,18 @@
 </template>
 <script>
 export default {
+  watch: {
+    "$route": () => {
+      document.getElementById('backToTop').click();
+    }
+  }
 };
 </script>  
 <style scoped>
 #app {
   width: 100%;
+  min-height: 100%;
+  background: #f5f7f9;
 }
 .fade-enter-active,
 .fade-leave-active {

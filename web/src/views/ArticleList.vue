@@ -34,9 +34,9 @@
           </router-link>
         </div>
       </section>
-      <section class="pagination-nav">
+      <section class="pagination-nav" v-if="articleLists.lenth !== 0">
         <Pagination
-          :totalData="commentSize"
+          :totalData="totalArtiles"
           :pageSize="pageSize"
           @current-change="getCurrentPage"
           @next-page="nextPage"
@@ -59,8 +59,8 @@ export default {
       articleLists: [],
       pageSize: 5,
       curPage: 1,
-      commentSize: 0,
-      cachedBlogs: new Map()
+      totalArtiles: 0,
+      cachedArtiles: new Map()
     };
   },
   filters: {
@@ -76,9 +76,9 @@ export default {
       .getArticleList(1)
       .then(result => {
         this.articleLists = result.data.data;
-        this.cachedBlogs.set(1, this.articleLists); //缓存第一页数据
+        this.cachedArtiles.set(1, this.articleLists); //缓存第一页数据
         this.pageSize = +result.data.meta.pageSize;
-        this.commentSize = +result.data.meta.count;
+        this.totalArtiles = +result.data.meta.count;
       })
       .catch(err => {
         this.blogList = []; //数据为空
@@ -86,14 +86,14 @@ export default {
   },
   methods: {
      getCurrentPage(page = 1) {
-      if (this.cachedBlogs.has(page)) {
-        this.articleLists = this.cachedBlogs.get(page);
+      if (this.cachedArtiles.has(page)) {
+        this.articleLists = this.cachedArtiles.get(page);
         document.getElementById('backToTop').click();
       } else {
         api.getArticleList(page).then(res => {
           if (res.data) {
             this.articleLists = res.data.data;
-            this.cachedBlogs.set(page, this.articleLists); //缓存第一页数据
+            this.cachedArtiles.set(page, this.articleLists); //缓存第一页数据
             document.getElementById('backToTop').click();
           }
         });

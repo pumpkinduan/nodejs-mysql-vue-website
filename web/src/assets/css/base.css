@@ -136,28 +136,29 @@ hr {
 .blue {
     color: #2395ff;
 }
-
-.center {
-    text-align: center;
-}
-
 .orange {
     color: #ff8a00 !important;
 }
-
-.fs-15 {
-    font-size: 1.5rem;
-}
-
 img {
     display: block;
 }
+
 .relative {
     position: relative;
 }
+/* 网页中间部分的内边距 */
 .main-block {
     padding: 5rem 4rem;
-    background: #f5f7f9;
     position: relative;
 }
 
+/* 滚动条宽度 */
+::-webkit-scrollbar {
+    width: 10px;
+    height: 10px;
+}
+/* 滚动条的滑块 */
+::-webkit-scrollbar-thumb {
+    background-color:#a1a3a9;
+    border-radius: 4px;
+}

@@ -34,7 +34,6 @@
             <li v-for="(item, index) in catalogs" :key="index">
               <a
                 :class="[curIndex == index ? 'active': '']"
-                :href="item.id"
                 @click="handleClick(item._top, index)"
               >{{index + 1}}.{{item.text}}</a>
             </li>
@@ -42,7 +41,7 @@
         </template>
       </AsideBar>
     </aside>
-    <el-dialog :lock-scroll="false" width="75%" :visible.sync="dialogVisible">
+    <el-dialog :lock-scroll="false" width="65%" :visible.sync="dialogVisible">
       <img width="100%" :src="dialogImageUrl" alt />
     </el-dialog>
   </div>
@@ -95,7 +94,7 @@ export default {
         //setTimeout不能省，它的延迟时间是测试出来的，最好不低于100
         this.init();
       });
-    }, 100);
+    }, 120);
   },
   beforeRouteLeave(to, from, next) {
     if (this.second > this.readingTime) {
@@ -123,7 +122,6 @@ export default {
           elements[i].id = text;
           this.catalogs.push({
             text,
-            id: "#" + text,
             _top: getElementPosition(elements[i]).y
           });
         }

@@ -8,14 +8,14 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/Pumpumpkin/PersonalWebsite.git"
+    "url": "git+https://github.com/pumpkinduan/nodejs-mysql-vue-website.git"
   },
   "author": "",
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/Pumpumpkin/PersonalWebsite/issues"
+    "url": "https://github.com/pumpkinduan/nodejs-mysql-vue-website/issues"
   },
-  "homepage": "https://github.com/Pumpumpkin/PersonalWebsite#readme",
+  "homepage": "https://github.com/pumpkinduan/nodejs-mysql-vue-website#readme",
   "dependencies": {
     "bcrypt": "^3.0.6",
     "body-parser": "^1.19.0",

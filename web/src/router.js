@@ -62,13 +62,5 @@ export default new Router({
       name: 'error',
       component: () => import('./views/NotFound.vue')
     }
-  ],
-  scrollBehavior(to, from, savedPosition) {
-    if (savedPosition) { return savedPosition }
-    return new Promise((resolve) => {
-      setTimeout(() => {
-        resolve({ x: 0, y: 0 });
-      }, 0);
-    });
-  }
+  ]
 })

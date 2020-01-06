@@ -55,7 +55,9 @@ export default {
 <style scoped>
 .home {
   width: 100%;
-  height: 100%;
+  min-height: 100%;
+  position: relative;
+  padding-bottom: 300px;
 }
 .home main .main-inner {
   position: relative;

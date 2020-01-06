@@ -56,7 +56,6 @@
             <li>使用vue-cli3构建项目，利用vueRouter实现spa页面效果</li>
             <li>编写简约风格的瀑布流组件，而网站首页则采用瀑布流布局，实现懒加载功能，利用节流进行性能优化</li>
             <li>基于HTML(5)&CSS(3)进行整站页面的搭建与布局，包含首页，关于我以及博客列表和博客详情页面</li>
-            <li>利用sessionStorage缓存当前页面待发布的留言信息，再次进入该页面时，自动填充留言信息</li>
           </ol>
         </li>
       </ul>
@@ -65,7 +64,9 @@
 </template>
 
 <style scoped>
-
+.about {
+  position: relative;
+}
 .about aside {
   width: 400px;
   height: 100%;
@@ -125,7 +126,7 @@
   padding: 0 1rem 1rem 1.5rem;
 }
 .about main .skill li {
-  margin-top: 1.5rem;
+  padding-top: 1.5rem;
 }
 .about main .skill li section {
   padding-left: 1rem;

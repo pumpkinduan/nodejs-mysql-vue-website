@@ -50,8 +50,12 @@ export default {
 </script>
 <style scoped>
 .footer {
-  background-color: #b1b3b32e;
+  width: 100%;
+  background-color: #fff;
   padding: 2rem 4rem 1rem;
+  position: absolute;
+  bottom: 0;
+  left: 0;
 }
 /* --底部关于开始-- */
 .footer .about h1,

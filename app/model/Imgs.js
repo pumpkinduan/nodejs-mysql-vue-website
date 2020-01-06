@@ -29,7 +29,6 @@ Imgs.init({
     sequelize,
     tableName: 'Imgs'
 })
-// .sync({alter: true})
 module.exports = {
     Imgs
 }

@@ -23,13 +23,13 @@
 </template>
 
 <script>
-import api from "@/api/article.js";
+import api from '@/api/article.js';
 export default {
-  name: "tag",
+  name: 'tag',
   data() {
     return {
-      tag: "",
-      tag_count: "",
+      tag: '',
+      tag_count: '',
       links: [],
       archive_count: 0
     };
@@ -49,7 +49,7 @@ export default {
             this.tag_count = res.data.meta.count;
           }
         })
-        .catch(err => {
+        .catch(() => {
           this.links = []; //数据为空
         });
     }

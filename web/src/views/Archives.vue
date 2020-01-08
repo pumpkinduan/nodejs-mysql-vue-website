@@ -23,13 +23,13 @@
 </template>
 
 <script>
-import api from "@/api/article.js";
+import api from '@/api/article.js';
 export default {
-  name: "archive",
+  name: 'archive',
   data() {
     return {
-      tag: "",
-      tag_count: "",
+      tag: '',
+      tag_count: '',
       archives: [],
       archive_count: 0
     };

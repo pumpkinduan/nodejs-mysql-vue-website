@@ -17,10 +17,10 @@
   </div>
 </template>
 <script>
-import AsideBar from "@/components/AsideBar";
-import Header from "@/components/Header.vue";
-import Footer from "@/components/Footer";
-import api from "@/api/article.js";
+import AsideBar from '@/components/AsideBar';
+import Header from '@/components/Header.vue';
+import Footer from '@/components/Footer';
+import api from '@/api/article.js';
 export default {
   components: {
     Header,
@@ -29,8 +29,8 @@ export default {
   },
   data() {
     return {
-      archive_count: "",
-      categories_count: "",
+      archive_count: '',
+      categories_count: '',
       categories: [],
       archives: []
     };

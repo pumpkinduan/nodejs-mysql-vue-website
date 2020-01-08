@@ -273,3 +273,120 @@
       "code": 404,
       "success": false
 	}
+
+### 获取所有文章归档
+	GET   /article/archives
+### 请求参数
+	无
+### 成功返回
+	{
+	    "data": [
+	        {
+	            "year": "2019",
+	            "count": 2,
+	            "content": [
+	                 {
+	                     "date": "12-20",
+	                     "title": "好好学习闭包",
+	                     "article_id": "46157358"
+	                 },
+	                 {  
+	                     "date": "12-05",
+	                     "title": "好好学习原型链",
+	                     "article_id": "11387429"
+	                 }
+	             ]
+	        },
+	        {
+	            "year": "2018",
+	            "count": 1,
+	            "content": [
+	                 {
+	                     "date": "12-28",
+	                     "title": "fssgss",
+	                     "article_id": "19122209"
+	                 }
+	             ]
+	        }
+	      ]
+		  "meta": {
+		      "count": 3,
+		      "success": true
+		  }
+	}	
+### 失败返回
+	{
+	    "msg": "数据为空",
+	    "errCode": 40004,
+	    "code": 404,
+	    "success": false
+	}
+
+### 获取所有文章分类
+	GET   /article/categories
+### 请求参数
+	无
+
+### 成功返回
+	{
+	    "data": [
+	        {
+	            "tag": "日记",
+	            "count": 1
+	        },
+	        {
+	            "tag": "VUE",
+	            "count": 1
+	        },
+	        {
+	            "tag": "JavaScript",
+	            "count": 2
+	        }
+	    ],
+	    "meta": {
+	        "categories_count": 3,
+	        "success": true
+	    }
+	}	
+### 失败返回
+	{
+	    "msg": "数据为空",
+	    "errCode": 40004,
+	    "code": 404,
+	    "success": false
+	}
+
+### 获取分类下的所有文章
+	GET   /article/ists_tag
+### 请求参数
+| 参数 | 类型 | 说明 | 是否必填 |
+| :----: | :----: | :----: |:----:|
+| tag | 字符串 | 标签 | 是 |
+
+#### 例如：tag=JavaScript
+### 成功返回
+	{
+    	"data": [
+    		{
+	            "created_at": "2019-12-05",
+	            "article_id": 11387429,
+	            "title": "好好学习原型链"
+        },
+	        {
+	            "created_at": "2019-12-04",
+	            "article_id": 46157358,
+	            "title": "好好学习闭包"
+	        }
+	    ],
+	    "meta": {
+	        "count": 2,
+	        "success": true
+	    }
+	}
+### 失败返回
+	{
+	    "msg": "数据为空",
+	    "errCode": 40004,
+	    "code": 404,
+	    "success": false
+	}	

@@ -18,75 +18,75 @@
 </template>
 
 <script>
-import validator from "@/util/validateInfo.js";
-import jwtDecode from "jwt-decode";
-import { mapActions } from "vuex";
-import api from "@/api/admin.js";
+import validator from '@/util/validateInfo.js';
+import jwtDecode from 'jwt-decode';
+import { mapActions } from 'vuex';
+import api from '@/api/admin.js';
 export default {
   mounted() {
-    this.loginForm.account = localStorage.getItem("account");
+    this.loginForm.account = localStorage.getItem('account');
   },
   data() {
     const validateAccount = (rule, value, callback) => {
       // console.log(value); //输入框的值
       if (!value) {
         //没有输入账号
-        return callback(new Error("账号不能为空"));
+        return callback(new Error('账号不能为空'));
       }
       setTimeout(() => {
         if (validator.validateUser(value)) {
           callback();
         } else {
-          callback(new Error("账号格式错误"));
+          callback(new Error('账号格式错误'));
         }
       }, 300);
     };
     const validatePwd = (rule, value, callback) => {
-      if (value === "") {
-        callback(new Error("密码不能为空"));
+      if (value === '') {
+        callback(new Error('密码不能为空'));
       } else {
         if (validator.validatePwd(value)) {
           callback();
         } else {
-          callback(new Error("密码长度在6-18个字符之间"));
+          callback(new Error('密码长度在6-18个字符之间'));
         }
       }
     };
     return {
       loginForm: {
-        pwd: "",
-        account: ""
+        pwd: '',
+        account: ''
       },
       rules: {
-        pwd: [{ validator: validatePwd, trigger: "blur", required: true }],
+        pwd: [{ validator: validatePwd, trigger: 'blur', required: true }],
         account: [
-          { validator: validateAccount, trigger: "blur", required: true }
+          { validator: validateAccount, trigger: 'blur', required: true }
         ]
       }
     };
   },
   methods: {
     ...mapActions([
-      "set_admin", //this.set_admin() --> this.$store.dispatch('set_admin')
-      "set_authenticated"
+      'set_admin', //this.set_admin() --> this.$store.dispatch('set_admin')
+      'set_authenticated'
     ]),
     submitForm() {
       //密码校验
       let { account, pwd } = this.loginForm;
       if (!account && !pwd) {
         return this.$message({
-          message: "请输入账号",
+          message: '请输入账号',
           showClose: true
         });
       }
       if (!account) {
         return this.$message({
-          message: "请输入账号",
+          message: '请输入账号',
           showClose: true
         });
       } else if (!pwd) {
         return this.$message({
-          message: "请输入密码",
+          message: '请输入密码',
           showClose: true
         });
       }
@@ -95,7 +95,7 @@ export default {
           const data = res.data;
           if (data && data.success) {
             if (data.token) {
-              localStorage.setItem("token", data.token);
+              localStorage.setItem('token', data.token);
               const decoded = jwtDecode(data.token);
               this.set_admin(decoded);
               this.set_authenticated(true); //表示登录成功
@@ -108,7 +108,7 @@ export default {
               showClose: true,
               duration: 1500
             });
-            this.$router.push({ name: "home" });
+            this.$router.push({ name: 'home" });
           }
         },
         err => {

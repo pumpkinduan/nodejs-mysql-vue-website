@@ -12,13 +12,13 @@
   </div>
 </template>
 <script>
-import { debounce } from "@/util/debounce.js";
+import { debounce } from '@/util/debounce.js';
 export default {
   activated() {
     //解决 失活的瀑布流组件 再次被激活时 定位发生错乱的bug
     this.setPostion();
   },
-  name: "waterFall",
+  name: 'waterFall',
   props: {
     gutter: {
       type: Number,
@@ -35,7 +35,7 @@ export default {
       rowLeftX: [],
       rowHeightArr: [],
       loadPage: 1,
-      handleDebounce: ""
+      handleDebounce: ''
     };
   },
   created() {
@@ -54,7 +54,7 @@ export default {
   },
   methods: {
     init() {
-      window.addEventListener("resize", this.handleDebounce, false);
+      window.addEventListener('resize', this.handleDebounce, false);
     },
     preLoadImg(img, fn) {
       if (img && img.complete) {
@@ -71,7 +71,7 @@ export default {
     preLoadImgs(fn) {
       let imgs =
         this.$refs.waterfall_container &&
-        this.$refs.waterfall_container.getElementsByTagName("img");
+        this.$refs.waterfall_container.getElementsByTagName('img');
       let totalCount = imgs && imgs.length,
         count = 0;
       for (let i = 0; i < totalCount; i++) {
@@ -117,12 +117,12 @@ export default {
               Math.ceil(item.offsetHeight) + gutter;
           });
         }
-        container.style.height = Math.max.apply(null, rowHeightArr) + "px";
+        container.style.height = Math.max.apply(null, rowHeightArr) + 'px';
       });
     }
   },
   destroyed() {
-    window.removeEventListener("resize", this.handleDebounce);
+    window.removeEventListener('resize', this.handleDebounce);
   }
 };
 </script>

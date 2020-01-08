@@ -8,7 +8,7 @@
 
 <script>
 export default {
-  props: ["menu", "levelList"],
+  props: ['menu', 'levelList'],
 };
 </script>
 

@@ -33,19 +33,19 @@ export default {
     return {
       navLinks: [
         {
-          class: "iconfont icon-shouye",
-          component: "articleList",
-          name: "首页"
+          class: 'iconfont icon-shouye',
+          component: 'articleList',
+          name: '首页'
         },
         {
-          class: "iconfont icon-xingxing1",
-          component: "photoWall",
-          name: "相册墙"
+          class: 'iconfont icon-xingxing1',
+          component: 'photoWall',
+          name: '相册墙'
         },
         {
-          class: "iconfont icon-guanyuwo",
-          component: "about",
-          name: "关于我"
+          class: 'iconfont icon-guanyuwo',
+          component: 'about',
+          name: '关于我'
         }
       ],
       show: false

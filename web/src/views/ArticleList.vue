@@ -48,8 +48,8 @@
 </template>
 
 <script>
-import Pagination from "@/components/Pagination";
-import api from "@/api/article.js";
+import Pagination from '@/components/Pagination';
+import api from '@/api/article.js';
 export default {
   components: {
     Pagination
@@ -80,7 +80,7 @@ export default {
         this.pageSize = +result.data.meta.pageSize;
         this.totalArtiles = +result.data.meta.count;
       })
-      .catch(err => {
+      .catch(() => {
         this.blogList = []; //数据为空
       });
   },

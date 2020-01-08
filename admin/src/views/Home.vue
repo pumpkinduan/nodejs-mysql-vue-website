@@ -19,9 +19,9 @@
 
 <script>
 // @ is an alias to /src
-import HeaderNav from "@/components/HeaderNav";
-import SideMenu from "@/components/SideMenu";
-import Breadcrumb from "@/components/Breadcrumb";
+import HeaderNav from '@/components/HeaderNav';
+import SideMenu from '@/components/SideMenu';
+import Breadcrumb from '@/components/Breadcrumb';
 export default {
   components: {
     HeaderNav,
@@ -33,47 +33,47 @@ export default {
       isCollapse: false,
       menu: [
         {
-          icon: "el-icon-s-home",
-          name: "首页",
-          component: "Auth"
+          icon: 'el-icon-s-home',
+          name: '首页',
+          component: 'Auth'
         },
         {
-          icon: "el-icon-document",
-          name: "文章管理",
+          icon: 'el-icon-document',
+          name: '文章管理',
           children: [
             {
-              name: "文章发布",
-              component: "PublishArticle"
+              name: '文章发布',
+              component: 'PublishArticle'
             },
             {
-              name: "文章信息",
-              component: "ArticleList"
+              name: '文章信息',
+              component: 'ArticleList'
             }
           ]
         },
         {
-          icon: "el-icon-ice-tea",
-          name: "相册墙",
+          icon: 'el-icon-ice-tea',
+          name: '相册墙',
           children: [
             {
-              name: "图片发布",
-              component: "PhotoPublish"
+              name: '图片发布',
+              component: 'PhotoPublish'
             },
             {
-              name: "相册数据",
-              component: "PhotoList"
+              name: '相册数据',
+              component: 'PhotoList'
             }
           ]
         },
         {
-          icon: "el-icon-chat-dot-round",
-          name: "留言",
-          component: "CommentList"
+          icon: 'el-icon-chat-dot-round',
+          name: '留言',
+          component: 'CommentList'
         },
         {
-          icon: "el-icon-chat-line-square",
-          name: "回复",
-          component: "ReplyList"
+          icon: 'el-icon-chat-line-square',
+          name: '回复',
+          component: 'ReplyList'
         }
       ],
       levelList: []

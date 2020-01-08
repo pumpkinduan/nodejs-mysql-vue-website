@@ -43,13 +43,7 @@
 
 <script>
 export default {
-  props: ["isCollapse", "menu"],
-  data() {
-    return {
-      
-    };
-  },
-
+  props: ['isCollapse', 'menu'],
   methods: {
     toggleCollapse() {
       this.isCollapse = !this.isCollapse;

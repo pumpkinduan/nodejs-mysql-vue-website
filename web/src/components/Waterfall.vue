@@ -12,13 +12,13 @@
   </div>
 </template>
 <script>
-import { debounce, throttle, addEvent, removeEvent } from "@/lib/tool.js";
+import { debounce, throttle, addEvent, removeEvent } from '@/lib/tool.js';
 export default {
   activated() {
     //解决 失活的瀑布流组件 再次被激活时 定位发生错乱的bug
     this.setPostion();
   },
-  name: "waterFall",
+  name: 'waterFall',
   props: {
     gap: {
       type: Number,
@@ -34,7 +34,7 @@ export default {
     },
     backgroundColor: {
       type: String,
-      default: "#eee"
+      default: '#eee'
     }
   },
   data() {
@@ -45,8 +45,8 @@ export default {
       width: 240,
       loadPage: 1,
       canLoad: true,
-      handleDebounce: "",
-      handleThrottle: ""
+      handleDebounce: '',
+      handleThrottle: ''
     };
   },
   created() {
@@ -69,7 +69,7 @@ export default {
   },
   watch: {
     cards: {
-      handler(newVal, oldVal) {
+      handler() {
         this.canLoad = true;
       },
       immediate: true
@@ -77,8 +77,8 @@ export default {
   },
   methods: {
     init() {
-      addEvent(window, "resize", this.handleDebounce);
-      addEvent(window, "scroll", this.handleThrottle);
+      addEvent(window, 'resize', this.handleDebounce);
+      addEvent(window, 'scroll', this.handleThrottle);
     },
     preLoadImg(img, fn) {
       if (img && img.complete) {
@@ -95,11 +95,11 @@ export default {
     preLoadImgs(fn) {
       let imgs =
         this.$refs.waterfall_container &&
-        this.$refs.waterfall_container.getElementsByTagName("img");
+        this.$refs.waterfall_container.getElementsByTagName('img');
       let totalCount = imgs && imgs.length,
         count = 0;
       for (let i = 0; i < totalCount; i++) {
-        this.preLoadImg(imgs[i], img => {
+        this.preLoadImg(imgs[i], () => {
           count++;
           if (count === totalCount) {
             //所有图片加载完成
@@ -134,7 +134,7 @@ export default {
               }
             }
           }
-          eleNodeLists.forEach((item, index) => {
+          eleNodeLists.forEach((item) => {
             //遍历所有元素
             //第二行开始，按照指定的规则来排版布局
             //获取上一行高度数组中最矮的那个元素的高度
@@ -146,7 +146,7 @@ export default {
               Math.ceil(item.offsetHeight) + gutter;
           });
         }
-        container.style.height = Math.max.apply(null, rowHeightArr) + "px";
+        container.style.height = Math.max.apply(null, rowHeightArr) + 'px';
         if (this.isloadedMore()) {
           //防止 刚载入页面时的留白现象
           this.canLoad = false;
@@ -176,12 +176,12 @@ export default {
     },
     loadData() {
       this.loadPage++;
-      this.$emit("loadData", this.loadPage);
+      this.$emit('loadData', this.loadPage);
     }
   },
   destroyed() {
-    removeEvent(window, "resize", this.handleDebounce);
-    removeEvent(window, "scroll", this.handleThrottle);
+    removeEvent(window, 'resize', this.handleDebounce);
+    removeEvent(window, 'scroll', this.handleThrottle);
   }
 };
 </script>

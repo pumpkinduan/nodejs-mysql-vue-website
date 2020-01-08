@@ -48,15 +48,15 @@
 </template>
 
 <script>
-import AsideBar from "@/components/AsideBar";
-import api from "@/api/article.js";
-import Comment from "@/components/Comment";
+import AsideBar from '@/components/AsideBar';
+import api from '@/api/article.js';
+import Comment from '@/components/Comment';
 import {
   throttle,
   addEvent,
   removeEvent,
   getElementPosition
-} from "@/lib/tool.js";
+} from '@/lib/tool.js';
 export default {
   components: {
     AsideBar,
@@ -108,10 +108,10 @@ export default {
   methods: {
     init() {
       this.catalogDoms =
-        this.$refs.detail && this.$refs.detail.getElementsByTagName("h3");
+        this.$refs.detail && this.$refs.detail.getElementsByTagName('h3');
       this.createCatalog(this.catalogDoms);
       this.handleScroll = throttle(this.onScroll, 30);
-      addEvent(window, "scroll", this.handleScroll);
+      addEvent(window, 'scroll', this.handleScroll);
     },
     createCatalog(elements) {
       //生成文章目录
@@ -141,7 +141,7 @@ export default {
     },
     preLoadImgs(fn) {
       let imgs =
-        this.$refs.detail && this.$refs.detail.getElementsByTagName("img");
+        this.$refs.detail && this.$refs.detail.getElementsByTagName('img');
       let totalCount = imgs && imgs.length,
         count = 0;
       for (let i = 0; i < totalCount; i++) {
@@ -219,7 +219,7 @@ export default {
       this.browse = data.browse;
     },
     destroyed() {
-      removeEvent(window, "scroll", this.handleScroll);
+      removeEvent(window, 'scroll', this.handleScroll);
     }
   }
 };
@@ -281,8 +281,8 @@ export default {
 }
 @media screen and (min-width: 920px) {
   .detail-inner {
-    padding: 2rem 5rem;
-    width: 780px;
+    padding: 2rem 4rem;
+    width: 810px;
     background-color: #ffffff;
     position: relative;
     box-shadow: 0 0 40px #dcdbff;

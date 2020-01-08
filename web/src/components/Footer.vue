@@ -11,11 +11,6 @@
             Author:
             <a href="#">Pumpkin</a>
           </span>
-          <span class="line"></span>
-          <span class="timestamp">
-            时间戳:
-            <span style="color: #333;">{{timestamp}}</span>
-          </span>
         </section>
       </li>
       <li class="link fr">
@@ -35,19 +30,6 @@
     </ul>
   </div>
 </template>
-<script>
-import { format } from "@/lib/formatTime";
-export default {
-  data() {
-    return {
-      timestamp: ""
-    };
-  },
-  created() {
-    this.timestamp = format();
-  }
-};
-</script>
 <style scoped>
 .footer {
   width: 100%;

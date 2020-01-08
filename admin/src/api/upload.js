@@ -4,7 +4,7 @@ export default {
         return axiosInstance.post("/api/upload", data, config);
     },
     getAllImgs(page) {
-        return axiosInstance.get("/api/upload/getAllImgs", {
+        return axiosInstance.get("/api/upload/imgs", {
             params: {
                 page
             }

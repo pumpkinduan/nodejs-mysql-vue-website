@@ -37,11 +37,11 @@
 </template>
 
 <script>
-import api from "@/api/timeline.js";
+import api from '@/api/timeline.js';
 export default {
   data() {
     return {
-      activeName: "first",
+      activeName: 'first',
       page: 1,
       disabled: false,
       timelineList: [],
@@ -70,10 +70,10 @@ export default {
       this.getData(this.page);
     },
     deleteOneTimeline(id, index) {
-      this.$confirm("此操作将永久删除该动态, 是否继续?", "提示", {
-        confirmButtonText: "确定",
-        cancelButtonText: "取消",
-        type: "warning"
+      this.$confirm('此操作将永久删除该动态, 是否继续?', '提示', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        type: 'warning'
       }).then(val => {
         api.deleteOneTimeline(id).then(res => {
           this.timelineList.splice(index, 1);

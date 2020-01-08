@@ -43,18 +43,19 @@ axiosInstance.interceptors.response.use((response) => {
         Message.error('登录失败,token已经失效');
         localStorage.removeItem('token');
         window.location = '/#/admin/login';
-    } else if (status == 400) {
-        if (err.response.data.msg == "账号不存在，请先注册") {
-            Message.error(err.response.data.msg);
-            setTimeout(() => {
-                window.location = '/#/register';
-            }, 1000);
-        } else {
-            Message.error(err.response.data.msg);
-        }
-    } else {
-        Message.error(err.response.data.msg);
-    }
+    } else {Message.error(err.response.data.msg);}
+    // if (status == 400) {
+    //     if (err.response.data.msg == "账号不存在，请先注册") {
+    //         Message.error(err.response.data.msg);
+    //         setTimeout(() => {
+    //             window.location = '/#/register';
+    //         }, 1000);
+    //     } else {
+    //         Message.error(err.response.data.msg);
+    //     }
+    // } else {
+    //     Message.error(err.response.data.msg);
+    // }
     return Promise.reject(err)
 })
 export {

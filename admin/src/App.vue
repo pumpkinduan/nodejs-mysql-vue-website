@@ -9,15 +9,15 @@
   </div>
 </template>
 <script>
-import jwtDecode from "jwt-decode";
-import { mapActions } from "vuex";
+import jwtDecode from 'jwt-decode';
+import { mapActions } from 'vuex';
 
 export default {
-  name: "home",
+  name: 'home',
   methods: {
     ...mapActions([
-      "set_admin", //this.set_admin() --> this.$store.dispatch('set_admin')
-      "set_authenticated"
+      'set_admin', //this.set_admin() --> this.$store.dispatch('set_admin')
+      'set_authenticated'
     ])
   },
   created() {

@@ -29,11 +29,11 @@
 </template>
 
 <script>
-import Header from "@/components/Header.vue";
-import Quotation from "@/components/Quotation.vue";
-import config from "@/config.js";
-import Waterfall from "@/components/Waterfall";
-import api from "@/api/img.js";
+import Header from '@/components/Header.vue';
+import Quotation from '@/components/Quotation.vue';
+import config from '@/config.js';
+import Waterfall from '@/components/Waterfall';
+import api from '@/api/img.js';
 export default {
   components: {
     Quotation,
@@ -46,7 +46,7 @@ export default {
       gap: 300,
       page: 1,
       serverUrl: config.serverUrl,
-      dialogImageUrl: "",
+      dialogImageUrl: '',
       dialogVisible: false,
       totalPhotoes: null
     };
@@ -63,7 +63,7 @@ export default {
         if (result.data && result.data.imgs) {
           !this.totalPhotoes
             ? (this.totalPhotoes = result.data.imgs.count)
-            : "";
+            : '';
           this.cards.push(...result.data.imgs.rows);
         }
       });
@@ -74,7 +74,7 @@ export default {
       this.getData(page);
     },
     handlePreview(path) {
-      this.dialogImageUrl = this.serverUrl + "/" + path;
+      this.dialogImageUrl = this.serverUrl + '/' + path;
       this.dialogVisible = !this.dialogVisible;
     }
   }

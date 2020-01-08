@@ -27,41 +27,41 @@
 </template>
 
 <script>
-import validator from "@/util/validateInfo.js";
-import { Message } from "element-ui";
-import api from "@/api/admin.js";
+import validator from '@/util/validateInfo.js';
+import { Message } from 'element-ui';
+import api from '@/api/admin.js';
 export default {
   data() {
     const validateAccount = (rule, value, callback) => {
       if (!value) {
         //没有输入账号
-        return callback(new Error("账号不能为空"));
+        return callback(new Error('账号不能为空'));
       }
       setTimeout(() => {
         if (validator.validateUser(value)) {
           callback();
         } else {
-          callback(new Error("账号格式错误"));
+          callback(new Error('账号格式错误'));
         }
       }, 300);
     };
     const validatePwd = (rule, value, callback) => {
-      if (value === "") {
-        callback(new Error("密码不能为空"));
+      if (value === '') {
+        callback(new Error('密码不能为空'));
       } else {
         if (validator.validatePwd(value)) {
           callback();
         } else {
-          callback(new Error("密码长度在6-18个字符之间"));
+          callback(new Error('密码长度在6-18个字符之间'));
         }
       }
     };
     const checkPwd = (rule, value, callback) => {
-      if (value === "") {
-        callback(new Error("密码不能为空"));
+      if (value === '') {
+        callback(new Error('密码不能为空'));
       } else {
         if (value !== this.registerForm.pwd) {
-          callback(new Error("两次输入的密码不一致"));
+          callback(new Error('两次输入的密码不一致'));
         } else {
           callback();
         }
@@ -69,15 +69,15 @@ export default {
     };
     return {
       registerForm: {
-        pwd: "",
-        account: "",
-        checkPwd: ""
+        pwd: '',
+        account: '',
+        checkPwd: ''
       },
       rules: {
-        pwd: [{ validator: validatePwd, trigger: "blur", required: true }],
-        checkPwd: [{ validator: checkPwd, trigger: "blur" }],
+        pwd: [{ validator: validatePwd, trigger: 'blur', required: true }],
+        checkPwd: [{ validator: checkPwd, trigger: 'blur' }],
         account: [
-          { validator: validateAccount, trigger: "blur", required: true }
+          { validator: validateAccount, trigger: 'blur', required: true }
         ]
       }
     };
@@ -87,14 +87,14 @@ export default {
       //密码校验
       let { account, pwd, checkPwd } = this.registerForm;
       if (!account && !pwd) {
-        return alert("请输入账号和密码");
+        return alert('请输入账号和密码');
       }
       if (!account) {
-        return alert("请输入账号");
+        return alert('请输入账号');
       } else if (!pwd) {
-        return alert("请输入密码");
+        return alert('请输入密码');
       } else if (checkPwd !== pwd) {
-        return alert("两次密码输入不一致");
+        return alert('两次密码输入不一致');
       }
       //向后台发送注册信息
       api
@@ -102,8 +102,8 @@ export default {
         .then(res => {
           if (res.data && res.data.success) {
             this.$message({
-              message: "恭喜主人，注册成功，即将跳转登录",
-              type: "success"
+              message: '恭喜主人，注册成功，即将跳转登录',
+              type: 'success'
             });
             setTimeout(() => {
               this.$router.push({name: 'login'});
@@ -111,9 +111,9 @@ export default {
           }
         })
         .catch(err => {
-          this.registerForm.account = "";
-          this.registerForm.pwd = "";
-          this.registerForm.checkPwd = "";
+          this.registerForm.account = '';
+          this.registerForm.pwd = '';
+          this.registerForm.checkPwd = '';
           throw err;
         });
     }

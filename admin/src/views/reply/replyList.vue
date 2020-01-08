@@ -16,8 +16,8 @@
 </template>
 
 <script>
-import api from "@/api/reply.js";
-import List from "@/components/List";
+import api from '@/api/reply.js';
+import List from '@/components/List';
 export default {
   created() {
     api
@@ -30,36 +30,33 @@ export default {
           this.cacheData.set(1, res.data.data); //缓存第一页数据 {1 => [...]}
         }
       })
-      .catch(err => {
-        console.log(err);
-      });
   },
   components: {
     List
   },
   data() {
     return {
-      search: "",
+      search: '',
       tableData: [],
       cacheData: new Map(), //缓存条目数据
       amount: 0, //总条数-
       pageSize: 5, //每页的条数
       pageBtns: 5, //页码按钮显示数量
       labels: {
-        created_at: "日期",
-        id: "id",
-        name: "名字",
-        content: "回复内容",
+        created_at: '日期',
+        id: 'id',
+        name: '名字',
+        content: '回复内容',
       },
       curPage: 1
     };
   },
   methods: {
     handleDelete(index, row) {
-      this.$confirm("此操作将永久删除该评论, 是否继续?", "提示", {
-        confirmButtonText: "确定",
-        cancelButtonText: "取消",
-        type: "warning"
+      this.$confirm('此操作将永久删除该评论, 是否继续?', '提示', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        type: 'warning'
       })
         .then(() => {
           api.deleteReply(row.id).then(res => {
@@ -72,8 +69,8 @@ export default {
         })
         .catch(() => {
           this.$message({
-            type: "info",
-            message: "已取消删除"
+            type: 'info',
+            message: '已取消删除'
           });
         });
     },

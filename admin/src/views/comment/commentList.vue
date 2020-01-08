@@ -16,26 +16,26 @@
 </template>
 
 <script>
-import api from "@/api/comment.js";
-import List from "@/components/List";
+import api from '@/api/comment.js';
+import List from '@/components/List';
 export default {
   components: {
     List
   },
   data() {
     return {
-      search: "",
+      search: '',
       tableData: [],
       cacheData: new Map(), //缓存条目数据
       amount: 0, //总条数-
       pageSize: 5, //每页的条数
       pageBtns: 5, //页码按钮显示数量
       labels: {
-        created_at: "日期",
-        id: "id",
-        name: "名字",
-        content: "留言",
-        article_title: "留言的文章标题"
+        created_at: '日期',
+        id: 'id',
+        name: '名字',
+        content: '留言',
+        article_title: '留言的文章标题'
       },
       curPage: 1
     };
@@ -54,10 +54,10 @@ export default {
   },
   methods: {
     handleDelete(index, row) {
-      this.$confirm("此操作将永久删除该评论, 是否继续?", "提示", {
-        confirmButtonText: "确定",
-        cancelButtonText: "取消",
-        type: "warning"
+      this.$confirm('此操作将永久删除该评论, 是否继续?', '提示', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        type: 'warning'
       })
         .then(() => {
           api.deleteComment(row.id).then(res => {
@@ -70,8 +70,8 @@ export default {
         })
         .catch(() => {
           this.$message({
-            type: "info",
-            message: "已取消删除"
+            type: 'info',
+            message: '已取消删除'
           });
         });
     },

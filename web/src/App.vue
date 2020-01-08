@@ -8,7 +8,7 @@
 <script>
 export default {
   watch: {
-    "$route": () => {
+    '$route': () => {
       document.getElementById('backToTop').click();
     }
   }

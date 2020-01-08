@@ -95,7 +95,7 @@ export default {
             },
             {
               page: this.currentIndex - interval - 1,
-              txt: "..."
+              txt: '...'
             }
           );
         }
@@ -105,7 +105,7 @@ export default {
           result.push(
             {
               page: this.currentIndex + interval + 1,
-              txt: "..."
+              txt: '...'
             },
             {
               page: this.totalPage,
@@ -132,21 +132,21 @@ export default {
         return;
       }
       this.currentIndex++;
-      this.$emit("next-page", this.currentIndex);
+      this.$emit('next-page', this.currentIndex);
     },
     prevPage() {
       if (this.currentIndex <= 1) {
         return;
       }
       this.currentIndex--;
-      this.$emit("prev-page", this.currentIndex);
+      this.$emit('prev-page', this.currentIndex);
     },
     currentChange(page) {
       if (this.currentIndex == page) {
         return;
       }
       this.currentIndex = page;
-      this.$emit("current-change", page);
+      this.$emit('current-change', page);
     }
   }
 };

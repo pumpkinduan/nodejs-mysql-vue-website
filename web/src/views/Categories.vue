@@ -14,9 +14,8 @@
 </template>
 
 <script>
-import api from "@/api/article.js";
 export default {
-  name: "category",
+  name: 'category',
   props: ['categories_count', 'categories']
 };
 </script>

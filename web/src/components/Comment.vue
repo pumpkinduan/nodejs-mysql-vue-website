@@ -101,30 +101,30 @@
 </template>
 
 <script>
-import { format } from "@/lib/formatTime.js";
-import commenter from "@/api/comment.js";
-import replyer from "@/api/reply.js";
-import { throttle, debounce, addEvent, removeEvent } from "@/lib/tool.js";
+import { format } from '@/lib/formatTime.js';
+import commenter from '@/api/comment.js';
+import replyer from '@/api/reply.js';
+import { throttle, debounce, addEvent, removeEvent } from '@/lib/tool.js';
 export default {
-  props: ["article_title"],
+  props: ['article_title'],
   data() {
     return {
       canLoad: true,
       loading_gif: false,
       maxlength: 128,
       words: [],
-      name: "",
-      comment: "",
+      name: '',
+      comment: '',
       totalReplies: 0,
       comment_id: null, //当前被回复的留言的id
-      parent_name: "",
-      parent_comment: "",
+      parent_name: '',
+      parent_comment: '',
       totalComments: 0,
-      errMessage: "",
+      errMessage: '',
       isReply: false, //是否回复  默认 否
-      curIndex: "",
+      curIndex: '',
       page: 1,
-      prompt: "Hey,guys,come and say something"
+      prompt: 'Hey,guys,come and say something'
     };
   },
   watch: {
@@ -136,17 +136,16 @@ export default {
     }
   },
   created() {
-    let self = this;
     this.getData();
     this.handleThrottle = throttle(() => {
       this.loadData();
     }, 350);
   },
   mounted() {
-    addEvent(window, "scroll", this.handleThrottle);
+    addEvent(window, 'scroll', this.handleThrottle);
   },
   destroyed() {
-    removeEvent(window, "scroll", this.handleThrottle);
+    removeEvent(window, 'scroll', this.handleThrottle);
   },
   methods: {
     getData() {
@@ -158,7 +157,7 @@ export default {
             let data = res.data.data;
             for (let i in data) {
               //重新整理数据格式，添加 active: false，用于排他
-              data[i]["active"] = false;
+              data[i]['active'] = false;
             }
             this.words.push(...data);
             this.pageSize = parseInt(res.data.meta.pageSize);
@@ -166,7 +165,7 @@ export default {
             this.totalReplies = parseInt(res.data.meta.totalReplies);
           }
         })
-        .catch(err => {
+        .catch(() => {
           //后台没有数据时会报错
           //表示下次不能再请求数据
           this.canLoad = false;
@@ -175,13 +174,13 @@ export default {
       let self = this;
       this.debounceComment = debounce(newVal => {
         newVal && newVal.length >= 128
-          ? (self.errMessage = "留言的字符个数不能超过128噢")
-          : (self.errMessage = "");
+          ? (self.errMessage = '留言的字符个数不能超过128噢')
+          : (self.errMessage = '');
       });
       this.debounceName = debounce(newVal => {
         newVal && newVal.length >= 12
-          ? (self.errMessage = "昵称的字符个数不能超过12噢")
-          : (self.errMessage = "");
+          ? (self.errMessage = '昵称的字符个数不能超过12噢')
+          : (self.errMessage = '');
       });
     },
     sendComment() {
@@ -194,6 +193,7 @@ export default {
       commenter
         .createComment(data)
         .then(res => {
+           if (!res.data.success) return;
           let newComment = Object.assign(data, {
             created_at: format(),
             replies: [],
@@ -217,6 +217,7 @@ export default {
         parent_name: this.parent_name
       };
       replyer.createReply(reply).then(res => {
+        if (!res.data.success) return;
         this.words[this.curIndex].replies.push(
           Object.assign(reply, { created_at: format() })
         );
@@ -232,11 +233,11 @@ export default {
           this.sendReply();
         }
       } else if (!this.comment) {
-        this.prompt = "留言不能为空噢";
+        this.prompt = '留言不能为空噢';
         this.$refs.focusTextarea.focus();
       } else {
         this.$refs.focusInput.focus();
-        this.errMessage = "请留下阁下的大名吧";
+        this.errMessage = '请留下阁下的大名吧';
       }
     },
     handleReply(name, id, index, content) {
@@ -252,14 +253,14 @@ export default {
     resetComment() {
       //留言初始化
       this.isReply = false;
-      this.comment = "";
-      this.name = "";
-      this.prompt = "Hey,guys,come and say something";
+      this.comment = '';
+      this.name = '';
+      this.prompt = 'Hey,guys,come and say something';
     },
     loadData() {
       if (this.totalComments <= this.words.length) return;
       if (this.canLoad) {
-        const ele = document.getElementsByClassName("words")[0],
+        const ele = document.getElementsByClassName('words')[0],
           viewHeight =
             document.documentElement.clientHeight ||
             document.body.clientHeight ||

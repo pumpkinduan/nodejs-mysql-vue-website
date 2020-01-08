@@ -9,7 +9,7 @@
 * 管理员与验证接口
 * 文章管理接口
 * 留言与一级回复接口
-* 每日一句接口
+* 图片接口
 
 #### 前端
 * 使用vue-cli 3.x 模板搭建
@@ -59,7 +59,7 @@
 * [文章管理接口](https://github.com/pumpkinduan/nodejs-mysql-vue-website/blob/master/documents/article.md)
 * [留言接口](https://github.com/pumpkinduan/nodejs-mysql-vue-website/blob/master/documents/comment.md)
 * [回复接口](https://github.com/pumpkinduan/nodejs-mysql-vue-website/blob/master/documents/reply.md)
-* [每日一句接口](https://github.com/pumpkinduan/nodejs-mysql-vue-website/blob/master/documents/quotation.md)
+* [图片接口](https://github.com/pumpkinduan/nodejs-mysql-vue-website/blob/master/documents/img.md)
 ## 后端代码 文件夹结构
 ###  根目录下的
     *  index.js

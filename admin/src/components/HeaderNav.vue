@@ -35,7 +35,7 @@
   </header>
 </template>
 <script>
-import { showFullScreen, cancelFullScreen } from "@/util/fullScreenHandle.js";
+import { showFullScreen, cancelFullScreen } from '@/util/fullScreenHandle.js';
 export default {
   created() {
     const { userInfo } = this.$store.state;
@@ -43,8 +43,8 @@ export default {
   },
   data() {
     return {
-      userName: "",
-      content: "全屏显示",
+      userName: '',
+      content: '全屏显示',
       isCollapse: false
     };
   },
@@ -54,15 +54,15 @@ export default {
       this.$emit('handleCollapse', this.isCollapse);
     },
     handleUser(command) {
-      if (command == "logout") {
+      if (command == 'logout') {
         //退出登录
         //1.清除token
-        localStorage.removeItem("token");
+        localStorage.removeItem('token');
         //2.清空store里的用户数据
-        this.$store.dispatch("clear_all");
+        this.$store.dispatch('clear_all');
         //3.退出当前页面，跳转到登录页面
-        this.$router.push({name: "login"});
-      } else if (command == "info") {
+        this.$router.push({name: 'login'});
+      } else if (command == 'info') {
         //展示用户个人信息
         alert(`${this.userName}，您好`);
       }
@@ -72,10 +72,10 @@ export default {
       //document.fullscreenElement 返回全屏模式下的元素，非全屏则返回null
       if (document.fullscreenElement) {
         cancelFullScreen();
-        this.content = "全屏显示";
+        this.content = '全屏显示';
       } else {
         showFullScreen();
-        this.content = "退出全屏";
+        this.content = '退出全屏';
       }
     }
   }

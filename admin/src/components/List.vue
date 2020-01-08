@@ -73,7 +73,7 @@ export default {
   },
   data() {
     return {
-      search: "",
+      search: '',
       serverUrl: config.serverUrl
     };
   },
@@ -89,7 +89,7 @@ export default {
       return total1 - total2;
     },
     getCurrentItem(page) {
-      this.$emit("getCurrentItem", page);
+      this.$emit('getCurrentItem', page);
     }
   }
 };

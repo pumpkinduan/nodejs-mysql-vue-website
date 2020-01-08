@@ -44,7 +44,7 @@ const router = new Router({
           },
           component: () => import("./views/article/articleList")
         },
-         {
+        {
           path: 'editArticle',
           name: 'EditArticle',
           meta: {
@@ -96,11 +96,11 @@ const router = new Router({
       name: 'login',
       component: () => import('./views/admin/login')
     },
-    {
-      path: '/register',
-      name: 'register',
-      component: () => import('./views/admin/register')
-    },
+    // {
+    //   path: '/register',
+    //   name: 'register',
+    //   component: () => import('./views/admin/register')
+    // },
     {//捕获404页面，该路由须放置在最后，当其他路由未匹配到时将捕获404
       path: '/*',
       name: 'error',
@@ -113,7 +113,7 @@ router.beforeEach((to, from, next) => {
   if (to.path == '/login' || to.path == '/register') {
     next();
   } else {
-    localStorage.getItem('token') && localStorage.getItem('isAuthenticated') ? next() : next({name: 'login'});
+    localStorage.getItem('token') && localStorage.getItem('isAuthenticated') ? next() : next({ name: 'login' });
   }
 })
 export default router

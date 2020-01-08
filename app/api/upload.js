@@ -17,11 +17,6 @@ function getAllImgs(req, res, next) {
 }
 function deleteImg(req, res, next) {
     const { path } = req.query;
-    console.log(path)
-    console.log(path)
-    console.log(path)
-    console.log(path)
-    console.log(path)
     ImgsDao.deleteImg(path, (err, data) => {
         reactToClient(res, err, data)
     });

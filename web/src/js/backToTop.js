@@ -1,5 +1,5 @@
 import { animate } from '@/lib/animate.js'
-import { throttle, cancelHandler } from "@/lib/tool.js";
+import { throttle } from "@/lib/tool.js";
 (function (window, document) {
     var timerId = null;
     init();

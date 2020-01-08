@@ -24,9 +24,9 @@
 </template>
 
 <script>
-import article from "@/api/article.js";
-import timeline from "@/api/timeline.js";
-import List from "@/components/List";
+import article from '@/api/article.js';
+import timeline from '@/api/timeline.js';
+import List from '@/components/List';
 export default {
   created() {
     article
@@ -48,27 +48,27 @@ export default {
   },
   data() {
     return {
-      search: "",
+      search: '',
       tableData: [],
       cacheData: new Map(), //缓存条目数据
       amount: 0, //总条数-
       pageSize: 5, //每页的条数
       pageBtns: 5, //页码按钮显示数量
       labels: {
-        created_at: "日期",
-        total_char: "字数",
-        browse: "访问量",
-        tag: "标签",
-        title: "标题"
+        created_at: '日期',
+        total_char: '字数',
+        browse: '访问量',
+        tag: '标签',
+        title: '标题'
       }
     };
   },
   methods: {
     handleDelete(index, row) {
-      this.$confirm("此操作将永久删除该文章, 是否继续?", "提示", {
-        confirmButtonText: "确定",
-        cancelButtonText: "取消",
-        type: "warning"
+      this.$confirm('此操作将永久删除该文章, 是否继续?', '提示', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        type: 'warning'
       })
         .then(() => {
           article.deleteArticle(row.article_id).then(res => {
@@ -78,7 +78,7 @@ export default {
               this.amount--;
               timeline.createOneTimeline({
                 title: row.title,
-                status: "删除文章",
+                status: '删除文章',
                 description: row.description
               });
             }
@@ -86,8 +86,8 @@ export default {
         })
         .catch(() => {
           this.$message({
-            type: "info",
-            message: "已取消删除"
+            type: 'info',
+            message: '已取消删除'
           });
         });
     },
@@ -106,9 +106,6 @@ export default {
             this.cacheData.set(page, res.data.data); //缓存每次获取到的数据
           }
         })
-        .catch(err => {
-          console.log(err);
-        });
     }
   }
 };

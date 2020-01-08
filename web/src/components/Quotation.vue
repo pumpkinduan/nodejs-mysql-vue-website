@@ -14,8 +14,8 @@
   </div>
 </template>
 <script>
-import api from "@/api/hitokoto.js";
-import { format } from "@/lib/formatTime.js";
+import api from '@/api/hitokoto.js';
+import { format } from '@/lib/formatTime.js';
 export default {
   data() {
     return {
@@ -33,7 +33,7 @@ export default {
     }, 10000);
   },
   mounted() {
-    this.$emit("sendGap", this.$refs.quotation.offsetHeight);
+    this.$emit('sendGap', this.$refs.quotation.offsetHeight);
   },
   methods: {
     getHitokoto() {
@@ -49,9 +49,6 @@ export default {
             }
           }
         })
-        .catch(err => {
-          
-        });
     },
   }
 };

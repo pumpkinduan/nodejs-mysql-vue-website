@@ -193,16 +193,13 @@ export default {
 };
 </script>
 <style scoped>
-.publish {
-  height: 100%;
-}
-.wrapper {
-  margin-top: 25px;
-}
 .el-button {
   border: none;
 }
 .submit-btn {
   margin-bottom: 15px;
+}
+.wrapper >>> .ql-container.ql-snow {
+  height: 400px;
 }
 </style>

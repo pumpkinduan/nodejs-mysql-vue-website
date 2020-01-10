@@ -7,7 +7,6 @@ const moment = require('moment');
 class Timeline extends Model { }
 Timeline.init({
     title: Sequelize.STRING(32),
-    description: Sequelize.STRING(64),
     author: {
         type: Sequelize.STRING(16),
         defaultValue: 'Pumpkin'

@@ -14,10 +14,6 @@ function getTimelineList(req, res, next) {
     });
 }
 function deleteOneTimeline(req, res, next) {
-    console.log(req.params)
-    console.log(req.params)
-    console.log(req.params)
-    console.log(req.params)
     const { id } = req.params;
     TimelineDao.deleteOneTimeline(id, (err, data) => {
         reactToClient(res, err, data)

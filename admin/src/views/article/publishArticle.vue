@@ -48,8 +48,7 @@ export default {
             //更新动态
              timeline.createOneTimeline({
               title: data.title,
-              status: "发布文章",
-              description: data.description
+              status: "发布文章"
             })
           }
         })

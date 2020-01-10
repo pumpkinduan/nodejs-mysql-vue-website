@@ -1,6 +1,7 @@
 <template>
   <div class="clearfix detail" ref="main">
     <div class="detail-inner fl">
+      <img class="heimao-gif" width="50" src="../assets/image/heimao.gif"/>
       <div class="post-date">
         <div class="post-month">{{ details.created_at && details.created_at.split('-')[1] }}月</div>
         <div class="post-day">{{ details.created_at && details.created_at.split('-')[2] }}</div>
@@ -12,9 +13,9 @@
         <section>
           <h1>{{details.title}}</h1>
           <ul class="post-meta">
-            <li class="post-time">发表于: {{details.created_at}}</li>
-            <li class="post-browse">访问量: {{details.browse}}</li>
-            <li class="post-words">字数: {{details.total_char}}</li>
+            <li class="post-time">Posted on: {{details.created_at}}</li>
+            <li class="post-browse">Visited: {{details.browse}}</li>
+            <li class="post-words">Words: {{details.total_char}}</li>
           </ul>
           <div class="description">{{ details.description }}</div>
         </section>
@@ -49,7 +50,7 @@
 
 <script>
 import AsideBar from '@/components/AsideBar';
-import api from '@/api/article.js';
+import article from '@/api/article.js';
 import Comment from '@/components/Comment';
 import {
   throttle,
@@ -64,7 +65,7 @@ export default {
   },
   beforeRouteEnter(to, from, next) {
     //请求数据
-    api.getArticleDetail(to.params.articleId).then(res => {
+    article.getArticleDetail(to.params.articleId).then(res => {
       if (res.data && res.data.data) {
         next(vm => vm.setData(res.data.data));
       }
@@ -98,7 +99,7 @@ export default {
   },
   beforeRouteLeave(to, from, next) {
     if (this.second > this.readingTime) {
-      api.updateBrowse(this.$route.params.articleId, {
+      article.updateBrowse(this.$route.params.articleId, {
         browse: this.browse
       }); //更新访问量
       next();
@@ -229,7 +230,13 @@ export default {
 .detail {
   position: relative;
 }
-.detail img {
+.detail img.heimao-gif {
+  position: absolute;
+  top: 120px;
+  right: -50px;
+  z-index: 9999;
+}
+.detail .detail-inner .ql-snow img {
   display: block;
   margin: 3px 0;
   max-width: 100%;
@@ -240,12 +247,12 @@ export default {
   line-height: 1.5rem;
   padding-bottom: 2rem;
   border-bottom: 1px solid #eee;
-  font-size: 1.5em;
+  font-size: 1.35em;
   overflow: hidden;
 }
 .detail-inner main .description {
-  color: #555;
-  font-size: 1rem;
+  color: #3a3a3a;
+  font-size: 0.9rem;
   font-weight: 400;
   line-height: 1.5rem;
   margin-top: 1rem;
@@ -279,6 +286,7 @@ export default {
 .right-catalog .catalog-wrap li a:hover {
   color: #ff8a00;
 }
+
 @media screen and (min-width: 920px) {
   .detail-inner {
     padding: 2rem 4rem;
@@ -290,6 +298,7 @@ export default {
   .detail-inner main h1 {
     width: 100%;
     font-size: 1.5rem;
+    text-align: center;
   }
 }
 @media screen and (max-width: 920px) {
@@ -297,6 +306,7 @@ export default {
     width: 100%;
     margin-right: 0;
     margin-bottom: 1rem;
+    text-align: center;
   }
   .detail-inner {
     width: 100%;

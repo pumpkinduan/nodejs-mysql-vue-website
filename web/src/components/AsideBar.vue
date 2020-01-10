@@ -3,6 +3,7 @@
     <slot>
       <template>
         <div class="site-overview-wrap">
+          <span class="heiguai-gif" @mousedown="handleDown($event)" @mouseup="handleUp"></span>
           <span class="site-logo orange">pumpkin</span>
           <p class="site-description">Everything is Ok</p>
           <div class="site-author">
@@ -10,8 +11,9 @@
               <img src="../assets/image/cv.jpg" />
             </section>
             <p class="site-author-words">
-              This is my personal blog where I share a lot of stuffs about my life and work
+              This is my personal website where I share a lot of stuffs about my life and work
               everything i do in between.
+              <br />Hope you guys love it
             </p>
           </div>
           <nav class="site-state">
@@ -36,9 +38,39 @@
 </template>
 
 <script>
-
+import { removeEvent, addEvent } from "@/lib/tool";
 export default {
-  props: ['archive_count', 'categories_count']
+  props: ["archive_count", "categories_count"],
+  data() {
+    return {
+      oBox: null
+    };
+  },
+  mounted() {
+    this.oBox = document.getElementsByClassName("heiguai-gif")[0];
+  },
+  methods: {
+    handleDown(ev) {
+      let oBox = this.oBox;
+      //2.获取差值
+      var extraX = ev.pageX - parseInt(oBox.offsetLeft);
+      var extraY = ev.pageY - parseInt(oBox.offsetTop);
+      this.handleMove = e => {
+        //获取偏移量
+        var newX = e.pageX - extraX + "px";
+        var newY = e.pageY - extraY + "px";
+        this.oBox.style.left = newX;
+        this.oBox.style.top = newY;
+      };
+      addEvent(document, "mousemove", this.handleMove);
+    },
+    handleUp() {
+      removeEvent(document, "mousemove", this.handleMove);
+    }
+  },
+  destroyed() {
+    removeEvent(document, "mousemove");
+  }
 };
 </script>
 
@@ -103,6 +135,7 @@ export default {
 .site-overview-wrap .site-state .site-state-item .site-state-item-count {
   color: #555;
   font-size: 1rem;
+  padding-right: 3px;
 }
 .site-overview-wrap .site-state .site-state-item .site-state-item-name {
   margin-top: 2px;
@@ -117,6 +150,16 @@ export default {
 }
 .site-overview-wrap .site-state .site-catalogs .site-state-item-name {
   color: #ff8a00;
+}
+.heiguai-gif {
+  display: inline-block;
+  background: url("../assets/image/heiguai.gif") 0 0 no-repeat;
+  position: absolute;
+  top: -20px;
+  right: -15px;
+  width: 60px;
+  height: 80px;
+  cursor: move;
 }
 @media screen and (max-width: 1280px) {
   .aside-bar {

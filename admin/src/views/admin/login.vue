@@ -90,8 +90,9 @@ export default {
           showClose: true
         });
       }
-      api.login({ account: account, password: pwd }).then(
-        res => {
+      api
+        .login({ account: account, password: pwd })
+        .then(res => {
           const data = res.data;
           if (data && data.success) {
             if (data.token) {
@@ -108,15 +109,14 @@ export default {
               showClose: true,
               duration: 1500
             });
-            this.$router.push({ name: 'home" });
+            this.$router.push({ name: 'home' });
           }
-        },
-        err => {
-          this.loginForm.account = "";
-          this.loginForm.pwd = "";
+        })
+        .catch(err => {
+          this.loginForm.account = '';
+          this.loginForm.pwd = '';
           throw err;
-        }
-      );
+        });
     }
   }
 };

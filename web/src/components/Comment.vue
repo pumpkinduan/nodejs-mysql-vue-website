@@ -34,7 +34,7 @@
                   <div class="replier">
                     <i class="iconfont orange fs-15 icon-github"></i>
                     <span class="user-name">{{reply.name}}</span>
-                    <small style="color: #666;">回复道:</small>
+                    <small style="color: #969090;">&nbsp;回复道:</small>
                     <span class="time fr">{{reply.created_at}}</span>
                   </div>
                   <p style="text-indent: 2rem;" class="content">{{reply.content}}</p>
@@ -297,7 +297,7 @@ export default {
   color: #666;
 }
 .comment .words h3 span {
-  vertical-align: 4px;
+  vertical-align: 3px;
   font-size: 0.8rem;
 }
 .comment .words ul li {
@@ -343,8 +343,7 @@ export default {
 }
 .comment .words ul li section .reply {
   padding: 0.8rem;
-  background-color: rgba(241,241,241,.4);
-  border-radius: 5px;
+  background-color: rgba(241,241,241,.3);
 }
 .comment .words ul li section .reply:last-child {
   border: none;

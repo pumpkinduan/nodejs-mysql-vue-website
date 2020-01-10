@@ -167,17 +167,17 @@ class ArticleDao {
             success(new global.errs.HttpException());
         })
     }
-    static updateBrowse(id, info, success) {
+    static updateBrowse(id, browse, success) {
         Article.findOne({
             where: {
                 article_id: id
             }
         }).then(val => {
             val.update({
-                'browse': info.browse
+                'browse': browse
             }).then(res => {
                 success(false, { msg: '访问量增加了', success: true })
-            }).catch(err => { console.log(err) })
+            })
         })
     }
     static updateArticleById(id, info, success) {//更新文章
@@ -187,10 +187,6 @@ class ArticleDao {
             }
         }).then(article => {
             if (article) {
-                if (article.cover !== info.cover) {
-                    //删除封面
-                    ImgsDao._delete(article.cover.replace(/\//g, '\\'))
-                }
                 article.update({
                     'title': info.title,
                     'content': info.content,
@@ -198,19 +194,16 @@ class ArticleDao {
                     'tag': info.tag,
                     'author': info.author,
                     'browse': info.browse,
-                    'cover': info.cover,
                     'description': info.description
                 }).then(res => {
                     success(false, { msg: '更新成功', success: true });
-
-                })
+                }).catch( err => {console.log(err)})
             } else {
                 success(new global.errs.NotFound('数据为空'))
             }
         }).catch(err => {
             success(new global.errs.HttpException());
             console.log(err)
-            throw err;
         })
     }
 }

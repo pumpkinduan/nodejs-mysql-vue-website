@@ -66,6 +66,8 @@
 .post-meta {
     display: flex;
     margin-top: 1rem;
+    margin-bottom: 3rem;
+    justify-content: center;
 }
 
 .post-meta li {

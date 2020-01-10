@@ -16,10 +16,11 @@ th, td, div, header, main, footer, section, article, aside {
     /* table elements 表格元素 */
     margin: 0;
     padding: 0;
-    color: #222;
+    color: #2b2b2b;
     box-sizing: border-box;
     font-family: Helvetica, "Microsoft YaHei", sans-serif;
     letter-spacing: 1px;
+    user-select: none;
 }
 
 html, body {

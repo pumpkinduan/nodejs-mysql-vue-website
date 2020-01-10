@@ -13,30 +13,32 @@
   </div>
 </template>
 <script>
-import Publish from "@/components/Publish";
-import article from "@/api/article.js";
-import timeline from "@/api/timeline.js";
+import Publish from '@/components/Publish';
+import api from '@/api/article.js';
+import timeline from '@/api/timeline.js';
 export default {
-  name: "EditArticle",
+  name: 'EditArticle',
   components: {
     Publish
   },
   data() {
     return {
-      file: "",
+      file: '',
       flag: true,
       edit: false,
-      title: "发布文章",
+      title: '发布文章',
       labels: {
-        tag: "标签",
-        title: "标题",
-        description: "描述"
+        tag: '标签',
+        title: '标题',
+        description: '描述',
+        author: '作者'
       },
       tableData: [
         {
-          tag: "",
-          title: "",
-          description: ""
+          tag: '',
+          title: '',
+          description: '',
+          author: ''
         }
       ]
     };
@@ -46,8 +48,8 @@ export default {
     if (article) {
       //代表编辑文章
       next(vm => {
-        vm.title = "编辑文章";
-        vm.btnText = "开始编辑";
+        vm.title = '编辑文章';
+        vm.btnText = '开始编辑';
         vm.edit = true;
         for (var i in vm.tableData[0]) {
           vm.tableData[0][i] = article[i];
@@ -70,21 +72,15 @@ export default {
   },
   methods: {
     handleSumbit(data) {
-      article
+      api
         .updateArticle(data, this.$route.params.article.article_id)
         .then(res => {
           if (res.data) {
             this.submitSuccess(res.data);
             timeline.createOneTimeline({
               title: data.title,
-              status: "更新文章",
-              description: data.description
+              status: '更新文章'
             })
-            // this.create_one_timeline({
-            //   title: data.title,
-            //   created_at: createDate(),
-            //   status: "更新文章"
-            // });
           }
         })
         .catch(err => {
@@ -93,17 +89,17 @@ export default {
     },
     submitSuccess(data) {
       sessionStorage.clear();
-      this.$refs.edit.$refs.quillEditor.quill.root.innerHTML = ""; //清空编辑器;
+      this.$refs.edit.$refs.quillEditor.quill.root.innerHTML = ''; //清空编辑器;
       this.resetDialog();
       this.$message({
         message: data.msg,
         duration: 1000
       });
-      this.$router.push({ name: "ArticleList" });
+      this.$router.push({ name: 'ArticleList' });
     },
     resetDialog() {
       for (var i in this.tableData[0]) {
-        this.tableData[0][i] = "";
+        this.tableData[0][i] = '';
       }
     }
   }

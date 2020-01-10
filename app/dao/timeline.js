@@ -4,11 +4,10 @@ class TimelineDao {
     static createOneTimeline(info, success) {//创建一条时间线
         const timeline = new Timeline();
         timeline.status = info.status;
-        timeline.description = info.description;
         timeline.title = info.title;
         timeline.save().then(res => {
             success(false, { msg: '创建成功', success: true });
-        }).catch(err => { success(new global.errs.HttpException()); })
+        }).catch(err => {  console.log(err);success(new global.errs.HttpException()); })
     }
     static getTimelineList(page = 1, success) {
         const pageSize = 5;
@@ -45,6 +44,7 @@ class TimelineDao {
                 success(new global.errs.NotFound('数据为空'))
             }
         }).catch(err => {
+            console.log(err)
             success(new global.errs.HttpException());
         })
     }

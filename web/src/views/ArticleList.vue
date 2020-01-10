@@ -19,9 +19,9 @@
           <span>{{item.title}}</span>
         </router-link>
         <ul class="post-meta">
-          <li class="post-time">发表于: {{item.created_at}}</li>
-          <li class="post-browse">访问量: {{item.browse}}</li>
-          <li class="post-words">字数: {{item.total_char}}</li>
+          <li class="post-time">Posted on: {{item.created_at}}</li>
+          <li class="post-browse">Visited: {{item.browse}}</li>
+          <li class="post-words">Words: {{item.total_char}}</li>
         </ul>
         <div class="description">{{item.description}}</div>
         <div class="bottom">
@@ -161,12 +161,12 @@ export default {
 .blogs .wrapper > section .description {
   padding: 1rem 3rem;
   color: #333;
-  font-size: 1rem;
+  font-size: 0.9rem;
   text-align: left;
   line-height: 1.5rem;
 }
 .blogs .wrapper > section .bottom {
-  margin-top: 5rem;
+  margin-top: 3rem;
 }
 .blogs .wrapper > section .bottom .read-more {
   font-size: 0.8rem;

@@ -96,11 +96,11 @@ const router = new Router({
       name: 'login',
       component: () => import('./views/admin/login')
     },
-    // {
-    //   path: '/register',
-    //   name: 'register',
-    //   component: () => import('./views/admin/register')
-    // },
+    {
+      path: '/register',
+      name: 'register',
+      component: () => import('./views/admin/register')
+    },
     {//捕获404页面，该路由须放置在最后，当其他路由未匹配到时将捕获404
       path: '/*',
       name: 'error',

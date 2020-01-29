@@ -16,7 +16,6 @@ Comment.init({
 }, {
     sequelize,
     tableName: 'comment',
-    modelName: 'comment'
 })
 module.exports = {
     Comment

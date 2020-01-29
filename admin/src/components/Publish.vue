@@ -49,6 +49,7 @@
         :on-change="handleFileChange"
         :http-request="uploadCompressImage"
       ></el-upload>
+      <el-button type="info" @click="handlePreview" class="preview-btn">预览文章</el-button>
       <el-button class="submit-btn" @click="handleSumbit" v-if="!edit" type="primary">发布文章</el-button>
       <el-button class="submit-btn" type="primary" @click="handleSumbit" v-else>修改完成，点击提交</el-button>
       <quill-editor ref="quillEditor" :options="editorOption"></quill-editor>
@@ -58,21 +59,19 @@
 <script>
 const toolbarOptions = [
   // toolbar btns
-  ['bold', 'italic', 'underline', 'strike', 'blockquote', 'code-block'], // toggled buttons
-  [{ list: 'ordered' }, { list: 'bullet' }],
-  [{ size: [false, 'large', 'huge'] }], // custom dropdown
+  ["bold", "italic", "underline", "strike", "blockquote", "code-block"], // toggled buttons
+  [{ list: "ordered" }, { list: "bullet" }],
+  [{ size: [false, "large", "huge"] }], // custom dropdown
   [{ header: [1, 2, 3, 4, 5, 6, false] }],
   [{ color: [] }, { background: [] }], // dropdown with defaults from theme
   [{ font: [] }, { align: [] }],
-  ['clean', 'link', 'image'] // add upload image btn
+  ["clean", "link", "image"] // add upload image btn
 ];
-import { quillEditor } from 'vue-quill-editor';
-import 'quill/dist/quill.core.css';
-import 'quill/dist/quill.snow.css';
-import config from '@/config.js';
-import api from '@/api/upload.js';
-import { compress } from '@/util/compress.js';
-import { debounce } from '@/util/debounce.js';
+import { quillEditor } from "vue-quill-editor";
+import config from "@/config.js";
+import api from "@/api/upload.js";
+import { compress } from "@/util/compress.js";
+import { debounce } from "@/util/debounce.js";
 export default {
   components: {
     quillEditor
@@ -93,8 +92,8 @@ export default {
       serverUrl: config.serverUrl,
       dialogFormVisible: false,
       editorOption: {
-        placeholder: '让你的手动起来吧！！！',
-        theme: 'snow',
+        placeholder: "让你的手动起来吧！！！",
+        theme: "snow",
         modules: {
           history: {
             delay: 2000
@@ -106,9 +105,9 @@ export default {
                 if (value) {
                   //value->true :表示点击了图片上传选项
                   //触发 el-upload身上的点击上传事件
-                  document.querySelector('.picture-upload input').click();
+                  document.querySelector(".picture-upload input").click();
                 } else {
-                  this.quill.format('image', false);
+                  this.quill.format("image", false);
                 }
               }
             }
@@ -121,29 +120,29 @@ export default {
     this.init();
   },
   destroyed() {
-    this.quill.off('text-change', this.handleTextChange);
+    this.quill.off("text-change", this.handleTextChange);
   },
   methods: {
     init() {
       this.quill = this.$refs.quillEditor.quill;
       this.handleTextChange = debounce((delta, oldDelta, source) => {
         //实现文章内容html的缓存
-        sessionStorage.setItem('text', this.quill.root.innerHTML);
+        sessionStorage.setItem("text", this.quill.root.innerHTML);
       }, 600);
-      this.quill.on('text-change', this.handleTextChange);
+      this.quill.on("text-change", this.handleTextChange);
       //从缓存中提取
-      this.quill.root.innerHTML = sessionStorage.getItem('text');
+      this.quill.root.innerHTML = sessionStorage.getItem("text");
     },
     uploadCompressImage(file) {
       let formData = new FormData();
-      file.blob && formData.append('picture', file.blob, file.name);
+      file.blob && formData.append("picture", file.blob, file.name);
       api
         .uploadImg(formData)
         .then(res => {
           res.data && this.uploadSuccess(res.data);
         })
         .catch(err => {
-          this.$message.error('upload failed');
+          this.$message.error("upload failed");
         });
     },
     handleFileChange(file) {
@@ -165,8 +164,8 @@ export default {
       //插入img标签到光标显示处
       quill.insertEmbed(
         position,
-        'image',
-        `${this.serverUrl}/${response.path.replace(/\\/gi, '/')}`
+        "image",
+        `${this.serverUrl}/${response.path.replace(/\\/gi, "/")}`
       );
       //光标到最后
       quill.setSelection(position + 1);
@@ -178,16 +177,20 @@ export default {
         content: this.$refs.quillEditor.quill.root.innerHTML,
         total_char: this.$refs.quillEditor.quill.root.innerText.replace(
           regSpecialCharacter,
-          ''
+          ""
         ).length
       });
       if (!this.$refs.quillEditor.quill.root.innerText.trim()) {
-        return this.$message.error('内容不能为空');
+        return this.$message.error("内容不能为空");
       }
-      this.$emit('handleSumbit', data);
-    },
+      this.$emit("handleSumbit", data);
+    }, 
     resetDialog() {
-      this.$emit('resetDialog');
+      this.$emit("resetDialog");
+    },
+    handlePreview() {
+       this.$store.state.showPreview = true;
+       this.$store.state.previewData = sessionStorage.getItem('text');
     }
   }
 };
@@ -200,6 +203,7 @@ export default {
   margin-bottom: 15px;
 }
 .wrapper >>> .ql-container.ql-snow {
-  height: 400px;
+  height: 450px;
 }
+
 </style>

@@ -147,6 +147,8 @@ export default {
           });
         }
         container.style.height = Math.max.apply(null, rowHeightArr) + 'px';
+        this.$parent.loading_gif = false;
+        this.$parent.showQuotation = 'visible';
         if (this.isloadedMore()) {
           //防止 刚载入页面时的留白现象
           this.canLoad = false;
@@ -189,7 +191,6 @@ export default {
 <style scoped>
 .waterfall-container {
   position: relative;
-  margin-bottom: 2rem;
 }
 .waterfall-item {
   width: 25%;

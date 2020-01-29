@@ -27,7 +27,7 @@ Imgs.init({
     }
 }, {
     sequelize,
-    tableName: 'Imgs'
+    tableName: 'imgs'
 })
 module.exports = {
     Imgs

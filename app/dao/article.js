@@ -80,7 +80,7 @@ class ArticleDao {
     }
     static getArchives(success) {
         sequelize.query(
-            'select `year`, count(`year`) as count, group_concat(`date`) as dates, group_concat(`title`) as titles, group_concat(`article_id`) as article_id from article group by year order by `created_at`;',
+            'select `year`, count(`year`) as count, group_concat(`date`) as dates, group_concat(`title`) as titles, group_concat(`article_id`) as article_id from article group by year order by year desc;',
             {
                 nest: true,
             }
@@ -105,13 +105,13 @@ class ArticleDao {
             console.log(err)
         })
     }
-    static getArticleList(page = 1, desc = "created_at", success) {//获取文章列表
+    static getArticleList(page = 1, success) {//获取文章列表
         const pageSize = 5; //每页的文章数量
         Article.scope('a_list').findAndCountAll({
             //分页
             limit: pageSize,
             offset: pageSize * (page - 1),
-            order: [[desc, 'DESC']] //按照文章创建的时间倒序查找
+            order: [['created_at', 'DESC']] //按照文章创建的时间倒序查找
         }).then((article) => {
             if (article.rows && article.rows.length !== 0) {
                 success(false, {
@@ -126,8 +126,8 @@ class ArticleDao {
                 success(new global.errs.NotFound('数据为空'));
             }
         }).catch(err => {
-            success(new global.errs.HttpException());
             console.log(err)
+            success(new global.errs.HttpException());
         })
     }
     static getArticleDetailById(id, success) {//获取文章详情

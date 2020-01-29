@@ -4,13 +4,13 @@ import { Loading, Message } from 'element-ui';
 let lodingInstancer = null;
 const axiosInstance = axios.create({
   baseURL: config.serverUrl,
-  timeout: 6000
+  timeout: 60000
 })
 // start loading
 function startLoading() {
     lodingInstancer = Loading.service({
-        text: '主人，马上加载好了',
-        fullscreen: false,
+        text: '主人，加载...',
+        fullscreen: true,
         background: 'rgba(0, 0, 0, 0.85)'
     });
 }
@@ -44,19 +44,19 @@ axiosInstance.interceptors.response.use((response) => {
         localStorage.removeItem('token');
         window.location = '/#/admin/login';
     } 
-    // else {Message.error(err.response.data.msg);}
-    if (status == 400) {
-        if (err.response.data.msg == "账号不存在，请先注册") {
-            Message.error(err.response.data.msg);
-            setTimeout(() => {
-                window.location = '/#/register';
-            }, 1000);
-        } else {
-            Message.error(err.response.data.msg);
-        }
-    } else {
-        Message.error(err.response.data.msg);
-    }
+    else {Message.error(err.response.data.msg);}
+    // if (status == 400) {
+    //     if (err.response.data.msg == "账号不存在，请先注册") {
+    //         Message.error(err.response.data.msg);
+    //         setTimeout(() => {
+    //             window.location = '/#/register';
+    //         }, 1000);
+    //     } else {
+    //         Message.error(err.response.data.msg);
+    //     }
+    // } else {
+    //     Message.error(err.response.data.msg);
+    // }
     return Promise.reject(err)
 })
 export {

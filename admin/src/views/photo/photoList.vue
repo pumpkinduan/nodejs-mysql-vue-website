@@ -18,7 +18,12 @@
       </Waterfall>
     </div>
     <div class="load-btn">
-      <el-button type="primary" @click="loadMoreImgs" :disabled="disabled">加载更多</el-button>
+      <el-button
+        type="primary"
+        v-loading.fullscreen.lock="fullscreenLoading"
+        @click="loadMoreImgs"
+        :disabled="disabled"
+      >加载更多</el-button>
       <el-badge :value="totalCounts" :max="99">
         <el-button>相片</el-button>
       </el-badge>
@@ -30,24 +35,25 @@
 </template>
 
 <script>
-import api from '@/api/upload.js';
-import config from '@/config.js';
-import Waterfall from '@/components/Waterfall.vue';
-import download from '@/util/download.js';
+import api from "@/api/upload.js";
+import config from "@/config.js";
+import Waterfall from "@/components/Waterfall.vue";
+import download from "@/util/download.js";
 export default {
   components: {
     Waterfall
   },
-  name: 'PhotoList',
+  name: "PhotoList",
   data() {
     return {
       urls: [],
       page: 1,
       serverUrl: config.serverUrl,
-      dialogImageUrl: '',
+      dialogImageUrl: "",
       dialogVisible: false,
       disabled: false,
-      totalCounts: 0
+      totalCounts: 0,
+      fullscreenLoading: false
     };
   },
   created() {
@@ -61,6 +67,10 @@ export default {
           if (res && res.data) {
             this.urls.push(...res.data.imgs.rows);
             this.totalCounts = res.data.imgs.count;
+            this.fullscreenLoading = true;
+            if (this.totalCounts == this.urls.length) {
+              this.disabled = true;
+            }
           }
         })
         .catch(err => {
@@ -68,7 +78,7 @@ export default {
         });
     },
     handlePreview(path) {
-      this.dialogImageUrl = this.serverUrl + '/' + path;
+      this.dialogImageUrl = this.serverUrl + "/" + path;
       this.dialogVisible = !this.dialogVisible;
     },
     loadMoreImgs() {
@@ -76,18 +86,18 @@ export default {
       this.getUrls(this.page);
     },
     handleRemove(path, index) {
-      this.$confirm('此操作将永久删除该图片, 是否继续?', '提示', {
-        confirmButtonText: '确定',
-        cancelButtonText: '取消',
-        type: 'warning'
+      this.$confirm("此操作将永久删除该图片, 是否继续?", "提示", {
+        confirmButtonText: "确定",
+        cancelButtonText: "取消",
+        type: "warning"
       }).then(res => {
-        path = path.replace(/\//gi, '\\');
+        path = path.replace(/\//gi, "\\");
         api
           .deleteOneImg(path)
           .then(res => {
             if (res.data) {
               this.$message({
-                type: 'success',
+                type: "success",
                 duration: 400,
                 message: res.data.msg
               });

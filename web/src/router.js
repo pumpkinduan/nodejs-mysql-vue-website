@@ -5,7 +5,7 @@ import Categories from './views/Categories.vue'
 import Archives from './views/Archives.vue'
 Vue.use(Router)
 export default new Router({
-  mode: 'history',
+  mode: 'hash',
   routes: [
     {
       path: '/',

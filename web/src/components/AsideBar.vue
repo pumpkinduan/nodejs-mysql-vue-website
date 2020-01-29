@@ -3,7 +3,7 @@
     <slot>
       <template>
         <div class="site-overview-wrap">
-          <span class="heiguai-gif" @mousedown="handleDown($event)" @mouseup="handleUp"></span>
+          <span class="heiguai-gif" @mousedown="handleDown" @mouseup="handleUp"></span>
           <span class="site-logo orange">pumpkin</span>
           <p class="site-description">Everything is Ok</p>
           <div class="site-author">
@@ -38,38 +38,56 @@
 </template>
 
 <script>
-import { removeEvent, addEvent } from "@/lib/tool";
+import { removeEvent, addEvent, getElementPosition } from "@/lib/tool";
 export default {
   props: ["archive_count", "categories_count"],
-  data() {
-    return {
-      oBox: null
-    };
-  },
-  mounted() {
-    this.oBox = document.getElementsByClassName("heiguai-gif")[0];
-  },
   methods: {
     handleDown(ev) {
-      let oBox = this.oBox;
-      //2.获取差值
-      var extraX = ev.pageX - parseInt(oBox.offsetLeft);
-      var extraY = ev.pageY - parseInt(oBox.offsetTop);
+      let oBox = ev.target;
+      let { x, y } = getElementPosition(oBox.offsetParent);
+      //元素活动的范围
+      let range = {
+        maxLeft: document.documentElement.clientWidth - x - oBox.offsetWidth,
+        minLeft: -x,
+        maxTop: document.documentElement.clientHeight - y - oBox.offsetHeight,
+        minTop: -y
+      };
+      //获取不变的差值；
+      //水平方向公式： 差值+元素left = 鼠标点击位置距离窗口左侧距离
+      let extraX = ev.pageX - parseInt(oBox.offsetLeft);
+      let extraY = ev.pageY - parseInt(oBox.offsetTop);
       this.handleMove = e => {
-        //获取偏移量
-        var newX = e.pageX - extraX + "px";
-        var newY = e.pageY - extraY + "px";
-        this.oBox.style.left = newX;
-        this.oBox.style.top = newY;
+        //计算元素的left和top
+        let newX = e.pageX - extraX;
+        let newY = e.pageY - extraY;
+        if (newX >= range.maxLeft) {
+          oBox.style.left = range.maxLeft + "px";
+        } else if (newX <= range.minLeft) {
+          oBox.style.left = range.minLeft + "px";
+        } else {
+          oBox.style.left = newX + "px";
+        }
+        if (newY <= range.minTop) {
+          oBox.style.top = range.minTop + "px";
+        } else if (newY >= range.maxTop) {
+          oBox.style.top = range.maxTop + "px";
+        } else {
+          oBox.style.top = newY + "px";
+        }
       };
       addEvent(document, "mousemove", this.handleMove);
+      document.addEventListener('mouseleave', () => {
+        this.handleUp();
+      }, false)
     },
     handleUp() {
       removeEvent(document, "mousemove", this.handleMove);
+      // this.handleMove = null;
+      console.log("removeEvent");
     }
   },
   destroyed() {
-    removeEvent(document, "mousemove");
+    removeEvent(document, "mousemove", this.handleMove);
   }
 };
 </script>

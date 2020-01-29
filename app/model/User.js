@@ -13,7 +13,7 @@ User.init({//初始化管理员信息
     }
 }, {
   sequelize,
-  tableName: 'User'
+  tableName: 'user'
 })
 module.exports = {
     User

@@ -98,7 +98,7 @@ export default {
         this.tableData = this.cacheData.get(page); //从缓存中取数据
         return;
       }
-      api
+      article
         .getArticleLists({ page })
         .then(res => {
           if (res.data && res.data.data) {

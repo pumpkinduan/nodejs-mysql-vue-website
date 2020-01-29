@@ -449,9 +449,5 @@ button.cancle {
 button:hover {
   opacity: 0.8;
 }
-.block-loading {
-  width: 100%;
-  padding: 5rem 0;
-  background: url("../assets/image/loading_big.gif") center center no-repeat;
-}
+
 </style>

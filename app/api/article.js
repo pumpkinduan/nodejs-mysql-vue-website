@@ -21,8 +21,8 @@ function getCategories(req, res, next) {
 }
 //获取文章列表
 function getArticleList(req, res, next) {
-    const { page, desc } = req.query;
-    const data = ArticleDao.getArticleList(page, desc, (err, data) => {
+    const { page } = req.query;
+    const data = ArticleDao.getArticleList(page, (err, data) => {
         reactToClient(res, err, data)
     });
 }

@@ -34,7 +34,8 @@
           </router-link>
         </div>
       </section>
-      <section class="pagination-nav" v-if="articleLists.lenth !== 0">
+      <div class="block-loading" v-if="articleLists.length <= 0"></div>
+      <section class="pagination-nav" v-else>
         <Pagination
           :totalData="totalArtiles"
           :pageSize="pageSize"

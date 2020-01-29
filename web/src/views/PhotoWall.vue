@@ -2,7 +2,7 @@
   <div>
     <Header />
     <main class="clearfix">
-      <Quotation ref="quotation" @sendGap="sendGap" />
+      <Quotation ref="quotation" @sendGap="sendGap" :style="{visibility: showQuotation}" />
       <div class="wrap">
         <Waterfall :cards="cards" ref="waterfall" @loadData="loadData" :gap="gap">
           <template slot-scope="{data}">
@@ -25,15 +25,17 @@
     <el-dialog :visible.sync="dialogVisible">
       <img width="100%" :src="dialogImageUrl" alt />
     </el-dialog>
+    <div :class="[loading_gif ? 'block-loading': '']"></div>
+    <div v-show="showPrompt" class="prompt-text">亲，没有更多相片了噢~</div>
   </div>
 </template>
 
 <script>
-import Header from '@/components/Header.vue';
-import Quotation from '@/components/Quotation.vue';
-import config from '@/config.js';
-import Waterfall from '@/components/Waterfall';
-import api from '@/api/img.js';
+import Header from "@/components/Header.vue";
+import Quotation from "@/components/Quotation.vue";
+import config from "@/config.js";
+import Waterfall from "@/components/Waterfall";
+import api from "@/api/img.js";
 export default {
   components: {
     Quotation,
@@ -46,9 +48,12 @@ export default {
       gap: 300,
       page: 1,
       serverUrl: config.serverUrl,
-      dialogImageUrl: '',
+      dialogImageUrl: "",
       dialogVisible: false,
-      totalPhotoes: null
+      totalPhotoes: 0,
+      loading_gif: false,
+      showPrompt: false,
+      showQuotation: "hidden"
     };
   },
   created() {
@@ -59,22 +64,24 @@ export default {
       this.gap = gap;
     },
     getData(page) {
+      this.loading_gif = true;
       api.getAllImgs(page).then(result => {
         if (result.data && result.data.imgs) {
-          !this.totalPhotoes
-            ? (this.totalPhotoes = result.data.imgs.count)
-            : '';
+          this.totalPhotoes = result.data.imgs.count;
           this.cards.push(...result.data.imgs.rows);
         }
       });
     },
     loadData(page) {
       // 减少一次请求
-      if (this.totalPhotoes <= this.cards.length) return;
+      if (this.totalPhotoes != 0 && this.totalPhotoes === this.cards.length) {
+        this.showPrompt = true;
+        return;
+      }
       this.getData(page);
     },
     handlePreview(path) {
-      this.dialogImageUrl = this.serverUrl + '/' + path;
+      this.dialogImageUrl = this.serverUrl + "/" + path;
       this.dialogVisible = !this.dialogVisible;
     }
   }
@@ -114,5 +121,11 @@ main {
 }
 .el-image__item-actions span {
   margin: 0 10px;
+}
+.prompt-text {
+  text-align: center;
+  font-size: 1rem;
+  padding-bottom: 14px;
+  color: #9c9c87;
 }
 </style>

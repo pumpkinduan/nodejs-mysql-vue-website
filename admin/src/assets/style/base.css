@@ -41,23 +41,6 @@ html, body {
 
 /* 设置默认字体 */
 
-h1 {
-    font-size: 18px;
-    /* 18px / 12px = 1.5 */
-}
-
-h2 {
-    font-size: 16px;
-}
-
-h3 {
-    font-size: 14px;
-}
-
-h4, h5, h6 {
-    font-size: 100%;
-}
-
 address, cite, dfn, em, var {
     font-style: normal;
 }
@@ -176,6 +159,7 @@ hr {
 img {
     vertical-align: middle;
 }
+/* 自定义quill css */
 .ql-container.ql-snow {
     height: 400px;
 }
@@ -190,6 +174,12 @@ img {
     overflow: auto;
     border: 1px solid #dddddd;
     border-radius: 3px;
+}
+.ql-snow .ql-editor h1,
+.ql-snow .ql-editor h2,
+.ql-snow .ql-editor h3,
+.ql-snow .ql-editor h4 {
+    margin: 1rem 0;
 }
 
 /* 滚动条宽度 */

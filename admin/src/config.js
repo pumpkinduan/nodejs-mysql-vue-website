@@ -1,4 +1,4 @@
-const serverUrl = 'http://localhost:8088';
+const serverUrl = 'http://47.96.251.63';
 export default {
     serverUrl
 }

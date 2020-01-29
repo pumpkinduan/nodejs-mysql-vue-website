@@ -71,11 +71,6 @@ abbr[title], acronym[title] {
     border-bottom: 1px dotted;
     cursor: help;
 }
-
-.ql-editor {
-    padding: 0 !important;
-}
-
 .ql-editor .ql-size-large {
     font-size: 1em;
 }
@@ -163,3 +158,9 @@ img {
     background-color:#a1a3a9;
     border-radius: 4px;
 }
+/* 加载gif */
+.block-loading {
+    width: 100%;
+    padding-bottom: 3rem;
+    background: url("../image/loading_big.gif") center center no-repeat;
+  }

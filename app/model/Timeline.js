@@ -29,7 +29,7 @@ Timeline.init({
     }
 }, {
     sequelize,
-    tableName: 'Timeline'
+    tableName: 'timeline'
 })
 module.exports = {
     Timeline

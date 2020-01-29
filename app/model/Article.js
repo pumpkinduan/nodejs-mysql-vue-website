@@ -4,7 +4,7 @@
 const { Sequelize, Model } = require('sequelize');
 const { sequelize } = require('../core/db');
 const moment = require('moment');
-class Article extends Model { }
+class Article extends Model { };
 Article.init({
     title: Sequelize.STRING(32),
     author: Sequelize.STRING(16),
@@ -42,7 +42,7 @@ Article.init({
     }
 }, {
     sequelize,
-    tableName: 'Article'
+    tableName: 'article'
 })
 module.exports = {
     Article

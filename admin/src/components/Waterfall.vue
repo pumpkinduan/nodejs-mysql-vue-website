@@ -118,6 +118,7 @@ export default {
           });
         }
         container.style.height = Math.max.apply(null, rowHeightArr) + 'px';
+        this.$parent.fullscreenLoading = false;
       });
     }
   },

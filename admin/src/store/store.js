@@ -7,13 +7,8 @@ const state = {
     isAuthenticated: false,
     userInfo: '',
     timelineList: [],
-    records: { //文章，文章动态时间线，留言，评论...总数量记录
-        timeline_count: 0,
-        comment_count: 0,
-        reply_count: 0,
-        photo_count: 0,
-        article_count: 0
-    }
+    showPreview: false,
+    previewData: ''
 }
 const mutations = {
     [types.SET_AUTHENTICATED](state, payload) {

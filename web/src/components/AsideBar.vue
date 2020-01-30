@@ -5,15 +5,15 @@
         <div class="site-overview-wrap">
           <span class="heiguai-gif" @mousedown="handleDown" @mouseup="handleUp"></span>
           <span class="site-logo orange">pumpkin</span>
-          <p class="site-description">Everything is Ok</p>
+          <p class="site-description">Everything is Ok~</p>
           <div class="site-author">
             <section class="site-author-img">
-              <img src="../assets/image/cv.jpg" />
+              <img src="../assets/image/asideBar.jpg" />
             </section>
             <p class="site-author-words">
               This is my personal website where I share a lot of stuffs about my life and work
               everything i do in between.
-              <br />Hope you guys love it
+              <br />Hope you guys love it！
             </p>
           </div>
           <nav class="site-state">
@@ -82,8 +82,6 @@ export default {
     },
     handleUp() {
       removeEvent(document, "mousemove", this.handleMove);
-      // this.handleMove = null;
-      console.log("removeEvent");
     }
   },
   destroyed() {
@@ -102,6 +100,7 @@ export default {
   line-height: 1rem;
   padding: 1rem;
   width: 320px;
+  text-align: center;
 }
 .site-overview-wrap {
   font-family: cursive;
@@ -113,14 +112,12 @@ export default {
   font-family: cursive;
   letter-spacing: 5px;
   font-size: 1.65rem;
-  text-align: center;
 }
 .site-overview-wrap .site-description {
   color: #666;
   font-size: 0.9rem;
   font-family: cursive;
   line-height: 1.5rem;
-  text-align: center;
 }
 .site-overview-wrap .site-author .site-author-img {
   padding: 0.5rem 0;
@@ -132,6 +129,7 @@ export default {
 .site-overview-wrap .site-author .site-author-words {
   line-height: 1.2rem;
   font-family: cursive;
+  
 }
 .site-overview-wrap .site-state {
   margin-top: 1rem;

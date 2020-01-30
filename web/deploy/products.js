@@ -4,17 +4,12 @@
 const fs = require('fs');
 const path = require('path');
 // env 文件 判断打包环境指定对应的服务器id
-console.log(process.env.NODE_ENV)
 const envfile = process.env.NODE_ENV === 'prod' ? '../.env.prod' : '../.env.dev';
 // env环境变量的路径
 const envPath = path.resolve(__dirname, envfile);
 // env对象
 const envObj = parse(fs.readFileSync(envPath, 'utf8'));
-
-console.log(envPath)
-console.log(envObj)
 const SERVER_ID = parseInt(envObj['VUE_APP_SERVER_ID']);
-console.log(SERVER_ID)
 function parse(src) {
     // 解析KEY=VAL的文件
     const res = {};

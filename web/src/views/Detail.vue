@@ -1,13 +1,16 @@
 <template>
   <div class="clearfix detail" ref="main">
     <div class="detail-inner fl">
-      <img class="heimao-gif" width="50" src="../assets/image/heimao.gif"/>
+      <img class="heimao-gif" width="50" src="../assets/image/heimao.gif" />
       <div class="post-date">
         <div class="post-month">{{ details.created_at && details.created_at.split('-')[1] }}月</div>
         <div class="post-day">{{ details.created_at && details.created_at.split('-')[2] }}</div>
       </div>
       <div class="post-badge">
-        <router-link :to="{name: 'tag', params: {tag: details.tag}}" class="post-tag">{{details.tag}}</router-link>
+        <router-link
+          :to="{name: 'tag', params: {tag: details.tag}}"
+          class="post-tag"
+        >{{details.tag}}</router-link>
       </div>
       <main class="ql-snow">
         <section>
@@ -21,9 +24,7 @@
         </section>
         <div ref="detail" v-html="details.content" class="content ql-editor"></div>
         <section class="wrap-comment">
-          <Comment
-            :article_title="details.title"
-          />
+          <Comment :article_title="details.title" />
         </section>
       </main>
     </div>
@@ -49,15 +50,15 @@
 </template>
 
 <script>
-import AsideBar from '@/components/AsideBar';
-import article from '@/api/article.js';
-import Comment from '@/components/Comment';
+import AsideBar from "@/components/AsideBar";
+import article from "@/api/article.js";
+import Comment from "@/components/Comment";
 import {
   throttle,
   addEvent,
   removeEvent,
   getElementPosition
-} from '@/lib/tool.js';
+} from "@/lib/tool.js";
 export default {
   components: {
     AsideBar,
@@ -73,10 +74,10 @@ export default {
   },
   data() {
     return {
-      dialogImageUrl: '',
+      dialogImageUrl: "",
       dialogVisible: false,
       curIndex: null,
-      catalogDoms: '',
+      catalogDoms: "",
       details: {},
       catalogs: [],
       stayTime: 0,
@@ -109,10 +110,10 @@ export default {
   methods: {
     init() {
       this.catalogDoms =
-        this.$refs.detail && this.$refs.detail.getElementsByTagName('h3');
+        this.$refs.detail && this.$refs.detail.getElementsByTagName("h3");
       this.createCatalog(this.catalogDoms);
-      this.handleScroll = throttle(this.onScroll, 30);
-      addEvent(window, 'scroll', this.handleScroll);
+      this.handleScroll = throttle(this.onScroll, 45);
+      addEvent(window, "scroll", this.handleScroll);
     },
     createCatalog(elements) {
       //生成文章目录
@@ -142,21 +143,32 @@ export default {
     },
     preLoadImgs(fn) {
       let imgs =
-        this.$refs.detail && this.$refs.detail.getElementsByTagName('img');
-      let totalCount = imgs && imgs.length,
+        this.$refs.detail && this.$refs.detail.getElementsByTagName("img");
+        //当文章内没有图片时，则执行回调函数
+      if (imgs && !imgs.length) {
+        fn();
+        return;
+      }
+      let totalCount = imgs.length,
         count = 0;
       for (let i = 0; i < totalCount; i++) {
         this.preLoadImg(imgs[i], img => {
           // 放大图片事件
-          img.style.cursor = 'zoom-in';
-          addEvent(img, 'click', () => {
-            this.dialogVisible = true;
-            this.dialogImageUrl = img.src;
-          }, false)
+          img.style.cursor = "zoom-in";
+          addEvent(
+            img,
+            "click",
+            () => {
+              this.dialogVisible = true;
+              this.dialogImageUrl = img.src;
+            },
+            false
+          );
           count++;
           if (count === totalCount) {
             //所有图片加载完成
-            fn(this.$refs.detail); //表示可以获取包含图片的元素的实际高度
+            //表示可以获取包含图片的元素的实际高度
+            fn();
             imgs = null;
           }
         });
@@ -220,7 +232,7 @@ export default {
       this.browse = data.browse;
     },
     destroyed() {
-      removeEvent(window, 'scroll', this.handleScroll);
+      removeEvent(window, "scroll", this.handleScroll);
     }
   }
 };

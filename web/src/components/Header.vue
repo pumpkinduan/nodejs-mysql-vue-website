@@ -1,5 +1,5 @@
 <template>
-  <header id="nav_header" class="clearfix">  
+  <header id="nav_header" class="clearfix">
     <h1 class="fl">
       <router-link to="/">
         <img src="../assets/image/pumpkin.png" style="width: 5em;" />
@@ -28,24 +28,29 @@
 </template>
   <script>
 export default {
-  name: 'HeaderNav',
+  name: "HeaderNav",
   data() {
     return {
       navLinks: [
         {
-          class: 'iconfont icon-shouye',
-          component: 'articleList',
-          name: '首页'
+          class: "iconfont icon-shouye",
+          component: "articleList",
+          name: "首页"
         },
         {
-          class: 'iconfont icon-xingxing1',
-          component: 'photoWall',
-          name: '相册墙'
+          class: "iconfont icon-xingxing1",
+          component: "photoWall",
+          name: "相册墙"
         },
         {
-          class: 'iconfont icon-guanyuwo',
-          component: 'about',
-          name: '关于我'
+          class: "iconfont icon-guanyuwo",
+          component: "about",
+          name: "关于我"
+        },
+        {
+          class: "iconfont el-icon-chat-line-square",
+          component: "resume",
+          name: "我的简历"
         }
       ],
       show: false
@@ -70,7 +75,7 @@ header .logo {
   letter-spacing: 5px;
   color: #ff450085;
   font-size: 1.5rem;
-  display:inline-block;
+  display: inline-block;
   line-height: 5rem;
 }
 header nav ul li a {
@@ -138,7 +143,7 @@ header nav ul li a:hover:after {
 .menu ul li {
   border-top: 1px solid hsla(0, 7%, 15%, 0.17);
   padding: 1.5rem 0;
-  transition: color .4s;
+  transition: color 0.4s;
 }
 .menu ul li:first-child {
   border: none;
@@ -151,15 +156,17 @@ header nav ul li a:hover:after {
 .menu a {
   color: #ccc;
   transition: color 0.3s;
-  margin-right: 5px; 
+  margin-right: 5px;
 }
 /* 菜单栏的动画 */
-.menu-enter, .menu-leave-to {
+.menu-enter,
+.menu-leave-to {
   opacity: 0;
   transform: translateX(100%);
 }
-.menu-enter-active, .menu-leave-active {
-  transition: all .5s;
+.menu-enter-active,
+.menu-leave-active {
+  transition: all 0.5s;
 }
 .menu-enter-to {
   transform: translateX(0%);

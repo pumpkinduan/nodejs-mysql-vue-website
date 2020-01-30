@@ -1,164 +1,85 @@
 <template>
   <div class="about">
-    <aside>
-      <h1>
-        <router-link to="/">
-          <span>
-            <img src="../assets/image/南瓜.jpg" width="100%" style="border-radius: 50%;" />
-          </span>
-        </router-link>
-      </h1>
-      <p>段征中 &nbsp; &nbsp; &nbsp; &nbsp;男</p>
-      <p class="hello">Don't wait for life to start</p>
-      <ul>
-        <li>
-          <span style="padding-bottom: 0.8rem; display: inline-block;">教育背景</span>
-          <p>湖南工程学院. 2016.09-2020.06</p>
-          <p>本科.专业. 材料成型及控制工程</p>
-        </li>
-        <li>
-          <span>兴趣爱好</span>
-          <p>前端、英语、阅读...</p>
-          <p>健身、篮球、爬山...</p>
-        </li>
-        <li>
-          <span>联系方式</span>
-          <p>我的邮箱: 1519629554@qq.com</p>
-        </li>
-      </ul>
-    </aside>
-    <main>
-      <ul class="skill">
-        <li>
-          <em>IT 技能</em>
-          <ol>
-            <li>熟练掌握HTML、CSS原理，如：选择器的权重，层叠性，BFC，IFC,，动流，定位流</li>
-            <li>灵活运用html(5)&css(3)高度还原设计稿效果,，写过淘宝，努比亚，豆瓣，美团等等许多页面</li>
-            <li>深刻理解原生JavaScript理论概念,如闭包，作用域，作用域链，原型链，继承以及JS的执行机制</li>
-            <li>DOM：灵活自如的利用js操作DOM，实现与页面的交互效果</li>
-            <li>ES6：熟练ES6基本语法，模拟实现过promise以及map和set数据结构</li>
-            <li>Ajax：手动封装过类似jQuery的Ajax函数, 了解Jsonp和CORS跨域, 利用Jsonp写过百度搜索框功能, 并且利用NodeJs模拟过Jsonp的实现原理</li>
-            <li>VueJs：对vuejs的响应式数据原理,虚拟DOM,依赖收集有过深入了解,并自己尝试进行了实现</li>
-            <li>jQuery： 阅读过部分源码,了解其整体封装思想,自己封装过一个简易版的jQuery,利用jQuery写过轮播图插件,翻页插件,QQ音乐播放器等等demo</li>
-            <li>
-              熟悉Git常见命令的使用, 有自己的GitHub主页:
-              <a style="color: #f39e02;" href="https://github.com/pumpkinduan" target="blank">https://github.com/pumpkinduan</a>
-            </li>
-          </ol>
-        </li>
-        <li>
-          <em>我的项目</em>
-          <h1>使用 Node.js + Express + MySQL + Vue.js技术栈搭建整站项目</h1>
-          <ol>
-            <li>利用nodejs+express实现API接口</li>
-            <li>使用element-ui快速搭建后台管理系统界面，界面包含管理员的注册与登录，文章编辑与管理，留言与回复以及每日一句功能，文章编辑方面实现了图片的上传功能，借用express的multer中间件将图片直接存储在服务器中，而在数据库中存储图片的路径、大小等信息，减少了数据库的压力</li>
-            <li>使用aixos进行网络请求，借用sequelieze操作MySQL数据库</li>
-            <li>使用vue-cli3构建项目，利用vueRouter实现spa页面效果</li>
-            <li>编写简约风格的瀑布流组件，而网站首页则采用瀑布流布局，实现懒加载功能，利用节流进行性能优化</li>
-            <li>基于HTML(5)&CSS(3)进行整站页面的搭建与布局，包含首页，关于我以及博客列表和博客详情页面</li>
-          </ol>
-        </li>
-      </ul>
-    </main>
+    <Header />
+    <div class="inner">
+      <h1 class="cover">关于我</h1>
+      <article class="content">
+        <p>你好啊，来访的朋友！我是南瓜(Pumpkin)，出于对南瓜这种食物的喜爱，给自己起了这个名字。</p>
+        <p>我身高178 || 179 || 180的样子，不过都差不多啦，体重130-135，目标145!</p>
+        <p>22岁，大四老油条一枚，不抽烟不喝酒也不蹦迪，</p>
+        <p>外冷内热，有时很逗比、有时很安静、有时(用长沙话说就是)"做好事"......</p>
+        <p>爱走动，爱搞事情；腰包鼓时，游玩可是说走就走，</p>
+        <p>秋攀武功山只为看云海（可惜两次都没见着），冬攀衡山看雾凇（美），夏攀武当山（凉爽）。</p>
+        <p>在学校里，常泡图书馆和健身房，健康与学习一个都不能落下。</p>
+        <p>挂过科（共计2科，难受~），也逃过课（图书馆敲代码）</p>
+        <p>爱看NBA，古装剧，美剧，悬疑推理片，高中前两年曾痴迷于动漫，LOL和篮球，</p>
+        <p>到高三，想考大学了便放弃动漫和LOL，脚踝伤了三次后也放弃篮球了。</p>
+        <p>饮食中规中距，相对清淡，不油腻也不辛辣，怕起痘...</p>
+        <p>爱吃各种水果与蔬菜</p>
+        <p>最爱的宠物是：英姿飒爽的狗狗（边牧，哈士奇......</p>
+        <p>养过小仓鼠（在宿舍），鱼，王八，狗狗，以后自己再养只🐱猫，哈哈哈~</p>
+        <p>食物禁忌：葱× 香菜✓ 蒜子✓ 大蒜× 肥肉× 味精和鸡精× 鸡鱼鸭皮×</p>
+        <p>爱听：纯音乐，古风，流行；唱歌老跑调，室友都拿这个开我玩笑emmmm~</p>
+        <p>偶像：詹姆斯和彭于晏</p>
+        <p>个人网站1.0版本于2020-1-23上线，选择了阿里云服务器，技术栈为vue+express+mysql。</p>
+        <p>~加油给力搞事情~</p>
+      </article>
+    </div>
   </div>
 </template>
 
+<script>
+import Header from "@/components/Header.vue";
+export default {
+  components: {
+    Header
+  }
+};
+</script>
+
 <style scoped>
 .about {
-  position: relative;
-}
-.about aside {
-  width: 400px;
-  height: 100%;
-  position: fixed;
-  padding-right: 2rem;
-  padding-top: 5rem;
-  top: 0;
-  left: 0;
-  background: url("../assets/image/cv.jpg") 0 0 no-repeat;
+  min-width: 100%;
+  min-height: 100vh;
+  background: url("../assets/image/bgc.jpg") 0 0 no-repeat;
   background-size: cover;
   text-align: center;
 }
-.about aside h1 span {
-  display: inline-block;
-  width: 150px;
-  height: 150px;
-  border: 1px solid #555;
-  border-radius: 50%;
-  padding: 1px;
+.about .inner {
+  position: relative;
+  padding-top: 1px;
+  width: 768px;
+  margin: 0 auto;
 }
-.about aside img {
-  margin: 0;
-}
-.about aside > p {
-  line-height: 1.2rem;
-  font-size: 1.2rem;
-  color: #dcd5d5e0;
-  padding-top: 2rem;
-}
-.about aside p.hello {
-  color: #888;
-}
-.about aside ul {
-  margin-top: 2rem;
-}
-.about aside ul li {
-  color: #f1f1f1;
-  font-size: 1.2rem;
+.about .inner .cover {
+  position: relative;
+  color: #fff;
+  font-size: 1.8rem;
   font-weight: 500;
-  padding: 1.5rem 0;
-  transition: color 0.3s;
+  padding: 10rem 0;
+  background: url("../assets/image/cover.jpg") center center no-repeat;
+  background-size: cover;
 }
-
-.about aside ul li p {
-  color: #ccc;
-  font-size: 1rem;
-  padding: 0.8rem 0;
+.about .inner .cover::after {
+  content: "";
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  background-color: #000;
+  opacity: 0.3;
+  top: 0;
+  left: 0;
 }
-.about aside ul > li span:hover {
-  color: orange;
+.about .inner .content {
+  font-size: 0.9rem;
+  background-color: #fff;
+  opacity: 0.8;
 }
-
-.about main {
-  padding-left: 400px;
-}
-.about main .skill {
-  padding: 0 1rem 1rem 1.5rem;
-}
-.about main .skill li {
+.about .inner .content p {
   padding-top: 1.5rem;
+  transition: all .3s;
 }
-.about main .skill li section {
-  padding-left: 1rem;
-  margin-top: 2rem;
-  border-top: 2px solid #eee;
-  font-weight: 350;
-  color: #444;
-  font-size: 0.9rem;
-  line-height: 1.4rem;
-}
-.about main .skill li em {
-  padding-bottom: 5px;
-  font-size: 1.2rem;
-  font-weight: 600;
-  color: #555;
-  border-bottom: 1px dotted #444948;
-  display: inline-block;
-}
-.about main .skill li section p {
-  padding: 0.6rem 0;
-}
-.about main .skill li ol {
-  padding-left: 1.2rem;
-}
-.about main .skill li h1 {
-  font-size: 0.9rem;
-  color: #888;
-  margin-top: 10px;
-}
-.about main .skill li ol li {
-  list-style-type: disc;
-  color: #666;
-  font-size: 0.78rem;
+.about .inner .content p:last-child {
+  padding-bottom: 1rem;
 }
 </style>

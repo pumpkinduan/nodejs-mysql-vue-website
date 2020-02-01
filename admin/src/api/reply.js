@@ -8,5 +8,8 @@ export default {
         return axiosInstance.get("/api/reply/all", {
             params
         });
+    },
+    createReply(data) {
+        return axiosInstance.post("/api/reply/create", data);
     }
 }

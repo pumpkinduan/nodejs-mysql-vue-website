@@ -2,12 +2,12 @@
   <div class="article-list">
     <List
       :labels="labels"
-      :hasCover="true"
       :tableData="tableData"
       :amount="amount"
       :pageSize="pageSize"
       :pageBtns="pageBtns"
       :cacheData="cacheData"
+      :canSearch="true"
       @getCurrentItem="getCurrentItem"
     >
       <template slot="only" slot-scope="{scopeProp}">

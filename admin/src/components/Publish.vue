@@ -62,7 +62,7 @@ const toolbarOptions = [
   ["bold", "italic", "underline", "strike", "blockquote", "code-block"], // toggled buttons
   [{ list: "ordered" }, { list: "bullet" }],
   [{ size: [false, "large", "huge"] }], // custom dropdown
-  [{ header: [1, 2, 3, 4, 5, 6, false] }],
+  [{ header: [3, 4, false] }],
   [{ color: [] }, { background: [] }], // dropdown with defaults from theme
   [{ font: [] }, { align: [] }],
   ["clean", "link", "image"] // add upload image btn
@@ -202,8 +202,4 @@ export default {
 .submit-btn {
   margin-bottom: 15px;
 }
-.wrapper >>> .ql-container.ql-snow {
-  height: 450px;
-}
-
 </style>

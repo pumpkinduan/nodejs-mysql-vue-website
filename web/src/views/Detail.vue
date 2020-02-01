@@ -275,11 +275,15 @@ export default {
   top: 40px;
   width: 320px;
 }
+.right-catalog .catalog-wrap {
+  text-align: left;
+}
 .right-catalog .catalog-wrap h2 {
   color: #555;
   font-size: 1rem;
   padding-bottom: 1.2rem;
   padding-top: 0.5rem;
+  text-align: center;
 }
 .right-catalog .catalog-wrap li {
   padding: 0.4rem 0;
@@ -302,7 +306,7 @@ export default {
 @media screen and (min-width: 920px) {
   .detail-inner {
     padding: 2rem 4rem;
-    width: 810px;
+    width: 830px;
     background-color: #ffffff;
     position: relative;
     box-shadow: 0 0 40px #dcdbff;

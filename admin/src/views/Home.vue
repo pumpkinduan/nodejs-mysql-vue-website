@@ -14,10 +14,14 @@
         </transition>
       </el-main>
     </el-container>
-    <div class="preview-mask ql-snow" v-show="$store.state.showPreview">
-      <div class="ql-editor inner">
+    <div
+      class="preview-mask ql-snow"
+      @click="closePreview($event)"
+      v-show="$store.state.showPreview"
+    >
+      <div class="ql-editor inner" ref="ql_content">
         <div class="content" v-html="$store.state.previewData"></div>
-        <span class="el-icon-circle-close" @click.stop="handlePreview"></span>
+        <span class="el-icon-circle-close" @click.stop="closePreview(false)"></span>
       </div>
     </div>
   </el-container>
@@ -105,8 +109,16 @@ export default {
       }
       this.levelList = matched.filter(item => item.meta && item.meta.title);
     },
-    handlePreview() {
-      this.$store.state.showPreview = false;
+    closePreview(e) {
+      if (!e) {
+        //点击关闭按钮
+        this.$store.state.showPreview = false;
+        return;
+      }
+      //点击目标以外区域
+      if (!this.$refs.ql_content.contains(e.target)) {
+        this.$store.state.showPreview = false;
+      }
     }
   }
 };
@@ -135,19 +147,20 @@ export default {
 }
 .preview-mask .inner {
   padding: 2rem 4rem;
-  width: 810px;
+  width: 830px;
   min-height: 100vh;
   background-color: #ffffff;
   position: relative;
   left: 50%;
   transform: translate(-50%);
+  font-family: Helvetica, "Microsoft YaHei", sans-serif;
 }
 .preview-mask .inner .content {
   margin: 3rem 0;
   line-height: 1.5rem;
   padding-bottom: 2rem;
   border-bottom: 1px solid #eee;
-  font-size: 14px;
+  font-size: 1.35em;
 }
 .preview-mask .inner .el-icon-circle-close {
   position: absolute;

@@ -1,18 +1,3 @@
-div, section {
-    -moz-user-select: none;
-    /* Firefox私有属性 */
-    -webkit-user-select: none;
-    /* WebKit内核私有属性 */
-    -ms-user-select: none;
-    /* IE私有属性(IE10及以后) */
-    -khtml-user-select: none;
-    /* KHTML内核私有属性 */
-    -o-user-select: none;
-    /* Opera私有属性 */
-    user-select: none;
-    /* CSS3属性 */
-}
-
 /* 清除内外边距 */
 
 body, h1, h2, h3, h4, h5, h6, hr, p, blockquote,
@@ -32,6 +17,8 @@ th, td, div, header, main, footer {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
+    /* font-family: Helvetica, "Microsoft YaHei", sans-serif; */
+    letter-spacing: 1px;
 }
 
 html, body {
@@ -39,20 +26,9 @@ html, body {
     height: 100%;
 }
 
-/* 设置默认字体 */
-
-address, cite, dfn, em, var {
-    font-style: normal;
+body {
+    font-size: 62.5% !important;
 }
-
-/* 将斜体扶正 */
-
-code, kbd, pre, samp, tt {
-    font-family: "Courier New", Courier, monospace;
-}
-
-/* 统一等宽字体 */
-
 small {
     font-size: 12px;
 }
@@ -159,10 +135,13 @@ hr {
 img {
     vertical-align: middle;
 }
+
 /* 自定义quill css */
+
 .ql-container.ql-snow {
-    height: 400px;
+    height: 500px;
 }
+
 .ql-snow .ql-editor pre.ql-syntax {
     padding: 10px;
     background: #fafafa;
@@ -175,10 +154,8 @@ img {
     border: 1px solid #dddddd;
     border-radius: 3px;
 }
-.ql-snow .ql-editor h1,
-.ql-snow .ql-editor h2,
-.ql-snow .ql-editor h3,
-.ql-snow .ql-editor h4 {
+
+.ql-snow .ql-editor h1, .ql-snow .ql-editor h2, .ql-snow .ql-editor h3, .ql-snow .ql-editor h4 {
     margin: 1rem 0;
 }
 

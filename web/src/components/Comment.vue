@@ -4,7 +4,9 @@
       <h3>
         <i class="iconfont icon-liuyan"></i>
         <span v-if="words.length > 0">
-          一共有<em style="font-size: 1rem;" class="orange">{{totalComments}}</em>条留言和<em style="font-size: 1rem;" class="orange">{{totalReplies}}</em>条回复
+          一共有
+          <em style="font-size: 1rem;" class="orange">{{totalComments}}</em>条留言和
+          <em style="font-size: 1rem;" class="orange">{{totalReplies}}</em>条回复
         </span>
         <span v-else>目前还没有人留下ta的足迹噢,快来抢占一楼吧</span>
       </h3>
@@ -12,7 +14,7 @@
         <ul>
           <li v-for="(item, index) in words" :key="index">
             <header>
-              <i class="iconfont icon-xiaolian- fs-15 orange"></i>
+              <img src="../assets/image/lwl.jpeg" />
               <span class="user-name">{{item.name}}</span>
             </header>
             <section class="wrapper">
@@ -25,43 +27,53 @@
                   @click="handleReply(item.name, item.id, index, item.content)"
                 ></i>
               </div>
-              <template>
-                <section
-                  :key="r_index"
-                  class="reply"
-                  v-for="(reply, r_index) in item.replies.slice(0,3)"
-                >
-                  <div class="replier">
-                    <i class="iconfont orange fs-15 icon-github"></i>
+              <section
+                :key="r_index"
+                class="reply"
+                v-for="(reply, r_index) in item.replies.slice(0,3)"
+              >
+                <div>
+                  <template v-if="reply.name=='南瓜'">
+                    <img src="../assets/image/hinata.png" />
+                    <b>南瓜(作者)</b>
+                  </template>
+                  <template v-else>
+                    <img src="../assets/image/meto.jpg" />
                     <span class="user-name">{{reply.name}}</span>
-                    <small style="color: #969090;">&nbsp;回复道:</small>
-                    <span class="time fr">{{reply.created_at}}</span>
-                  </div>
-                  <p style="text-indent: 2rem;" class="content">{{reply.content}}</p>
-                </section>
-                <transition-group name="slide" tag="div" appear>
-                  <section
-                    :key="r_index + 3"
-                    class="reply"
-                    v-for="(reply, r_index) in item.replies.slice(3)"
-                    v-show="item.active"
-                  >
-                    <div class="replier">
-                      <i class="iconfont orange fs-15 icon-github"></i>
-                      <span>{{reply.name}}回复道</span>
-                      <span class="time fr">{{reply.created_at}}</span>
-                    </div>
-                    <p style="text-indent: 2rem;" class="content">{{reply.content}}</p>
-                  </section>
-                </transition-group>
-              </template>
+                  </template>
+                  <small style="color: #969090;">&nbsp;回复道:</small>
+                  <span class="time fr">{{reply.created_at}}</span>
+                </div>
+                <p class="content">{{reply.content}}</p>
+              </section>
+              <section
+                :key="r_index + 3"
+                class="reply list-complete"
+                v-for="(reply, r_index) in item.replies.slice(3)"
+                v-show="item.active"
+              >
+                <div>
+                  <template v-if="reply.name=='南瓜'">
+                    <img src="../assets/image/hinata.png" />
+                    <b>南瓜(作者)</b>
+                  </template>
+                  <template v-else>
+                    <img src="../assets/image/meto.jpg" />
+                    <span class="user-name">{{reply.name}}</span>
+                  </template>
+                  <small style="color: #969090;">&nbsp;回复道:</small>
+                  <span class="time fr">{{reply.created_at}}</span>
+                </div>
+                <p class="content">{{reply.content}}</p>
+              </section>
               <div
                 v-if="item.replies && item.replies.length>3"
                 @click="item.active=!item.active"
                 class="showMore clearfix fr"
+                :key="item.replies.length"
               >
-                <span v-if="!item.active">剩余{{item.replies.length - 3}}条回复</span>
-                <span v-else>收起回复</span>
+                <span v-show="!item.active">剩余{{item.replies.length - 3}}条回复</span>
+                <span v-show="item.active">收起回复</span>
                 <span :class="['iconfont','icon-xiala',(item.active ? 'active' : '')]"></span>
               </div>
             </section>
@@ -99,32 +111,38 @@
     </section>
   </div>
 </template>
-
 <script>
-import { format } from '@/lib/formatTime.js';
-import commenter from '@/api/comment.js';
-import replyer from '@/api/reply.js';
-import { throttle, debounce, addEvent, removeEvent } from '@/lib/tool.js';
+import { format } from "@/lib/formatTime.js";
+import commenter from "@/api/comment.js";
+import replyer from "@/api/reply.js";
+import {
+  throttle,
+  debounce,
+  addEvent,
+  removeEvent,
+  getPageOffset
+} from "@/lib/tool.js";
 export default {
-  props: ['article_title'],
+  props: ["article_title"],
   data() {
     return {
       canLoad: true,
       loading_gif: false,
       maxlength: 128,
       words: [],
-      name: '',
-      comment: '',
+      name: "",
+      comment: "",
       totalReplies: 0,
       comment_id: null, //当前被回复的留言的id
-      parent_name: '',
-      parent_comment: '',
+      parent_name: "",
+      parent_comment: "",
       totalComments: 0,
-      errMessage: '',
+      errMessage: "",
       isReply: false, //是否回复  默认 否
-      curIndex: '',
+      curIndex: "",
       page: 1,
-      prompt: 'Hey,guys,come and say something'
+      prompt: "Hey,guys,come and say something",
+      _scrollTop: 0 //记录用户点击回复时滚动条的位置
     };
   },
   watch: {
@@ -142,10 +160,10 @@ export default {
     }, 350);
   },
   mounted() {
-    addEvent(window, 'scroll', this.handleThrottle);
+    addEvent(window, "scroll", this.handleThrottle);
   },
   destroyed() {
-    removeEvent(window, 'scroll', this.handleThrottle);
+    removeEvent(window, "scroll", this.handleThrottle);
   },
   methods: {
     getData() {
@@ -157,7 +175,7 @@ export default {
             let data = res.data.data;
             for (let i in data) {
               //重新整理数据格式，添加 active: false，用于排他
-              data[i]['active'] = false;
+              data[i]["active"] = false;
             }
             this.words.push(...data);
             this.pageSize = parseInt(res.data.meta.pageSize);
@@ -174,13 +192,13 @@ export default {
       let self = this;
       this.debounceComment = debounce(newVal => {
         newVal && newVal.length >= 128
-          ? (self.errMessage = '留言的字符个数不能超过128噢')
-          : (self.errMessage = '');
+          ? (self.errMessage = "留言的字符个数不能超过128噢")
+          : (self.errMessage = "");
       });
       this.debounceName = debounce(newVal => {
         newVal && newVal.length >= 12
-          ? (self.errMessage = '昵称的字符个数不能超过12噢')
-          : (self.errMessage = '');
+          ? (self.errMessage = "昵称的字符个数不能超过12噢")
+          : (self.errMessage = "");
       });
     },
     sendComment() {
@@ -193,7 +211,7 @@ export default {
       commenter
         .createComment(data)
         .then(res => {
-           if (!res.data.success) return;
+          if (!res.data.success) return;
           let newComment = Object.assign(data, {
             created_at: format(),
             replies: [],
@@ -223,44 +241,54 @@ export default {
         );
         this.totalReplies++;
         this.resetComment();
+        //滚回到用户回复的留言处
+        document.documentElement._scrollTop = this._scrollTop;
       });
     },
+    check() {
+      let flag = true;
+      if (!this.comment) {
+        this.prompt = "留言不能为空噢";
+        flag = false;
+      }
+      if (!this.name) {
+        this.errMessage = "请留下阁下的大名吧";
+        flag = false;
+      }
+      this.$refs.focusTextarea.focus();
+      return flag;
+    },
     send() {
-      if (this.comment && this.name) {
+      if (this.check()) {
         if (!this.isReply) {
           this.sendComment();
         } else {
           this.sendReply();
         }
-      } else if (!this.comment) {
-        this.prompt = '留言不能为空噢';
-        this.$refs.focusTextarea.focus();
-      } else {
-        this.$refs.focusInput.focus();
-        this.errMessage = '请留下阁下的大名吧';
       }
     },
     handleReply(name, id, index, content) {
       //代表 && index==key回复
+      this._scrollTop = getPageOffset().y;
+      this.prompt = `回复${name}:`;
+      this.$refs.focusTextarea.focus();
       this.isReply = true;
       this.comment_id = id;
       this.parent_name = name;
       this.parent_comment = content;
       this.curIndex = index; //当前点击的那条留言
-      this.prompt = `回复${name}:`;
-      this.$refs.focusTextarea.focus();
     },
     resetComment() {
       //留言初始化
       this.isReply = false;
-      this.comment = '';
-      this.name = '';
-      this.prompt = 'Hey,guys,come and say something';
+      this.comment = "";
+      this.name = "";
+      this.prompt = "Hey,guys,come and say something";
     },
     loadData() {
       if (this.totalComments <= this.words.length) return;
       if (this.canLoad) {
-        const ele = document.getElementsByClassName('words')[0],
+        const ele = document.getElementsByClassName("words")[0],
           viewHeight =
             document.documentElement.clientHeight ||
             document.body.clientHeight ||
@@ -278,7 +306,6 @@ export default {
   }
 };
 </script>
-
 <style scoped>
 .comment .prompt p {
   font-weight: 400;
@@ -305,9 +332,18 @@ export default {
   font-size: 0.8rem;
   padding: 1.2rem 1rem;
 }
+.words ul li img {
+  display: inline-block;
+  border-radius: 50%;
+  margin-right: 6px;
+}
 .words ul li header {
   max-width: 600px;
   min-width: 300px;
+}
+.words ul li header > img {
+  width: 40px;
+  vertical-align: -12px;
 }
 .comment .words ul li section .time {
   color: #777;
@@ -315,7 +351,7 @@ export default {
 }
 .comment .words ul li section.wrapper {
   margin-top: 0.6rem;
-  padding-left: 2rem;
+  padding-left: 46px;
   position: relative;
   color: #555;
   overflow: hidden;
@@ -332,8 +368,6 @@ export default {
 }
 .comment .words ul li header .user-name {
   font-size: 1rem;
-  vertical-align: 2px;
-  margin-left: 6px;
   font-weight: 500;
 }
 .comment .words ul li .content {
@@ -343,10 +377,17 @@ export default {
 }
 .comment .words ul li section .reply {
   padding: 0.8rem;
-  background-color: rgba(241,241,241,.3);
+  background-color: rgba(241, 241, 241, 0.3);
 }
 .comment .words ul li section .reply:last-child {
   border: none;
+}
+.comment .words ul li section .reply img {
+  width: 35px;
+  vertical-align: middle;
+}
+.comment .words ul li section .reply .content {
+  padding-left: 41px;
 }
 /* 字体图标样式开始 */
 .icon-liuyan {
@@ -363,33 +404,19 @@ export default {
   cursor: pointer;
   color: #ff9d00;
 }
-.icon-github {
+/* .icon-github {
   vertical-align: middle;
   margin-right: 5px;
-}
+  color: #1f85b5
+} */
 .icon-quxiao:hover {
   color: #f40;
   cursor: pointer;
 }
 .icon-xiaolian- {
-  font-size: 1.3rem;
+  font-size: 1.4rem;
 }
 /* 字体图标样式结束 */
-.slide-enter {
-  transform: translateY(-100%);
-  opacity: 0;
-}
-.slide-enter-active,
-.slide-leave-active {
-  transition: all 0.3s;
-}
-.slide-enter-to {
-  transform: translateY(0%);
-}
-.slide-leave-to {
-  opacity: 0;
-  transform: translateY(-100%);
-}
 .errMessage {
   color: #f40;
   position: absolute;
@@ -449,5 +476,4 @@ button.cancle {
 button:hover {
   opacity: 0.8;
 }
-
 </style>

@@ -1,6 +1,6 @@
 <template>
   <div class="auth">
-    <el-card shadow="hover" style="width: 20%;">管理员: {{this.$store.state.userInfo.account}}</el-card>
+    <el-card shadow="hover" style="width: 20%; font-size:1rem;">管理员: {{this.$store.state.userInfo.account}}</el-card>
     <el-tabs v-model="activeName" style="width: 60%;">
       <el-tab-pane label="Timeline" name="first">
         <div class="block">

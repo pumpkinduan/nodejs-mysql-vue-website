@@ -15,11 +15,11 @@
       <el-table-column type="expand" fixed="left" v-if="$route.name=='ReplyList'">
         <template slot-scope="props">
           <p style="margin-bottom: 10px;">
-            <strong style="color: #E6A23C">被回复的留言者:&nbsp; &nbsp;</strong>
+            <strong style="color: #E6A23C">被回复的留言者:&nbsp;</strong>
             {{ props.row.parent_name }}
           </p>
           <p>
-            <strong style="color: #E6A23C">被回复的留言:&nbsp; &nbsp;</strong>
+            <strong style="color: #E6A23C">被回复的留言者的留言:&nbsp;</strong>
             {{ props.row.parent_comment }}
           </p>
         </template>
@@ -37,14 +37,14 @@
       ></el-table-column>
       <el-table-column min-width="220" align="center" fixed="right">
         <template slot="header" slot-scope="scope">
-          <el-input v-model="search" placeholder="输入关键字搜索" />
+          <el-input v-if="canSearch" v-model="search" placeholder="输入关键字搜索" />
+          <span v-else>操作</span>
         </template>
         <template slot-scope="scope">
           <slot name="only" :scopeProp="scope"></slot>
         </template>
       </el-table-column>
     </el-table>
-    <slot></slot>
     <div class="block">
       <el-pagination
         background
@@ -69,11 +69,13 @@ export default {
     labels: {
       type: Object,
       required: true
-    }
+    },
+    canSearch: Boolean
   },
   data() {
     return {
       search: '',
+      dialogFormVisible: false,
       serverUrl: config.serverUrl
     };
   },
@@ -89,7 +91,7 @@ export default {
       return total1 - total2;
     },
     getCurrentItem(page) {
-      this.$emit('getCurrentItem', page);
+      this.$emit("getCurrentItem", page);
     }
   }
 };

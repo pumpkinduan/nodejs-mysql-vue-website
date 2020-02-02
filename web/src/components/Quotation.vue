@@ -61,6 +61,7 @@ export default {
   padding: 0 1rem;
 }
 .quotation {
+  position: relative;
   width: 100%;
   font-size: 1rem;
   padding: 4rem 2rem 1rem 2rem;
@@ -71,6 +72,7 @@ export default {
 }
 .quotation .el-carousel__item {
   transition: all 0.4s;
+  z-index: 0;
 }
 .quotation h1 {
   font-size: 1rem;

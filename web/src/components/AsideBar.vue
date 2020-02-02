@@ -8,7 +8,7 @@
           <p class="site-description">Everything is Ok~</p>
           <div class="site-author">
             <section class="site-author-img">
-              <img src="../assets/image/asideBar.jpg" />
+              <img src="../assets/image/asideBar.jpg" alt="封面"/>
             </section>
             <p class="site-author-words">
               This is my personal website where I share a lot of stuffs about my life and work
@@ -38,55 +38,8 @@
 </template>
 
 <script>
-import { removeEvent, addEvent, getElementPosition } from "@/lib/tool";
 export default {
-  props: ["archive_count", "categories_count"],
-  methods: {
-    handleDown(ev) {
-      let oBox = ev.target;
-      let { x, y } = getElementPosition(oBox.offsetParent);
-      //元素活动的范围
-      let range = {
-        maxLeft: document.documentElement.clientWidth - x - oBox.offsetWidth,
-        minLeft: -x,
-        maxTop: document.documentElement.clientHeight - y - oBox.offsetHeight,
-        minTop: -y
-      };
-      //获取不变的差值；
-      //水平方向公式： 差值+元素left = 鼠标点击位置距离窗口左侧距离
-      let extraX = ev.pageX - parseInt(oBox.offsetLeft);
-      let extraY = ev.pageY - parseInt(oBox.offsetTop);
-      this.handleMove = e => {
-        //计算元素的left和top
-        let newX = e.pageX - extraX;
-        let newY = e.pageY - extraY;
-        if (newX >= range.maxLeft) {
-          oBox.style.left = range.maxLeft + "px";
-        } else if (newX <= range.minLeft) {
-          oBox.style.left = range.minLeft + "px";
-        } else {
-          oBox.style.left = newX + "px";
-        }
-        if (newY <= range.minTop) {
-          oBox.style.top = range.minTop + "px";
-        } else if (newY >= range.maxTop) {
-          oBox.style.top = range.maxTop + "px";
-        } else {
-          oBox.style.top = newY + "px";
-        }
-      };
-      addEvent(document, "mousemove", this.handleMove);
-      document.addEventListener('mouseleave', () => {
-        this.handleUp();
-      }, false)
-    },
-    handleUp() {
-      removeEvent(document, "mousemove", this.handleMove);
-    }
-  },
-  destroyed() {
-    removeEvent(document, "mousemove", this.handleMove);
-  }
+  props: ['archive_count', 'categories_count'],
 };
 </script>
 
@@ -175,7 +128,6 @@ export default {
   right: -15px;
   width: 60px;
   height: 80px;
-  cursor: move;
 }
 @media screen and (max-width: 1280px) {
   .aside-bar {

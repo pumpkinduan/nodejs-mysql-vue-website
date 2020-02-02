@@ -4,7 +4,7 @@
       <h1>
         <router-link to="/">
           <span>
-            <img src="../assets/image/南瓜.jpg" width="100%" style="border-radius: 50%;" />
+            <img alt="avator" src="../assets/image/南瓜.jpg" width="100%" style="border-radius: 50%;" />
           </span>
         </router-link>
       </h1>

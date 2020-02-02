@@ -61,7 +61,8 @@ export default {
       pageSize: 5,
       curPage: 1,
       totalArtiles: 0,
-      cachedArtiles: new Map()
+      cachedArtiles: new Map(),
+      comments: 0
     };
   },
   filters: {

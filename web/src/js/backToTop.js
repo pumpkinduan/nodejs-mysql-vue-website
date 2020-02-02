@@ -1,5 +1,5 @@
 import { animate } from '@/lib/animate.js'
-import { throttle } from "@/lib/tool.js";
+import { throttle, addEvent } from "@/lib/tool.js";
 (function (window, document) {
     var timerId = null;
     init();
@@ -20,15 +20,14 @@ import { throttle } from "@/lib/tool.js";
             }
             //注意:给 document.documentElement.scrollTop设置值时不能带单位
             document.documentElement.scrollTop += speed;
-            document.documentElement.body += speed;
         }, 30)
     }
     function bindEvent() {
         var btn = document.getElementById('backToTop');
-        btn.addEventListener('click', function () {
+        addEvent(btn, 'click', function () {
             move();
-        }, false);
-        document.addEventListener('scroll', throttle(function () {
+        })
+        addEvent(document, 'scroll', throttle(function () {
             if (document.documentElement.scrollTop + document.body.scrollTop <= 0) {
                 animate(btn, {
                     bottom: -80
@@ -38,7 +37,7 @@ import { throttle } from "@/lib/tool.js";
                     bottom: 40
                 })
             }
-        }, 150), false);
+        }, 150))
         //避免网页滚动时与鼠标滚轮并行触发而引起的回弹
         document.addEventListener('mousewheel', throttle(() => {
             clearInterval(timerId);

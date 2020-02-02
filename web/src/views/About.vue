@@ -1,6 +1,6 @@
 <template>
   <div class="about">
-    <Header />
+    <Header :opacity="1" bgc="#fff" />
     <div class="inner">
       <h1 class="cover">关于我</h1>
       <article class="content">
@@ -39,6 +39,7 @@ export default {
 
 <style scoped>
 .about {
+  padding-top: 5rem;
   min-width: 100%;
   min-height: 100vh;
   background: url("../assets/image/bgc.jpg") 0 0 no-repeat;
@@ -47,7 +48,6 @@ export default {
 }
 .about .inner {
   position: relative;
-  padding-top: 1px;
   width: 768px;
   margin: 0 auto;
 }

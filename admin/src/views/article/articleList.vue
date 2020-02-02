@@ -39,9 +39,6 @@ export default {
           this.cacheData.set(1, res.data.data); //缓存第一页数据 {1 => [...]}
         }
       })
-      .catch(err => {
-        console.log(err);
-      });
   },
   components: {
     List

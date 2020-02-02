@@ -1,12 +1,18 @@
 <template>
-  <header id="nav_header" class="clearfix">
+  <header id="nav_header" class="clearfix site-header" :style="{opacity: opacity, 'background-color': bgc}">
     <h1 class="fl">
       <router-link to="/">
-        <img src="../assets/image/pumpkin.png" style="width: 5em;" />
+        <span class="fl site-logo orange">pumpkin</span>
       </router-link>
     </h1>
-    <span class="fl logo orange">pumpkin</span>
-    <nav id="nav-btn" class="fr" @click="show = true;">
+    <section class="site-nav fr">
+      <ul class="clearfix">
+        <li v-for="(item, prop, index) in navLinks" :key="index">
+          <router-link :to="{name: item.component, params: {showList: true}}">{{item.name}}</router-link>
+        </li>
+      </ul>
+    </section>
+    <nav id="nav_btn" class="fr" @click="show = true;">
       <ul>
         <li>
           <a href="javascript:;"></a>
@@ -29,6 +35,16 @@
   <script>
 export default {
   name: "HeaderNav",
+  props: {
+    opacity: {
+      type: Number,
+      default: 0.2
+    },
+    bgc: {
+      type: String,
+      default: "#000"
+    }
+  },
   data() {
     return {
       navLinks: [
@@ -63,14 +79,22 @@ export default {
 </script>
 <style scoped>
 /* ----头部样式开始---- */
-header {
+.site-header {
   width: 100%;
-  height: 90px;
+  height: 5rem;
   padding: 0rem 3rem;
-  box-shadow: 0 0 1px 1px #ddd;
-  background-color: #fff;
+  box-shadow: 0 1px 40px -8px rgba(0, 0, 0, 0.5);
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: 1;
+  transition: all 0.4s;
 }
-header .logo {
+.site-header:hover {
+  background-color: #fff !important;
+  opacity: 0.9 !important;
+}
+.site-header .site-logo {
   font-family: cursive;
   letter-spacing: 5px;
   color: #ff450085;
@@ -78,14 +102,34 @@ header .logo {
   display: inline-block;
   line-height: 5rem;
 }
-header nav ul li a {
+
+.site-header .site-nav {
+  height: 100%;
+}
+.site-header .site-nav ul {
+  position: relative;
+  top: 0.8rem;
+}
+.site-header .site-nav ul li {
+  float: left;
+  transition: color 0.3s;
+}
+.site-header .site-nav ul li a {
+  padding: 1rem;
+}
+.site-header .site-nav ul li a:hover {
+  color: #ff8a00;
+}
+
+/* 适配移动端 */
+.site-header nav ul li a {
   display: inline-block;
   width: 5rem;
   height: 5rem;
   position: relative;
 }
-header nav ul li a:before,
-header nav ul li a:after {
+.site-header nav ul li a:before,
+.site-header nav ul li a:after {
   content: "";
   display: block;
   width: 100%;
@@ -98,28 +142,26 @@ header nav ul li a:after {
   background-repeat: no-repeat;
   transition: opacity 0.3s;
 }
-header nav ul li a:before {
+.site-header nav ul li a:before {
   content: "";
   opacity: 1;
   background-image: url('data:image/svg+xml;utf8,<svg version="1.1" xmlns="http://www.w3.org/2000/svg" width="80" height="80" viewbox="0 0 80 80"><line x1="0" x2="80" y1="20" y2="20" stroke="gray" stroke-width="8" stroke-linecap="round"/><line x1="0" x2="80" y1="40" y2="40" stroke-linecap="round" stroke="gray" stroke-width="8"/><line x1="0" x2="80" y1="60" y2="60" stroke-linecap="round" stroke="gray" stroke-width="8"/></svg>');
 }
-header nav ul li a:after {
+.site-header nav ul li a:after {
   content: "";
   opacity: 0;
   background-image: url('data:image/svg+xml;utf8,<svg version="1.1" xmlns="http://www.w3.org/2000/svg" width="80" height="80" viewbox="0 0 80 80"><line x1="0" x2="80" y1="20" y2="20" stroke="orange" stroke-width="8" stroke-linecap="round"/><line x1="0" x2="80" y1="40" y2="40"  stroke="orange" stroke-width="8"/><line x1="0" x2="80" y1="60" y2="60" stroke="orange" stroke-width="8"/></svg>');
 }
-header nav ul li a:hover:after {
+.site-header nav ul li a:hover:after {
   opacity: 1;
 }
-/* ----头部样式结束---- */
-
 /* ----右侧菜单栏开始---- */
 .menu {
   width: 18rem;
   height: 100vh;
   position: fixed;
   top: 0;
-  z-index: 6;
+  z-index: 666;
   right: 0;
   background-color: #666;
   padding: 2rem 1.5rem 2.5rem 2rem;
@@ -150,7 +192,7 @@ header nav ul li a:hover:after {
 }
 .menu ul li:hover a,
 .menu ul li:hover i {
-  color: orange;
+  color: #ff8a00;
 }
 .menu i,
 .menu a {
@@ -173,4 +215,24 @@ header nav ul li a:hover:after {
   opacity: 1;
 }
 /* ----右侧菜单栏结束---- */
+@media only screen and (min-width: 992px) {
+  #nav_btn {
+    display: none;
+  }
+  .site-header .site-nav {
+    display: block;
+  }
+}
+@media screen and (max-width: 991px) {
+  .site-header {
+    background: #fff !important;
+    opacity: 0.9 !important;
+  }
+  #nav_btn {
+    display: block;
+  }
+  .site-nav {
+    display: none;
+  }
+}
 </style>

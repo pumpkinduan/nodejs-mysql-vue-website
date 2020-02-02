@@ -17,13 +17,13 @@
   </div>
 </template>
 <script>
-import api from "@/api/hitokoto.js";
+import api from '@/api/hitokoto.js';
 export default {
   data() {
     return {
       timer: null,
       hitokoto:
-        "life is beautiful like summer flowers and death like autumn leaves"
+        'life is beautiful like summer flowers and death like autumn leaves'
     };
   },
   created() {

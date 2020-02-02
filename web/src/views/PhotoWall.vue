@@ -1,8 +1,8 @@
 <template>
   <div>
-    <Header />
-    <main class="clearfix">
-      <Quotation ref="quotation" @sendGap="sendGap" :style="{visibility: showQuotation}" />
+    <Header :opacity="1" bgc="#fff" />
+    <main class="clearfix main-block">
+      <Quotation ref="quotation" @sendGap="sendGap" />
       <div class="wrap">
         <Waterfall :cards="cards" ref="waterfall" @loadData="loadData" :gap="gap">
           <template slot-scope="{data}">
@@ -52,8 +52,7 @@ export default {
       dialogVisible: false,
       totalPhotoes: 0,
       loading_gif: false,
-      showPrompt: false,
-      showQuotation: "hidden"
+      showPrompt: false
     };
   },
   created() {
@@ -91,10 +90,9 @@ export default {
 <style scoped>
 main {
   width: 100%;
-  padding: 0 4rem;
   position: relative;
-  padding-top: 2rem;
   background: #f5f7f9;
+  padding-bottom: 0;
 }
 .el-image {
   display: inline-block;

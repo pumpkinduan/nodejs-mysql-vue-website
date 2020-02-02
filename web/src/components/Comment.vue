@@ -112,36 +112,36 @@
   </div>
 </template>
 <script>
-import { format } from "@/lib/formatTime.js";
-import commenter from "@/api/comment.js";
-import replyer from "@/api/reply.js";
+import { format } from '@/lib/formatTime.js';
+import commenter from '@/api/comment.js';
+import replyer from '@/api/reply.js';
 import {
   throttle,
   debounce,
   addEvent,
   removeEvent,
   getPageOffset
-} from "@/lib/tool.js";
+} from '@/lib/tool.js';
 export default {
-  props: ["article_title"],
+  props: ['article_title'],
   data() {
     return {
       canLoad: true,
       loading_gif: false,
       maxlength: 128,
       words: [],
-      name: "",
-      comment: "",
+      name: '',
+      comment: '',
       totalReplies: 0,
       comment_id: null, //当前被回复的留言的id
-      parent_name: "",
-      parent_comment: "",
+      parent_name: '',
+      parent_comment: '',
       totalComments: 0,
-      errMessage: "",
+      errMessage: '',
       isReply: false, //是否回复  默认 否
-      curIndex: "",
+      curIndex: '',
       page: 1,
-      prompt: "Hey,guys,come and say something",
+      prompt: 'Hey,guys,come and say something',
       _scrollTop: 0 //记录用户点击回复时滚动条的位置
     };
   },
@@ -160,10 +160,10 @@ export default {
     }, 350);
   },
   mounted() {
-    addEvent(window, "scroll", this.handleThrottle);
+    addEvent(window, 'scroll', this.handleThrottle);
   },
   destroyed() {
-    removeEvent(window, "scroll", this.handleThrottle);
+    removeEvent(window, 'scroll', this.handleThrottle);
   },
   methods: {
     getData() {
@@ -175,7 +175,7 @@ export default {
             let data = res.data.data;
             for (let i in data) {
               //重新整理数据格式，添加 active: false，用于排他
-              data[i]["active"] = false;
+              data[i]['active'] = false;
             }
             this.words.push(...data);
             this.pageSize = parseInt(res.data.meta.pageSize);
@@ -192,13 +192,13 @@ export default {
       let self = this;
       this.debounceComment = debounce(newVal => {
         newVal && newVal.length >= 128
-          ? (self.errMessage = "留言的字符个数不能超过128噢")
-          : (self.errMessage = "");
+          ? (self.errMessage = '留言的字符个数不能超过128噢')
+          : (self.errMessage = '');
       });
       this.debounceName = debounce(newVal => {
         newVal && newVal.length >= 12
-          ? (self.errMessage = "昵称的字符个数不能超过12噢")
-          : (self.errMessage = "");
+          ? (self.errMessage = '昵称的字符个数不能超过12噢')
+          : (self.errMessage = '');
       });
     },
     sendComment() {
@@ -248,11 +248,11 @@ export default {
     check() {
       let flag = true;
       if (!this.comment) {
-        this.prompt = "留言不能为空噢";
+        this.prompt = '留言不能为空噢';
         flag = false;
       }
       if (!this.name) {
-        this.errMessage = "请留下阁下的大名吧";
+        this.errMessage = '请留下阁下的大名吧';
         flag = false;
       }
       this.$refs.focusTextarea.focus();
@@ -281,9 +281,9 @@ export default {
     resetComment() {
       //留言初始化
       this.isReply = false;
-      this.comment = "";
-      this.name = "";
-      this.prompt = "Hey,guys,come and say something";
+      this.comment = '';
+      this.name = '';
+      this.prompt = 'Hey,guys,come and say something';
     },
     loadData() {
       if (this.totalComments <= this.words.length) return;

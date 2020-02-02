@@ -1,10 +1,14 @@
 <template>
   <div class="home">
     <Header />
-    <main class="main-block">
+    <main>
+      <div class="banner-wave-transition">
+        <div class="wave1"></div>
+        <div class="wave2"></div>
+      </div>
       <div class="main-inner clearfix">
         <aside class="left-aside fl" ref="main">
-          <transition appear name="fade" mode="out-in">
+          <transition appear mode="out-in">
             <router-view :categories="categories" :categories_count="categories_count" />
           </transition>
         </aside>
@@ -17,10 +21,10 @@
   </div>
 </template>
 <script>
-import AsideBar from '@/components/AsideBar';
-import Header from '@/components/Header.vue';
-import Footer from '@/components/Footer';
-import api from '@/api/article.js';
+import AsideBar from "@/components/AsideBar";
+import Header from "@/components/Header.vue";
+import Footer from "@/components/Footer";
+import api from "@/api/article.js";
 export default {
   components: {
     Header,
@@ -29,8 +33,8 @@ export default {
   },
   data() {
     return {
-      archive_count: '',
-      categories_count: '',
+      archive_count: "",
+      categories_count: "",
       categories: [],
       archives: []
     };
@@ -53,14 +57,84 @@ export default {
 </script>
 
 <style scoped>
+
 .home {
   width: 100%;
   min-height: 100%;
   position: relative;
   padding-bottom: 300px;
 }
-.home main .main-inner {
+.home main {
+  padding: 36rem 4rem 5rem;
+}
+.home main::before {
+  color: #f2f2f2;
+  font-size: 3rem;
+  text-align: center;
+  content: "Hey, Guys!";
+  font-weight: bold;
+  width: 100%;
+  height: 32rem;
+  line-height: 33rem;
+  background: url("../assets/image/banner.png") center center no-repeat;
+  background-size: cover;
+  position: absolute;
+  top: 0;
+  left: 0;
+}
+.home main::after {
+  content: "";
+  position: absolute;
+  top: 5rem;
+  left: 0;
+  width: 100%;
+  height: 24rem;
+  background-color: rgba(0,0,0,.12);
+}
+.home main,
+.main-inner {
   position: relative;
+}
+.home main .banner-wave-transition {
+  width: 100%;
+  position: absolute;
+  top: 28rem;
+  left: 0;
+  overflow-x: hidden;
+  height: 4rem;
+}
+.home main .banner-wave-transition div {
+  width: 600%;
+  height: 100%;
+  position: absolute;
+}
+.home main .banner-wave-transition .wave1 {
+  left: -3000px;
+  top: 0;
+  background: url("../assets/image/wave1.png") repeat-x;
+  animation: wave1 30s infinite linear;
+}
+.home main .banner-wave-transition .wave2 {
+  left: -2800px;
+  top: 0;
+  background: url("../assets/image/wave2.png") repeat-x;
+  animation: wave2 60s infinite linear;
+}
+@keyframes wave1 {
+  0% {
+    left: -3000px;
+  }
+  100% {
+    left: -1000px;
+  }
+}
+@keyframes wave2 {
+  0% {
+    left: -2800px;
+  }
+  100% {
+    left: -800px;
+  }
 }
 .home main .main-inner .left-aside {
   width: 780px;

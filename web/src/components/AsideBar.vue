@@ -3,7 +3,7 @@
     <slot>
       <template>
         <div class="site-overview-wrap">
-          <span class="heiguai-gif" @mousedown="handleDown" @mouseup="handleUp"></span>
+          <span class="heiguai-gif"></span>
           <span class="site-logo orange">pumpkin</span>
           <p class="site-description">Everything is Ok~</p>
           <div class="site-author">

@@ -45,7 +45,7 @@
 	$ nodemon index
 
 	# 启动前端项目
-	1. 在根目录下进入web项目：cd web，
+	1. 在根目录下进入frontEnd项目：cd frontEnd，
 	2. 安装包，执行: npm install 命令，
 	3. 启动服务: npm run server, 浏览器会自动开启页面
 
@@ -61,7 +61,7 @@
 * [回复接口](https://github.com/pumpkinduan/nodejs-mysql-vue-website/blob/master/documents/reply.md)
 * [图片接口](https://github.com/pumpkinduan/nodejs-mysql-vue-website/blob/master/documents/img.md)
 ## 后端代码 文件夹结构
-###  根目录下的
+###  backEnd目录下的
     *  index.js
         -  主程序，程序的入口，通过它来加载并调动其他模块
     *  server.conf

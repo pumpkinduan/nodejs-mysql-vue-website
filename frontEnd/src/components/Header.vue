@@ -226,7 +226,7 @@ export default {
 @media screen and (max-width: 991px) {
   .site-header {
     background: #fff !important;
-    opacity: 0.9 !important;
+    opacity: 1 !important;
   }
   #nav_btn {
     display: block;

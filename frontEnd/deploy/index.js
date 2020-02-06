@@ -5,9 +5,10 @@ const server = require('./products');
 const spinner = ora('正在发布到' + (process.env.NODE_ENV === 'prod' ? '生产' : '测试') + '服务器...');
 let Client = require('ssh2').Client;
 let conn = new Client();
+let path = require('path');
 conn
     .on('ready', function () {
-        // rm 删除dist文件，\n 是换行 换行执行 重启nginx命令 我这里是用docker重启nginx
+        // rm 删除views文件
         conn.exec('rm -rf /home/project/views', function (
             err,
             stream
@@ -59,26 +60,5 @@ conn
         host: server.host,
         port: server.port,
         username: server.username,
-        password: server.password
-        //privateKey: require('fs').readFileSync('/home/admin/.ssh/id_dsa')
+        password: server.password,
     });
-// spinner.start();
-// scpClient.scp(
-//   'dist/',
-//   {
-//     host: server.host,
-//     port: server.port,
-//     username: server.username,
-//     password: server.password,
-//     path: server.path
-//   },
-//   function (err) {
-//     spinner.stop();
-//     if (err) {
-//       console.log(chalk.red('发布失败.\n'));
-//       throw err;
-//     } else {
-//       console.log(chalk.green('Success! 成功发布到' + (process.env.NODE_ENV === 'prod' ? '生产' : '测试') + '服务器! \n'));
-//     }
-//   }
-// );

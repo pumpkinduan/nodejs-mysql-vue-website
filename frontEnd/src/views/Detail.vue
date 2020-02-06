@@ -33,12 +33,14 @@
         <template>
           <ul class="catalog-wrap">
             <h2>文章目录</h2>
-            <li v-for="(item, index) in catalogs" :key="index">
-              <a
-                :class="[curIndex == index ? 'active': '']"
-                @click="handleClick(item._top, index)"
-              >{{index + 1}}.{{item.text}}</a>
-            </li>
+            <transition-group appear mode="out-in">
+              <li v-for="(item, index) in catalogs" :key="index">
+                <a
+                  :class="[curIndex == index ? 'active': '']"
+                  @click="handleClick(item._top, index)"
+                >{{index + 1}}.{{item.text}}</a>
+              </li>
+            </transition-group>
           </ul>
         </template>
       </AsideBar>
@@ -50,15 +52,15 @@
 </template>
 
 <script>
-import AsideBar from '@/components/AsideBar';
-import article from '@/api/article.js';
-import Comment from '@/components/Comment';
+import AsideBar from "@/components/AsideBar";
+import article from "@/api/article.js";
+import Comment from "@/components/Comment";
 import {
   throttle,
   addEvent,
   removeEvent,
   getElementPosition
-} from '@/lib/tool.js';
+} from "@/lib/tool.js";
 export default {
   components: {
     AsideBar,
@@ -74,10 +76,10 @@ export default {
   },
   data() {
     return {
-      dialogImageUrl: '',
+      dialogImageUrl: "",
       dialogVisible: false,
       curIndex: null,
-      catalogDoms: '',
+      catalogDoms: "",
       details: {},
       catalogs: [],
       stayTime: 0,
@@ -110,10 +112,10 @@ export default {
   methods: {
     init() {
       this.catalogDoms =
-        this.$refs.detail && this.$refs.detail.getElementsByTagName('h3');
+        this.$refs.detail && this.$refs.detail.getElementsByTagName("h3");
       this.createCatalog(this.catalogDoms);
       this.handleScroll = throttle(this.onScroll, 45);
-      addEvent(window, 'scroll', this.handleScroll);
+      addEvent(window, "scroll", this.handleScroll);
     },
     createCatalog(elements) {
       //生成文章目录
@@ -143,8 +145,8 @@ export default {
     },
     preLoadImgs(fn) {
       let imgs =
-        this.$refs.detail && this.$refs.detail.getElementsByTagName('img');
-        //当文章内没有图片时，则执行回调函数
+        this.$refs.detail && this.$refs.detail.getElementsByTagName("img");
+      //当文章内没有图片时，则执行回调函数
       if (imgs && !imgs.length) {
         fn();
         return;
@@ -154,10 +156,10 @@ export default {
       for (let i = 0; i < totalCount; i++) {
         this.preLoadImg(imgs[i], img => {
           // 放大图片事件
-          img.style.cursor = 'zoom-in';
+          img.style.cursor = "zoom-in";
           addEvent(
             img,
-            'click',
+            "click",
             () => {
               this.dialogVisible = true;
               this.dialogImageUrl = img.src;
@@ -232,7 +234,7 @@ export default {
       this.browse = data.browse;
     },
     destroyed() {
-      removeEvent(window, 'scroll', this.handleScroll);
+      removeEvent(window, "scroll", this.handleScroll);
     }
   }
 };

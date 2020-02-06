@@ -8,7 +8,7 @@
           <p class="site-description">Everything is Ok~</p>
           <div class="site-author">
             <section class="site-author-img">
-              <img src="../assets/image/asideBar.jpg" alt="封面"/>
+              <img src="https://s2.ax1x.com/2020/02/03/1aP0bV.md.jpg" alt="封面"/>
             </section>
             <p class="site-author-words">
               This is my personal website where I share a lot of stuffs about my life and work

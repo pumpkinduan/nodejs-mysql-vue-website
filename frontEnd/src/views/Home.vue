@@ -76,20 +76,11 @@ export default {
   width: 100%;
   height: 32rem;
   line-height: 33rem;
-  background: url("../assets/image/banner.png") center center no-repeat;
+  background: url("https://s2.ax1x.com/2020/02/03/1aiMRJ.png") center center no-repeat;
   background-size: cover;
   position: absolute;
   top: 0;
   left: 0;
-}
-.home main::after {
-  content: "";
-  position: absolute;
-  top: 5rem;
-  left: 0;
-  width: 100%;
-  height: 24rem;
-  background-color: rgba(0,0,0,.12);
 }
 .home main,
 .main-inner {

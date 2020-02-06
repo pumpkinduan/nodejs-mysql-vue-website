@@ -118,7 +118,6 @@ function cancelHandler(event) {
     } else {
         return event.returnValue = false;
     }
-    return false;
 }
 function debounce(handler, delay) {
     var timer = null;

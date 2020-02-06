@@ -42,7 +42,7 @@
             <li>VueJs：对vuejs的响应式数据原理,虚拟DOM,依赖收集有过深入了解,并自己尝试进行了实现</li>
             <li>jQuery： 阅读过部分源码,了解其整体封装思想,自己封装过一个简易版的jQuery,利用jQuery写过轮播图插件,翻页插件,QQ音乐播放器等等demo</li>
             <li>
-              熟悉Git常见命令的使用, 有自己的GitHub主页:
+              熟悉Git常见命令的使用, GitHub主页:
               <a style="color: #f39e02;" href="https://github.com/pumpkinduan" target="blank">https://github.com/pumpkinduan</a>
             </li>
           </ol>
@@ -52,7 +52,7 @@
           <h1>使用 Node.js + Express + MySQL + Vue.js技术栈搭建整站项目</h1>
           <ol>
             <li>利用nodejs+express实现API接口</li>
-            <li>使用element-ui快速搭建后台管理系统界面，界面包含管理员的注册与登录，文章编辑与管理，留言与回复，文章编辑方面实现了图片的上传功能，借用express的multer中间件将图片直接存储在服务器中，而在数据库中存储图片的路径、大小等信息，减少了数据库的压力</li>
+            <li>使用element-ui快速搭建后台管理系统界面，界面包含管理员的注册与登录，文章编辑与管理，留言与回复，文章编辑方面实现了图片的上传功能，借用express的multer中间件将上传图片存储在服务器中，而在数据库中存储图片的路径、大小等信息，减少了数据库的压力</li>
             <li>使用aixos进行网络请求，借用sequelieze操作MySQL数据库</li>
             <li>使用vue-cli3构建项目，利用vueRouter实现spa页面效果</li>
             <li>基于HTML(5)&CSS(3)进行整站页面的搭建与布局，包含首页，关于我以及博客列表和博客详情页面</li>
@@ -75,7 +75,7 @@
   padding-top: 5rem;
   top: 0;
   left: 0;
-  background: url("../assets/image/cv.jpg") 0 0 no-repeat;
+  background: url("https://s2.ax1x.com/2020/02/03/1aiRJg.md.jpg") 0 0 no-repeat;
   background-size: cover;
   text-align: center;
 }
@@ -116,9 +116,8 @@
   padding: 0.8rem 0;
 }
 .resume aside ul > li span:hover {
-  color: orange;
+  color: #ff8a00;
 }
-
 .resume main {
   padding-left: 400px;
 }

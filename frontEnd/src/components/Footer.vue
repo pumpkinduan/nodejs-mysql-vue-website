@@ -11,6 +11,7 @@
             Created by
             <a href="#">Pumpkin</a>
           </span>
+          <p>湘ICP备20002688号-1</p>
         </section>
       </li>
     </ul>
@@ -53,7 +54,7 @@ export default {
 <style scoped>
 .footer {
   width: 100%;
-  background-color: rgba(0, 0, 0, 0.03);
+  background-color: rgba(0, 0, 0, 0.01);
   padding: 1.5rem 4rem 1rem;
   position: absolute;
   bottom: 0;

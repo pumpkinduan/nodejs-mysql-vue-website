@@ -2,7 +2,7 @@ import axios from 'axios'
 import config from './config'
 const axiosInstance = axios.create({
   baseURL: config.serverUrl,
-  timeout: 6000
+  timeout: 60000
 });
 //响应拦截
 axiosInstance.interceptors.response.use((response) => {

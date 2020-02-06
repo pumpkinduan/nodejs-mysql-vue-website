@@ -35,7 +35,7 @@
                 <div>
                   <template v-if="reply.name=='南瓜'">
                     <img src="../assets/image/hinata.png" />
-                    <b>南瓜(作者)</b>
+                    <b>南瓜(管理员)</b>
                   </template>
                   <template v-else>
                     <img src="../assets/image/meto.jpg" />

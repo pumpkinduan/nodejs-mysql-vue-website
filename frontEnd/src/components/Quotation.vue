@@ -3,25 +3,20 @@
     <section class="quotation fl" ref="quotation">
       <el-carousel :interval="5000" arrow="never" height="300px">
         <el-carousel-item v-for="(item, index) in quotations" :key="index">
-          <h1 class="clearfix">
-            <span class="created-at fl">{{format()}}</span>
-            <span class="author fr">{{item.from}}</span>
-          </h1>
-          <p class="content" v-html="item.hitokoto"></p>
+          <p class="content"> {{item.hitokoto}}</p>
+          <h3 class="fr">~ {{item.from}} ~</h3>
         </el-carousel-item>
       </el-carousel>
     </section>
   </div>
 </template>
 <script>
-import api from '@/api/hitokoto.js';
-import { format } from '@/lib/formatTime.js';
+import api from "@/api/hitokoto.js";
 export default {
   data() {
     return {
       quotations: [],
       flag: false,
-      format: format,
       timer: null,
       total: 0
     };
@@ -33,7 +28,7 @@ export default {
     }, 10000);
   },
   mounted() {
-    this.$emit('sendGap', this.$refs.quotation.offsetHeight);
+    this.$emit("sendGap", this.$refs.quotation.offsetHeight);
   },
   methods: {
     getHitokoto() {
@@ -49,6 +44,25 @@ export default {
             }
           }
         })
+        .catch(() => {
+          this.quotations.push(
+            ...[
+              {
+                creator: "挪威的森林",
+                hitokoto:
+                  "每个人都有属于自己的一片森林，也许我们从来不曾去过，但它一直在那里，总会在那里。迷失的人迷失了，相逢的人会再相逢。即使是你最心爱的人，心中都会有一片你无法到达的森林。"
+              },
+              {
+                creator: "挪威的森林",
+                hitokoto: "死并非生的对立面，而作为生的一部分永存"
+              },
+              {
+                creator: "朱元璋",
+                hitokoto: "你的就是我的，我的还是我的"
+              }
+            ]
+          );
+        });
     }
   }
 };
@@ -65,7 +79,17 @@ export default {
   width: 100%;
   font-size: 1rem;
   padding: 4rem 2rem 1rem 2rem;
-  background-color: rgba(0, 0, 0, 0.85);
+  background: url("https://cn-south-227-storage-hitokoto-19627663.oss.dogecdn.com/pic/qf3cu.jpg") center center no-repeat;
+  background-size: cover;
+}
+.quotation::before {
+  width: 100%;
+  height: 100%;
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  background-color: rgba(0,0,0,.5);
 }
 .quotation .el-carousel {
   overflow: hidden;
@@ -74,16 +98,37 @@ export default {
   transition: all 0.4s;
   z-index: 0;
 }
-.quotation h1 {
-  font-size: 1rem;
-  color: #666;
-  margin-bottom: 20px;
+.quotation h3 {
+  font-weight: 500;
+  font-size: 1.2rem;
+  color: #dcd5d5e0;
+  margin-top: 2rem;
 }
 .quotation .content {
+  text-align: center;
+  position: relative;
+  letter-spacing: 2px;
   font-weight: 300;
-  color: #dcd5d5e0;
-  line-height: 24px;
+  color: #f2f2f2;
+  line-height: 28px;
   font-size: 1em;
+  margin-top: 1rem;
+  padding-left: 1.5rem;
+  padding-right: 1.5rem;
+}
+.quotation .content::before,
+.quotation .content::after {
+  position: absolute;
+}
+.quotation .content::before {
+  content: "『";
+  top: -1rem;
+  left: 0;
+}
+.quotation .content::after {
+  content: "』";
+  bottom: -1rem;
+  right: 0;
 }
 @media screen and (max-width: 1200px) {
   .wrapper {

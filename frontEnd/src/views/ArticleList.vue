@@ -167,6 +167,11 @@ export default {
   text-align: left;
   line-height: 1.5rem;
 }
+@media screen and (max-width: 780px) {
+  .blogs .wrapper > section .description {
+    padding: .6rem;
+  }
+}
 .blogs .wrapper > section .bottom {
   margin-top: 3rem;
 }

@@ -1,5 +1,9 @@
 <template>
-  <header id="nav_header" class="clearfix site-header" :style="{opacity: opacity, 'background-color': bgc}">
+  <header
+    id="nav_header"
+    class="clearfix site-header"
+    :style="{opacity: opacity, 'background-color': bgc}"
+  >
     <h1 class="fl">
       <router-link to="/">
         <span class="fl site-logo orange">pumpkin</span>
@@ -52,6 +56,16 @@ export default {
           class: "iconfont icon-shouye",
           component: "articleList",
           name: "首页"
+        },
+        {
+          class: "iconfont icon-jilu",
+          component: "category",
+          name: "分类"
+        },
+        {
+          class: "iconfont icon-biaoqian3",
+          component: "archive",
+          name: "归档"
         },
         {
           class: "iconfont icon-xingxing1",
@@ -215,7 +229,7 @@ export default {
   opacity: 1;
 }
 /* ----右侧菜单栏结束---- */
-@media only screen and (min-width: 992px) {
+@media screen and (min-width: 781px) {
   #nav_btn {
     display: none;
   }
@@ -223,10 +237,11 @@ export default {
     display: block;
   }
 }
-@media screen and (max-width: 991px) {
+@media screen and (max-width: 780px) {
   .site-header {
     background: #fff !important;
     opacity: 1 !important;
+    padding: 0rem 1rem;
   }
   #nav_btn {
     display: block;

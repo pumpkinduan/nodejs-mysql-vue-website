@@ -55,7 +55,7 @@ export default {
 .footer {
   width: 100%;
   background-color: rgba(0, 0, 0, 0.01);
-  padding: 1.5rem 4rem 1rem;
+  padding: 1.5rem 2rem 1rem;
   position: absolute;
   bottom: 0;
   left: 0;
@@ -74,9 +74,10 @@ export default {
   margin: 1.5rem 0;
 }
 .footer .about .copyright {
-  color: #888;
+  color: #999;
   font-size: 1rem;
   margin-bottom: 1rem;
+  font-weight: 600;
 }
 .footer .about .copyright span {
   word-spacing: -2px;
@@ -90,12 +91,14 @@ export default {
   border-bottom: 1px dotted #666;
   color: #666;
   transition: color 0.4s;
+  margin-left: 5px;
 }
 .footer .about .copyright .author a:hover {
   color: #ff450085;
 }
 .footer .about .hitokoto {
   transition: all 0.3s;
+  font-weight: 600;
 }
 .footer .about .hitokoto:hover {
   color: #ff450085;

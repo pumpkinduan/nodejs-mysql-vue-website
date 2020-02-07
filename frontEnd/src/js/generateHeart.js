@@ -21,9 +21,9 @@
     function bindEvent() {
         if (location.pathname == '/') {
             document.addEventListener('click', function (e) {
-                var e = e || window.event;
-                var left = e.clientX;
-                var top = e.clientY;
+                var event = e || window.event;
+                var left = event.clientX;
+                var top = event.clientY;
                 generateHeart(left, top);
             }, false);
         }

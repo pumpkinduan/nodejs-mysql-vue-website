@@ -3,8 +3,8 @@
     <section class="quotation fl" ref="quotation">
       <el-carousel :interval="5000" arrow="never" height="300px">
         <el-carousel-item v-for="(item, index) in quotations" :key="index">
-          <p class="content"> {{item.hitokoto}}</p>
-          <h3 class="fr">~ {{item.from}} ~</h3>
+          <p class="content">{{item.hitokoto}}</p>
+          <h3>~ {{item.from}} ~</h3>
         </el-carousel-item>
       </el-carousel>
     </section>
@@ -79,7 +79,8 @@ export default {
   width: 100%;
   font-size: 1rem;
   padding: 4rem 2rem 1rem 2rem;
-  background: url("https://cn-south-227-storage-hitokoto-19627663.oss.dogecdn.com/pic/qf3cu.jpg") center center no-repeat;
+  background: url("https://cn-south-227-storage-hitokoto-19627663.oss.dogecdn.com/pic/qf3cu.jpg")
+    center center no-repeat;
   background-size: cover;
 }
 .quotation::before {
@@ -89,7 +90,7 @@ export default {
   position: absolute;
   top: 0;
   left: 0;
-  background-color: rgba(0,0,0,.5);
+  background-color: rgba(0, 0, 0, 0.5);
 }
 .quotation .el-carousel {
   overflow: hidden;
@@ -103,6 +104,13 @@ export default {
   font-size: 1.2rem;
   color: #dcd5d5e0;
   margin-top: 2rem;
+  text-align: right;
+}
+@media screen and (max-width: 780px) {
+  .quotation h3 {
+    font-size: 1rem;
+    text-align: center;
+  }
 }
 .quotation .content {
   text-align: center;

@@ -37,7 +37,7 @@
               <li v-for="(item, index) in catalogs" :key="index">
                 <a
                   :class="[curIndex == index ? 'active': '']"
-                  @click="handleClick(item._top, index)"
+                  @click="handleClick(item.top, index)"
                 >{{index + 1}}.{{item.text}}</a>
               </li>
             </transition-group>
@@ -105,30 +105,29 @@ export default {
       article.updateBrowse(this.$route.params.articleId, {
         browse: this.browse
       }); //更新访问量
-      next();
     }
     next();
   },
   methods: {
     init() {
-      this.catalogDoms =
-        this.$refs.detail && this.$refs.detail.getElementsByTagName("h3");
+      this.catalogDoms = Array.from(
+        this.$refs.detail.getElementsByTagName("h3")
+      );
       this.createCatalog(this.catalogDoms);
       this.handleScroll = throttle(this.onScroll, 45);
       addEvent(window, "scroll", this.handleScroll);
     },
-    createCatalog(elements) {
+    createCatalog(arr) {
       //生成文章目录
-      let len = elements && elements.length;
       this.preLoadImgs(() => {
-        for (var i = 0; i < len; i++) {
-          var text = elements[i].innerText.trim();
-          elements[i].id = text;
+        arr.forEach(item => {
+          var text = item.innerText.trim();
+          item.id = text;
           this.catalogs.push({
             text,
-            _top: getElementPosition(elements[i]).y
+            top: getElementPosition(item).y
           });
-        }
+        });
       });
     },
     preLoadImg(img, fn) {
@@ -144,17 +143,16 @@ export default {
       }
     },
     preLoadImgs(fn) {
-      let imgs =
-        this.$refs.detail && this.$refs.detail.getElementsByTagName("img");
-      //当文章内没有图片时，则执行回调函数
-      if (imgs && !imgs.length) {
+      let imgs = Array.from(this.$refs.detail.getElementsByTagName("img"));
+      //当文章内没有图片时，则执行回调函数=>生成目录
+      if (imgs && imgs.length == 0) {
         fn();
         return;
       }
-      let totalCount = imgs.length,
-        count = 0;
-      for (let i = 0; i < totalCount; i++) {
-        this.preLoadImg(imgs[i], img => {
+      let count = 0,
+        totalCount = imgs.length;
+      imgs.forEach(item => {
+        this.preLoadImg(item, img => {
           // 放大图片事件
           img.style.cursor = "zoom-in";
           addEvent(
@@ -174,13 +172,13 @@ export default {
             imgs = null;
           }
         });
-      }
+      });
     },
     scrollAnimate(end) {
       let k = 4;
       let speed_ms = 30;
-      let _html = document.documentElement;
-      let scroll_top = _html.scrollTop;
+      let html = document.documentElement;
+      let scroll_top = html.scrollTop;
       let scrollInterval = null;
       if (scroll_top !== end) {
         clearInterval(scrollInterval);
@@ -188,9 +186,9 @@ export default {
           let speed = (end - scroll_top) / k;
           speed = speed > 0 ? Math.ceil(speed) : Math.floor(speed);
           scroll_top += speed;
-          _html.scrollTop = scroll_top;
+          html.scrollTop = scroll_top;
           if (Math.abs(end - scroll_top) <= Math.abs(speed)) {
-            _html.scrollTop = end;
+            html.scrollTop = end;
             clearInterval(scrollInterval);
           }
         }, speed_ms);
@@ -198,20 +196,19 @@ export default {
     },
     onScroll() {
       //实现目录导航滚动效果
-      let _html = document.documentElement;
-      let items = this.catalogs;
-      let len = items.length;
+      let html = document.documentElement;
+      let len = this.catalogs.length;
       // 100为预留距离
       if (len <= 0) return;
-      if (_html.scrollTop + 100 < items[0]._top) {
+      if (html.scrollTop + 100 < this.catalogs[0].top) {
         this.curIndex = null;
         return;
       }
-      for (var i = 0; i < len; i++) {
-        if (_html.scrollTop + 100 >= items[i]._top) {
-          this.curIndex = i;
+      this.catalogs.forEach((item, index) => {
+        if (html.scrollTop + 100 >= item.top) {
+          this.curIndex = index;
         }
-      }
+      });
     },
     handleClick(end, index) {
       //实现目录导航点击动画效果
@@ -250,6 +247,18 @@ export default {
   right: -50px;
   z-index: 9999;
 }
+.detail-inner {
+  padding: 2rem 4rem;
+  width: 830px;
+  background-color: #fff;
+  position: relative;
+  box-shadow: 0 0 40px #dcdbff;
+}
+.detail-inner main h1 {
+  width: 100%;
+  font-size: 1.5rem;
+  text-align: center;
+}
 .detail .detail-inner .ql-snow img {
   display: block;
   margin: 3px 0;
@@ -262,14 +271,13 @@ export default {
   padding-bottom: 2rem;
   border-bottom: 1px solid #eee;
   font-size: 1.35em;
-  overflow: hidden;
+  /* overflow: hidden; */
 }
 .detail-inner main .description {
   color: #3a3a3a;
   font-size: 0.9rem;
   font-weight: 400;
   line-height: 1.5rem;
-  margin-top: 1rem;
   word-break: break-all;
 }
 .right-catalog {
@@ -305,21 +313,7 @@ export default {
   color: #ff8a00;
 }
 
-@media screen and (min-width: 920px) {
-  .detail-inner {
-    padding: 2rem 4rem;
-    width: 830px;
-    background-color: #ffffff;
-    position: relative;
-    box-shadow: 0 0 40px #dcdbff;
-  }
-  .detail-inner main h1 {
-    width: 100%;
-    font-size: 1.5rem;
-    text-align: center;
-  }
-}
-@media screen and (max-width: 920px) {
+@media screen and (max-width: 780px) {
   .detail-inner main h1 {
     width: 100%;
     margin-right: 0;
@@ -328,7 +322,18 @@ export default {
   }
   .detail-inner {
     width: 100%;
-    padding: 2rem 2.5rem;
+    padding: 2rem 0;
+  }
+  .detail img.heimao-gif {
+    display: none;
+  }
+  .detail-inner main .content,
+  .detail-inner main .description,
+  .wrap-comment {
+    padding: 0 1rem;
+  }
+  .right-catalog {
+    display: none;
   }
 }
 </style>

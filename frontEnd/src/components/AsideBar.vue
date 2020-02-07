@@ -5,7 +5,7 @@
         <div class="site-overview-wrap">
           <span class="heiguai-gif"></span>
           <span class="site-logo orange">pumpkin</span>
-          <p class="site-description">Everything is Ok~</p>
+          <p class="site-description">这么菜鸡的博客，还不加把劲？</p>
           <div class="site-author">
             <section class="site-author-img">
               <img src="https://s2.ax1x.com/2020/02/03/1aP0bV.md.jpg" alt="封面"/>
@@ -67,10 +67,8 @@ export default {
   font-size: 1.65rem;
 }
 .site-overview-wrap .site-description {
-  color: #666;
-  font-size: 0.9rem;
-  font-family: cursive;
-  line-height: 1.5rem;
+  font: italic 600 0.9rem/1.6rem cursive ;
+  color: #222;;
 }
 .site-overview-wrap .site-author .site-author-img {
   padding: 0.5rem 0;
@@ -82,7 +80,6 @@ export default {
 .site-overview-wrap .site-author .site-author-words {
   line-height: 1.2rem;
   font-family: cursive;
-  
 }
 .site-overview-wrap .site-state {
   margin-top: 1rem;
@@ -128,10 +125,5 @@ export default {
   right: -15px;
   width: 60px;
   height: 80px;
-}
-@media screen and (max-width: 1280px) {
-  .aside-bar {
-    display: none;
-  }
 }
 </style>

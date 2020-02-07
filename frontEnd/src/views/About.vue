@@ -82,4 +82,13 @@ export default {
 .about .inner .content p:last-child {
   padding-bottom: 1rem;
 }
+@media screen and (max-width: 780px) {
+  .about .inner {
+    width: 100%;
+  }
+  .about .inner .content {
+    padding: 1rem;
+    line-height: 1.5rem;
+  }
+}
 </style>

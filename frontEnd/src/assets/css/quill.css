@@ -1,4 +1,5 @@
 /*针对文章详情的特殊样式*/
+
 .ql-editor {
   box-sizing: border-box;
   line-height: 1.42;
@@ -179,7 +180,6 @@
 .ql-snow .ql-editor h3 {
   font-size: 1.4em;
 }
-
 .ql-snow .ql-editor h4 {
   font-size: 1.12em;
 }
@@ -191,6 +191,7 @@
 .ql-snow .ql-editor h6 {
   font-size: 0.8em;
 }
+
 .ql-snow .ql-editor blockquote {
   border-left: 4px solid #ccc;
   margin-bottom: 5px;
@@ -218,12 +219,11 @@
 .ql-snow .ql-editor pre.ql-syntax {
   padding: 10px;
   background: #fafafa;
-  font: 14px / 18px Consolas, monospace, serif;
+  font: .9rem / 1.1rem Consolas, monospace, serif;
   color: #444444;
-  word-wrap: break-word;
   -moz-tab-size: 4;
   tab-size: 4;
-  overflow: auto;
+  overflow-x: auto;
   border: 1px solid #dddddd;
   border-radius: 3px;
   line-height: 20px;
@@ -232,6 +232,14 @@
 .ql-snow .ql-editor img {
   max-width: 100%;
 }
+
 .ql-snow a {
   color: #ff8a00;
+}
+@media screen and (max-width: 780px) {
+  .ql-snow .ql-editor h3 {
+    text-overflow: ellipsis;
+    overflow: hidden;
+    white-space: nowrap;
+  }
 }

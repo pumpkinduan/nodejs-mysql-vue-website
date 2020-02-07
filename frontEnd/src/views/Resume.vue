@@ -43,7 +43,11 @@
             <li>jQuery： 阅读过部分源码,了解其整体封装思想,自己封装过一个简易版的jQuery,利用jQuery写过轮播图插件,翻页插件,QQ音乐播放器等等demo</li>
             <li>
               熟悉Git常见命令的使用, GitHub主页:
-              <a style="color: #f39e02;" href="https://github.com/pumpkinduan" target="blank">https://github.com/pumpkinduan</a>
+              <a
+                style="color: #f39e02;"
+                href="https://github.com/pumpkinduan"
+                target="blank"
+              >https://github.com/pumpkinduan</a>
             </li>
           </ol>
         </li>
@@ -159,5 +163,10 @@
   list-style-type: disc;
   color: #666;
   font-size: 0.78rem;
+}
+@media screen and (max-width: 780px) {
+  .resume main {
+    display: none;
+  }
 }
 </style>

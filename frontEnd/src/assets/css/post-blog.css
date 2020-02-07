@@ -1,5 +1,5 @@
 /* 
-    针对博客文章的共有样式
+    针对博客列表的日期和标签
 */
 .post-date {
     position: absolute;
@@ -66,7 +66,7 @@
 .post-meta {
     display: flex;
     margin-top: 1rem;
-    margin-bottom: 3rem;
+    margin-bottom: 2rem;
     justify-content: center;
 }
 
@@ -85,4 +85,10 @@
 
 .post-meta .post-browse {
     color: #ff8a00;
+}
+@media screen and (max-width: 780px) {
+    .post-date,
+    .post-badge {
+        display: none;
+    }
 }

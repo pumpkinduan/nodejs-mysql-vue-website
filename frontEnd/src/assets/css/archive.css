@@ -42,7 +42,7 @@
     background-color: #333;
     position: absolute;
     top: 50%;
-    transition: opacity 0.3s;
+    transition: opacity .3s;
     transform: translateY(-50%);
     left: calc(-1.25rem - 2px);
     opacity: 0.5;

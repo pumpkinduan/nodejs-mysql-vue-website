@@ -168,8 +168,7 @@ export default {
           lastDomHeight / 2 + minHeight <
           window.innerHeight +
             document.documentElement.scrollTop +
-            document.body.scrollTop -
-            124
+            document.body.scrollTop 
         ) {
           //这里- 124是因为瀑布流的起始参考线不是浏览器窗口的顶部，而是往下124px
           return true;

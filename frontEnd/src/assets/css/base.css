@@ -29,8 +29,8 @@ html, body {
 }
 
 body {
-    font-size: 62.5% !important;
-    cursor: url(../image/cursor.png), auto;
+    font-size: 62.5%;
+    cursor: url("../image/cursor.png"), auto;
 }
 
 address, cite, dfn, em, var {
@@ -66,14 +66,17 @@ a {
     display: inline-block;
     transition: all .2s;
 }
+
 a:hover {
     opacity: 0.75;
 }
+
 abbr[title], acronym[title] {
     /* 注：1.ie6 不支持 abbr; 2.这里用了属性选择符，ie6 下无效果 */
     border-bottom: 1px dotted;
     cursor: help;
 }
+
 .ql-editor .ql-size-large {
     font-size: 1em;
 }
@@ -135,41 +138,64 @@ hr {
 .blue {
     color: #2395ff;
 }
+
 .orange {
     color: #ff8a00 !important;
 }
+
 img {
     display: block;
 }
+
 .relative {
     position: relative;
 }
+
 .main-block {
     padding: 8rem 4rem 5rem;
     position: relative;
 }
+
+@media screen and (max-width: 780px) {
+    .main-block {
+        padding: 8rem 0 2rem;
+    }
+}
+
 /* 滚动条宽度 */
+
 ::-webkit-scrollbar {
     width: 10px;
     height: 10px;
 }
+
 /* 滚动条的滑块 */
+
 ::-webkit-scrollbar-thumb {
-    background-color:#a1a3a9;
+    background-color: #a1a3a9;
     border-radius: 4px;
 }
+
 /* 加载gif */
+
 .block-loading {
     width: 100%;
     padding-bottom: 3rem;
     background: url("../image/loading_big.gif") center center no-repeat;
 }
+
 /* 过渡动画 */
-.v-enter-active,
-.v-leave-active {
-  transition: opacity 0.5s;
+
+.v-enter-active, .v-leave-active {
+    transition: opacity 0.5s;
 }
-.v-enter,
-.v-leave-to {
-  opacity: 0;
+
+.v-enter, .v-leave-to {
+    opacity: 0;
+}
+
+@media screen and (max-width: 780px) {
+    :root {
+        font-size: 14px;
+    }
 }

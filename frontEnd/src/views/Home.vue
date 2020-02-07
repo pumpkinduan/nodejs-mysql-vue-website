@@ -57,7 +57,6 @@ export default {
 </script>
 
 <style scoped>
-
 .home {
   width: 100%;
   min-height: 100%;
@@ -76,7 +75,8 @@ export default {
   width: 100%;
   height: 32rem;
   line-height: 33rem;
-  background: url("https://s2.ax1x.com/2020/02/03/1aiMRJ.png") center center no-repeat;
+  background: url("https://s2.ax1x.com/2020/02/03/1aiMRJ.png") center center
+    no-repeat;
   background-size: cover;
   position: absolute;
   top: 0;
@@ -100,31 +100,31 @@ export default {
   position: absolute;
 }
 .home main .banner-wave-transition .wave1 {
-  left: -3000px;
+  left: -120rem;
   top: 0;
   background: url("../assets/image/wave1.png") repeat-x;
   animation: wave1 30s infinite linear;
 }
 .home main .banner-wave-transition .wave2 {
-  left: -2800px;
+  left: -100rem;
   top: 0;
   background: url("../assets/image/wave2.png") repeat-x;
   animation: wave2 60s infinite linear;
 }
 @keyframes wave1 {
   0% {
-    left: -3000px;
+    left: -120rem;
   }
   100% {
-    left: -1000px;
+    left: -40rem;
   }
 }
 @keyframes wave2 {
   0% {
-    left: -2800px;
+    left: -100rem;
   }
   100% {
-    left: -800px;
+    left: -60rem;
   }
 }
 .home main .main-inner .left-aside {
@@ -136,13 +136,18 @@ export default {
   width: 320px;
   margin-right: 1rem;
 }
-.fade-enter-active,
-.fade-leave-active {
-  transition: opacity 0.3s;
+@media screen and (max-width: 780px) {
+  .home main {
+    padding: 36rem 1rem 2rem;
+  }
+  .home main .main-inner .left-aside {
+    width: 100%;
+  }
 }
-.fade-enter,
-.fade-leave-to {
-  opacity: 0;
+@media screen and (max-width: 1280px) {
+  .home main .main-inner .right-aside {
+    display: none;
+  }
 }
 </style>
 

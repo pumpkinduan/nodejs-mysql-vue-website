@@ -7,17 +7,11 @@
           <div class="post-day">{{item.date | getDate}}</div>
         </div>
         <div class="post-badge">
-          <router-link
-            :to="{name: 'tag', params: {tag: item.tag}}"
-            class="post-tag"
-          >{{item.tag}}</router-link>
+          <router-link :to="{name: 'tag', params: {tag: item.tag}}" class="post-tag">{{item.tag}}</router-link>
         </div>
-        <router-link
-          class="title"
-          :to="{name: 'detail', params: {articleId: item.article_id}}"
-        >
-          <span>{{item.title}}</span>
-        </router-link>
+        <div class="post-title">
+          <router-link :to="{name: 'detail', params: {articleId: item.article_id}}">{{item.title}}</router-link>
+        </div>
         <ul class="post-meta">
           <li class="post-time">Posted on: {{item.created_at}}</li>
           <li class="post-browse">Visited: {{item.browse}}</li>
@@ -49,8 +43,8 @@
 </template>
 
 <script>
-import Pagination from '@/components/Pagination';
-import api from '@/api/article.js';
+import Pagination from "@/components/Pagination";
+import api from "@/api/article.js";
 export default {
   components: {
     Pagination
@@ -66,15 +60,15 @@ export default {
     };
   },
   filters: {
-    getDate(value = '') {
-      return value.split('-')[1];
-    },  
-    getMonth(value = '') {
-       return value.split('-')[0] + '月';
+    getDate(value = "") {
+      return value.split("-")[1];
+    },
+    getMonth(value = "") {
+      return value.split("-")[0] + "月";
     }
   },
   created() {
-     api
+    api
       .getArticleList(1)
       .then(result => {
         this.articleLists = result.data.data;
@@ -87,25 +81,25 @@ export default {
       });
   },
   methods: {
-     getCurrentPage(page = 1) {
+    getCurrentPage(page = 1) {
       if (this.cachedArtiles.has(page)) {
         this.articleLists = this.cachedArtiles.get(page);
-        document.getElementById('backToTop').click();
+        document.getElementById("backToTop").click();
       } else {
         api.getArticleList(page).then(res => {
           if (res.data) {
             this.articleLists = res.data.data;
             this.cachedArtiles.set(page, this.articleLists); //缓存第一页数据
-            document.getElementById('backToTop').click();
+            document.getElementById("backToTop").click();
           }
         });
       }
     },
     nextPage(page) {
-      this.getCurrentPage(page)
+      this.getCurrentPage(page);
     },
     prevPage(page) {
-      this.getCurrentPage(page)
+      this.getCurrentPage(page);
     }
   }
 };
@@ -133,15 +127,24 @@ export default {
   transform: translate3d(0, 0, 10px);
   box-shadow: 0 0 40px #dcdbff;
 }
-.blogs .wrapper > section .title span {
-  display: inline-block;
+.blogs .wrapper > section .post-title {
+  padding: 0 1rem;
+}
+.blogs .wrapper > section .post-title a {
   font-size: 1.6rem;
   font-weight: bold;
   padding-bottom: 0.5rem;
   position: relative;
+  text-overflow: ellipsis;
   overflow: hidden;
+  white-space: nowrap;
 }
-.blogs .wrapper > section .title span::after {
+@media screen and (max-width: 780px) {
+  .blogs .wrapper > section .post-title a {
+    width: 100%;
+  }
+}
+.blogs .wrapper > section .post-title a::after {
   content: "";
   display: inline-block;
   border-bottom: 2px solid orange;
@@ -152,7 +155,7 @@ export default {
   left: 0;
   transform: translateX(-100%);
 }
-.blogs .wrapper > section .title span:hover::after {
+.blogs .wrapper > section .post-title a:hover::after {
   transform: translateX(0);
 }
 .blogs .wrapper > section .post-meta {
@@ -169,7 +172,7 @@ export default {
 }
 @media screen and (max-width: 780px) {
   .blogs .wrapper > section .description {
-    padding: .6rem;
+    padding: 0.6rem;
   }
 }
 .blogs .wrapper > section .bottom {

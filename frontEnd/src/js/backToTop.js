@@ -11,7 +11,8 @@ import { throttle, addEvent } from "@/lib/tool.js";
     function move() {
         clearInterval(timerId);
         timerId = setInterval(function () {
-            let begin = document.documentElement.scrollTop + document.body.scrollTop;
+            //document.scrollingElement兼容移动和PC
+            let begin = document.scrollingElement.scrollTop; 
             let end = 0;
             let speed = (end - begin) * 0.3;
             if (Math.abs(end - begin) <= Math.abs(speed)) {
@@ -19,16 +20,16 @@ import { throttle, addEvent } from "@/lib/tool.js";
                 clearInterval(timerId);
             }
             //注意:给 document.documentElement.scrollTop设置值时不能带单位
-            document.documentElement.scrollTop += speed;
+            document.scrollingElement.scrollTop += speed;
         }, 30)
     }
     function bindEvent() {
-        var btn = document.getElementById('backToTop');
+        let btn = document.getElementById('backToTop');
         addEvent(btn, 'click', function () {
             move();
         })
         addEvent(document, 'scroll', throttle(function () {
-            if (document.documentElement.scrollTop + document.body.scrollTop <= 0) {
+            if (document.scrollingElement.scrollTop <= 0) {
                 animate(btn, {
                     bottom: -80
                 })
@@ -45,7 +46,7 @@ import { throttle, addEvent } from "@/lib/tool.js";
 
     }
     function createBtn() {
-        var div = document.createElement('div');
+        let div = document.createElement('div');
         div.innerHTML = ` <svg width="50" height="50" viewBox="0 0 50 50" xmlns="http://www.w3.org/2000/svg">
         <polyline 
         points="15 30, 25 20, 35 30"
@@ -62,7 +63,7 @@ import { throttle, addEvent } from "@/lib/tool.js";
         document.body.appendChild(div);
     }
     function setStyle() {
-        var style = document.createElement('style');
+        let style = document.createElement('style');
         style.innerHTML = ` #backToTop {
                                 width: 50px;
                                 height: 50px;

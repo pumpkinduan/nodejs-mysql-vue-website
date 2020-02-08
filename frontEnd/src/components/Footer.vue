@@ -2,7 +2,7 @@
   <div class="footer">
     <ul>
       <li class="about">
-        <h1>Simple Word</h1>
+        <h3>Simple Word</h3>
         <p class="hitokoto">{{hitokoto}}</p>
         <section class="copyright">
           <span>@ 南瓜的时光机</span>
@@ -62,19 +62,18 @@ export default {
   text-align: center;
 }
 /* --底部关于开始-- */
-.footer .about h1,
-.footer .link h2 {
+.footer .about h3 {
   color: #333;
-  font: normal 500 1.4rem cursive;
+  font-size: 1.3rem;
+  font-weight: 500;
 }
 .footer .about p {
-  font-family: cursive;
   color: #666;
-  font-size: 1.1rem;
+  font-size: 1rem;
   margin: 1.5rem 0;
 }
 .footer .about .copyright {
-  color: #999;
+  color: #777;
   font-size: 1rem;
   margin-bottom: 1rem;
   font-weight: 600;
@@ -89,7 +88,6 @@ export default {
 }
 .footer .about .copyright .author a {
   border-bottom: 1px dotted #666;
-  color: #666;
   transition: color 0.4s;
   margin-left: 5px;
 }
@@ -98,7 +96,6 @@ export default {
 }
 .footer .about .hitokoto {
   transition: all 0.3s;
-  font-weight: 600;
 }
 .footer .about .hitokoto:hover {
   color: #ff450085;

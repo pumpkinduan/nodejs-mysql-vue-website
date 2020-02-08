@@ -56,18 +56,16 @@ export default {
   text-align: center;
 }
 .site-overview-wrap {
-  font-family: cursive;
   padding: 0 1rem;
 }
 .site-overview-wrap .site-logo {
   display: block;
   padding: 1rem 0;
-  font-family: cursive;
   letter-spacing: 5px;
   font-size: 1.65rem;
 }
 .site-overview-wrap .site-description {
-  font: italic 600 0.9rem/1.6rem cursive ;
+  font: italic 600 0.9rem/1.6rem normal;
   color: #222;;
 }
 .site-overview-wrap .site-author .site-author-img {
@@ -79,7 +77,6 @@ export default {
 }
 .site-overview-wrap .site-author .site-author-words {
   line-height: 1.2rem;
-  font-family: cursive;
 }
 .site-overview-wrap .site-state {
   margin-top: 1rem;

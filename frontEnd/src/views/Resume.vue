@@ -73,7 +73,8 @@
 }
 .resume aside {
   width: 400px;
-  height: 100%;
+  min-height: 200%;
+  overflow: auto;
   position: fixed;
   padding-right: 2rem;
   padding-top: 5rem;

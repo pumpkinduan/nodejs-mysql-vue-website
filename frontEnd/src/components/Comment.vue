@@ -445,15 +445,14 @@ strong {
 button,
 input,
 textarea {
-  border-radius: 5px;
+  border-radius: 3px;
   outline: none;
-  font-family: cursive, "Microsoft YaHei";
-  border: 2px solid #e4e4e4;
+  border: 1px solid #d6cfca;
   font-size: 1rem;
 }
 textarea:focus,
 input:focus {
-  border: 2px solid orange;
+  border: 1px solid #ff8a00;
 }
 button {
   margin: 0.5rem 0;

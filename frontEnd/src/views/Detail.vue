@@ -45,7 +45,7 @@
         </template>
       </AsideBar>
     </aside>
-    <el-dialog :lock-scroll="false" width="65%" :visible.sync="dialogVisible">
+    <el-dialog top="0" :show-close="false" :lock-scroll="false" :visible.sync="dialogVisible">
       <img width="100%" :src="dialogImageUrl" alt />
     </el-dialog>
   </div>
@@ -177,8 +177,7 @@ export default {
     scrollAnimate(end) {
       let k = 4;
       let speed_ms = 30;
-      let html = document.documentElement;
-      let scroll_top = html.scrollTop;
+      let scroll_top = document.scrollingElement.scrollTop;
       let scrollInterval = null;
       if (scroll_top !== end) {
         clearInterval(scrollInterval);
@@ -186,9 +185,9 @@ export default {
           let speed = (end - scroll_top) / k;
           speed = speed > 0 ? Math.ceil(speed) : Math.floor(speed);
           scroll_top += speed;
-          html.scrollTop = scroll_top;
+          document.scrollingElement.scrollTop = scroll_top;
           if (Math.abs(end - scroll_top) <= Math.abs(speed)) {
-            html.scrollTop = end;
+            document.scrollingElement.scrollTop = end;
             clearInterval(scrollInterval);
           }
         }, speed_ms);
@@ -196,16 +195,15 @@ export default {
     },
     onScroll() {
       //实现目录导航滚动效果
-      let html = document.documentElement;
       let len = this.catalogs.length;
       // 100为预留距离
       if (len <= 0) return;
-      if (html.scrollTop + 100 < this.catalogs[0].top) {
+      if (document.scrollingElement.scrollTop + 100 < this.catalogs[0].top) {
         this.curIndex = null;
         return;
       }
       this.catalogs.forEach((item, index) => {
-        if (html.scrollTop + 100 >= item.top) {
+        if (document.scrollingElement.scrollTop + 100 >= item.top) {
           this.curIndex = index;
         }
       });
@@ -245,7 +243,7 @@ export default {
   position: absolute;
   top: 120px;
   right: -50px;
-  z-index: 9999;
+  z-index: 1;
 }
 .detail-inner {
   padding: 2rem 4rem;
@@ -271,7 +269,7 @@ export default {
   padding-bottom: 2rem;
   border-bottom: 1px solid #eee;
   font-size: 1.35em;
-  /* overflow: hidden; */
+  overflow: hidden;
 }
 .detail-inner main .description {
   color: #3a3a3a;
@@ -312,7 +310,13 @@ export default {
 .right-catalog .catalog-wrap li a:hover {
   color: #ff8a00;
 }
-
+.detail >>> .el-dialog__header,
+.detail >>> .el-dialog__body {
+  padding: 0;
+}
+.detail >>> .el-dialog {
+  width: 66%;
+}
 @media screen and (max-width: 780px) {
   .detail-inner main h1 {
     width: 100%;
@@ -334,6 +338,10 @@ export default {
   }
   .right-catalog {
     display: none;
+  }
+
+  .detail >>> .el-dialog {
+    width: 100%;
   }
 }
 </style>

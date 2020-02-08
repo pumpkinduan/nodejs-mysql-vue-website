@@ -1,12 +1,12 @@
 
     function animate(obj, json, type, callback) {
-        var speed, currentSty, stop;
+        let speed, currentSty, stop;
         clearInterval(obj.timer);
         obj.timer = setInterval(function () {
             stop = true;
             if (type == 'fastToSlow') {
-                var k = 15;
-                for (var attr in json) {
+                let k = 15;
+                for (let attr in json) {
                     if (attr == 'opacity') {
                         currentSty = parseFloat(getStyle(obj, attr)) * 100;
                         json[attr] = json[attr] * 100;
@@ -40,7 +40,7 @@
                 }
             }
             if (type == 'linear' || (!type)) {
-                for (var key in json) {
+                for (let key in json) {
                     if (key == 'opacity') {
                         currentSty = parseFloat(getStyle(obj, key)) * 100;
                         json[key] = json[key] * 100;
@@ -75,8 +75,8 @@
                 }
             }
             if (type == 'slowToFast') {
-                var k = 0.5;
-                for (var val in json) {
+                let k = 0.5;
+                for (let val in json) {
                     if (val == 'opacity') {
                         currentSty = parseFloat(getStyle(obj, val)) * 100;
                         json[val] = json[val] * 100;

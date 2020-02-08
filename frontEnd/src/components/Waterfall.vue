@@ -12,13 +12,13 @@
   </div>
 </template>
 <script>
-import { debounce, throttle, addEvent, removeEvent } from '@/lib/tool.js';
+import { debounce, throttle, addEvent, removeEvent } from "@/lib/tool.js";
 export default {
   activated() {
     //解决 失活的瀑布流组件 再次被激活时 定位发生错乱的bug
     this.setPostion();
   },
-  name: 'waterFall',
+  name: "waterFall",
   props: {
     gap: {
       type: Number,
@@ -34,7 +34,7 @@ export default {
     },
     backgroundColor: {
       type: String,
-      default: '#eee'
+      default: "#eee"
     }
   },
   data() {
@@ -45,8 +45,8 @@ export default {
       width: 240,
       loadPage: 1,
       canLoad: true,
-      handleDebounce: '',
-      handleThrottle: ''
+      handleDebounce: "",
+      handleThrottle: ""
     };
   },
   created() {
@@ -77,8 +77,8 @@ export default {
   },
   methods: {
     init() {
-      addEvent(window, 'resize', this.handleDebounce);
-      addEvent(window, 'scroll', this.handleThrottle);
+      addEvent(window, "resize", this.handleDebounce);
+      addEvent(window, "scroll", this.handleThrottle);
     },
     preLoadImg(img, fn) {
       if (img && img.complete) {
@@ -95,7 +95,7 @@ export default {
     preLoadImgs(fn) {
       let imgs =
         this.$refs.waterfall_container &&
-        this.$refs.waterfall_container.getElementsByTagName('img');
+        this.$refs.waterfall_container.getElementsByTagName("img");
       let totalCount = imgs && imgs.length,
         count = 0;
       for (let i = 0; i < totalCount; i++) {
@@ -122,6 +122,7 @@ export default {
         if (eleNodeLists && eleNodeLists.length) {
           oWidth = eleNodeLists[0].offsetWidth;
           columns = Math.floor(screenWidth / oWidth);
+
           for (let i = 0; i < columns; i++) {
             if (i < columns) {
               //第一行
@@ -134,7 +135,7 @@ export default {
               }
             }
           }
-          eleNodeLists.forEach((item) => {
+          eleNodeLists.forEach(item => {
             //遍历所有元素
             //第二行开始，按照指定的规则来排版布局
             //获取上一行高度数组中最矮的那个元素的高度
@@ -146,9 +147,9 @@ export default {
               Math.ceil(item.offsetHeight) + gutter;
           });
         }
-        container.style.height = Math.max.apply(null, rowHeightArr) + 'px';
+        container.style.height = Math.max.apply(null, rowHeightArr) + "px";
         this.$parent.loading_gif = false;
-        this.$parent.showQuotation = 'visible';
+        this.$parent.showQuotation = "visible";
         if (this.isloadedMore()) {
           //防止 刚载入页面时的留白现象
           this.canLoad = false;
@@ -159,30 +160,30 @@ export default {
     isloadedMore() {
       if (this.canLoad) {
         const { rowHeightArr } = this;
-        let lastIndex = this.$refs.waterfall_item && this.$refs.waterfall_item.length - 1;
+        let lastIndex =
+          this.$refs.waterfall_item && this.$refs.waterfall_item.length - 1;
         //获取最后一个插入到页面的DOM元素
         const lastDom = this.$refs.waterfall_item[lastIndex];
         const minHeight = Math.min.apply(null, rowHeightArr);
         const lastDomHeight = lastDom && lastDom.offsetHeight;
         if (
-          lastDomHeight / 2 + minHeight <
+          lastDomHeight / 8 + minHeight <
           window.innerHeight +
             document.documentElement.scrollTop +
-            document.body.scrollTop 
+            document.body.scrollTop
         ) {
-          //这里- 124是因为瀑布流的起始参考线不是浏览器窗口的顶部，而是往下124px
           return true;
         }
       }
     },
     loadData() {
       this.loadPage++;
-      this.$emit('loadData', this.loadPage);
+      this.$emit("loadData", this.loadPage);
     }
   },
   destroyed() {
-    removeEvent(window, 'resize', this.handleDebounce);
-    removeEvent(window, 'scroll', this.handleThrottle);
+    removeEvent(window, "resize", this.handleDebounce);
+    removeEvent(window, "scroll", this.handleThrottle);
   }
 };
 </script>

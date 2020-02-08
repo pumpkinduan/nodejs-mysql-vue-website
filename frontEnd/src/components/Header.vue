@@ -109,7 +109,6 @@ export default {
   opacity: 0.9 !important;
 }
 .site-header .site-logo {
-  font-family: cursive;
   letter-spacing: 5px;
   color: #ff450085;
   font-size: 1.5rem;

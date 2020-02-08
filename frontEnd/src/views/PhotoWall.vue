@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="photo-wall">
     <Header :opacity="1" bgc="#fff" />
     <main class="clearfix main-block">
       <Quotation ref="quotation" @sendGap="sendGap" />
@@ -22,7 +22,7 @@
         </Waterfall>
       </div>
     </main>
-    <el-dialog :visible.sync="dialogVisible">
+    <el-dialog :lock-scroll="false" top="0" :visible.sync="dialogVisible" :show-close="false">
       <img width="100%" :src="dialogImageUrl" alt />
     </el-dialog>
     <div :class="[loading_gif ? 'block-loading': '']"></div>
@@ -95,6 +95,7 @@ main {
   padding-bottom: 0;
 }
 .el-image {
+  width: 100%;
   display: inline-block;
   position: relative;
   overflow: hidden;
@@ -121,9 +122,19 @@ main {
   margin: 0 10px;
 }
 .prompt-text {
+  position: relative;
+  top: -1.2rem;
   text-align: center;
-  font-size: 1rem;
-  padding-bottom: 14px;
+  font-size: .8rem;
   color: #9c9c87;
+}
+.photo-wall >>> .el-dialog__header,
+.photo-wall >>> .el-dialog__body {
+  padding: 0;
+}
+@media screen and (max-width: 780px) {
+  .photo-wall >>> .el-dialog {
+    width: 100%;
+  }
 }
 </style>

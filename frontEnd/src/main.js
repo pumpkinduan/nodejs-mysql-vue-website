@@ -2,6 +2,7 @@ import Vue from 'vue'
 import '@/assets/css/quill.css'
 import '@/assets/css/base.css'
 import '@/assets/css/post-blog.css'
+import '@/assets/css/highlight.css'
 import router from './router'
 import '@/js/generateHeart.js'
 import '@/js/backToTop.js'
@@ -16,6 +17,7 @@ NProgress.configure({
   trickleSpeed: 200,
   minimum: 0.3
 })
+Vue.prototype.NProgress = NProgress;
 router.beforeEach((to, from, next) => {
   NProgress.start();
   next();

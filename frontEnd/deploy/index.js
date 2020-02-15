@@ -5,7 +5,6 @@ const server = require('./products');
 const spinner = ora('正在发布到' + (process.env.NODE_ENV === 'prod' ? '生产' : '测试') + '服务器...');
 let Client = require('ssh2').Client;
 let conn = new Client();
-let path = require('path');
 conn
     .on('ready', function () {
         // rm 删除views文件
@@ -15,7 +14,7 @@ conn
         ) {
             if (err) throw err;
             stream
-                .on('close', function (code, signal) {
+                .on('close', function () {
                     // 在执行shell命令后，把开始上传部署项目代码放到这里面
                     spinner.start();
                     scpClient.scp(
@@ -24,7 +23,8 @@ conn
                             host: server.host,
                             port: server.port,
                             username: server.username,
-                            password: server.password,
+                            privateKey: require('fs').readFileSync('./cert/key.pem'),
+                            // password: server.password,
                             path: server.path
                         },
                         function (err) {
@@ -45,7 +45,6 @@ conn
                             }
                         }
                     );
-
                     conn.end();
                 })
                 .on('data', function (data) {
@@ -60,5 +59,6 @@ conn
         host: server.host,
         port: server.port,
         username: server.username,
-        password: server.password,
+        // password: server.password,
+        privateKey: require('fs').readFileSync('./cert/key.pem')
     });

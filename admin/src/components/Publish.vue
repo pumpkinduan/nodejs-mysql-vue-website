@@ -57,6 +57,17 @@
   </div>
 </template>
 <script>
+
+import { quillEditor } from "vue-quill-editor";
+import config from "@/config.js";
+import api from "@/api/upload.js";
+import { compress } from "@/util/compress.js";
+import { debounce } from "@/util/debounce.js";
+window.hljs.configure({
+  languages: ["javascript", "html", "css"],
+  useBR: false
+});
+window.hljs.initHighlighting();
 const toolbarOptions = [
   // toolbar btns
   ["bold", "italic", "underline", "strike", "blockquote", "code-block"], // toggled buttons
@@ -67,11 +78,6 @@ const toolbarOptions = [
   [{ font: [] }, { align: [] }],
   ["clean", "link", "image"] // add upload image btn
 ];
-import { quillEditor } from "vue-quill-editor";
-import config from "@/config.js";
-import api from "@/api/upload.js";
-import { compress } from "@/util/compress.js";
-import { debounce } from "@/util/debounce.js";
 export default {
   components: {
     quillEditor
@@ -95,6 +101,7 @@ export default {
         placeholder: "让你的手动起来吧！！！",
         theme: "snow",
         modules: {
+          syntax: true,
           history: {
             delay: 2000
           },
@@ -125,10 +132,10 @@ export default {
   methods: {
     init() {
       this.quill = this.$refs.quillEditor.quill;
-      this.handleTextChange = debounce((delta, oldDelta, source) => {
+      this.handleTextChange = debounce(() => {
         //实现文章内容html的缓存
         sessionStorage.setItem("text", this.quill.root.innerHTML);
-      }, 600);
+      }, 500);
       this.quill.on("text-change", this.handleTextChange);
       //从缓存中提取
       this.quill.root.innerHTML = sessionStorage.getItem("text");
@@ -141,7 +148,7 @@ export default {
         .then(res => {
           res.data && this.uploadSuccess(res.data);
         })
-        .catch(err => {
+        .catch(() => {
           this.$message.error("upload failed");
         });
     },
@@ -184,13 +191,13 @@ export default {
         return this.$message.error("内容不能为空");
       }
       this.$emit("handleSumbit", data);
-    }, 
+    },
     resetDialog() {
       this.$emit("resetDialog");
     },
     handlePreview() {
-       this.$store.state.showPreview = true;
-       this.$store.state.previewData = sessionStorage.getItem('text');
+      this.$store.state.showPreview = true;
+      this.$store.state.previewData = sessionStorage.getItem("text");
     }
   }
 };

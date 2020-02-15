@@ -78,7 +78,7 @@ export default {
         type: "warning"
       })
         .then(() => {
-          api.deleteComment(row.id).then(res => {
+          commenter.deleteComment(row.id).then(res => {
             if (res.data && res.data.success) {
               this.$message.success(res.data.msg);
               this.tableData.splice(index, 1); //删除纪录

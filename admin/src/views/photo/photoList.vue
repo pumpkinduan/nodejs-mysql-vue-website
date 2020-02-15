@@ -38,7 +38,6 @@
 import api from "@/api/upload.js";
 import config from "@/config.js";
 import Waterfall from "@/components/Waterfall.vue";
-import download from "@/util/download.js";
 export default {
   components: {
     Waterfall
@@ -73,7 +72,7 @@ export default {
             }
           }
         })
-        .catch(err => {
+        .catch(() => {
           this.disabled = true;
         });
     },
@@ -90,7 +89,7 @@ export default {
         confirmButtonText: "确定",
         cancelButtonText: "取消",
         type: "warning"
-      }).then(res => {
+      }).then(() => {
         path = path.replace(/\//gi, "\\");
         api
           .deleteOneImg(path)
@@ -105,9 +104,6 @@ export default {
               this.totalCounts--;
             }
           })
-          .catch(err => {
-            console.log(err);
-          });
       });
     }
   }

@@ -46,8 +46,9 @@ class ImgsDao {
             }
         }).then((img) => {
             if (img) {
+                path = path.replace(/\\/gi, "/");
                 fs.unlink(path, (err) => {
-                    if (err) throw err;
+                    if (err) {success(new global.errs.ParaException(err));};
                     img.destroy().then(suc => {
                         success(false, { msg: '删除成功', success: true })
                     })

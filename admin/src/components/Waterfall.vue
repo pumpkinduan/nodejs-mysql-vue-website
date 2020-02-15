@@ -75,12 +75,11 @@ export default {
       let totalCount = imgs && imgs.length,
         count = 0;
       for (let i = 0; i < totalCount; i++) {
-        this.preLoadImg(imgs[i], img => {
+        this.preLoadImg(imgs[i], () => {
           count++;
           if (count === totalCount) {
             //所有图片加载完成
             fn(this.$refs.waterfall_item); //表示可以获取包含图片的元素的实际高度
-            imgs = null;
           }
         });
       }
@@ -105,7 +104,7 @@ export default {
               rowHeightArr.push(0);
             }
           }
-          eleNodeLists.forEach((item, index) => {
+          eleNodeLists.forEach((item) => {
             //遍历所有元素
             //第二行开始，按照指定的规则来排版布局
             //获取上一行高度数组中最矮的那个元素的高度

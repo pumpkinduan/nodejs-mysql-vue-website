@@ -3,9 +3,7 @@
     <aside>
       <h1>
         <router-link to="/">
-          <span>
-            <img alt="avator" src="../assets/image/南瓜.jpg" width="100%" style="border-radius: 50%;" />
-          </span>
+          <img alt="avator" src="../assets/image/南瓜.jpg" width="100%" style="border-radius: 50%;" />
         </router-link>
       </h1>
       <p>段征中 &nbsp; &nbsp; &nbsp; &nbsp;男</p>
@@ -13,8 +11,8 @@
       <ul>
         <li>
           <span style="padding-bottom: 0.8rem; display: inline-block;">教育背景</span>
-          <p>湖南工程学院. 2016.09-2020.06</p>
-          <p>本科.专业. 材料成型及控制工程</p>
+          <p>湖工. 2016.09-2020.06</p>
+          <p>专业. 材料成型及控制工程</p>
         </li>
         <li>
           <span>兴趣爱好</span>
@@ -33,16 +31,15 @@
         <li>
           <em>IT 技能</em>
           <ol>
-            <li>熟练掌握HTML、CSS原理，如：选择器的权重，层叠性，BFC，IFC,，动流，定位流</li>
-            <li>灵活运用html(5)&css(3)高度还原设计稿效果,，写过淘宝，努比亚，豆瓣，美团等等许多页面</li>
+            <li>熟练掌握HTML、CSS原理，如：选择器的权重，层叠性，BFC，IFC，浮动流，定位流</li>
+            <li>灵活运用html(5)&css(3)高度还原设计稿效果, 写过淘宝，努比亚，豆瓣，美团等等许多页面</li>
             <li>深刻理解原生JavaScript理论概念,如闭包，作用域，作用域链，原型链，继承以及JS的执行机制</li>
             <li>DOM：灵活自如的利用js操作DOM，实现与页面的交互效果</li>
             <li>ES6：熟练ES6基本语法，模拟实现过promise以及map和set数据结构</li>
-            <li>Ajax：手动封装过类似jQuery的Ajax函数, 了解Jsonp和CORS跨域, 利用Jsonp写过百度搜索框功能, 并且利用NodeJs模拟过Jsonp的实现原理</li>
             <li>VueJs：对vuejs的响应式数据原理,虚拟DOM,依赖收集有过深入了解,并自己尝试进行了实现</li>
-            <li>jQuery： 阅读过部分源码,了解其整体封装思想,自己封装过一个简易版的jQuery,利用jQuery写过轮播图插件,翻页插件,QQ音乐播放器等等demo</li>
+            <li>jQuery： 阅读过部分源码,自己封装过一个简易版的jQuery,利用jQuery写过轮播图插件,翻页插件,QQ音乐播放器等等demo</li>
             <li>
-              熟悉Git常见命令的使用, GitHub主页:
+              GitHub主页:
               <a
                 style="color: #f39e02;"
                 href="https://github.com/pumpkinduan"
@@ -59,7 +56,7 @@
             <li>使用element-ui快速搭建后台管理系统界面，界面包含管理员的注册与登录，文章编辑与管理，留言与回复，文章编辑方面实现了图片的上传功能，借用express的multer中间件将上传图片存储在服务器中，而在数据库中存储图片的路径、大小等信息，减少了数据库的压力</li>
             <li>使用aixos进行网络请求，借用sequelieze操作MySQL数据库</li>
             <li>使用vue-cli3构建项目，利用vueRouter实现spa页面效果</li>
-            <li>基于HTML(5)&CSS(3)进行整站页面的搭建与布局，包含首页，关于我以及博客列表和博客详情页面</li>
+            <li>基于HTML(5)&CSS(3)进行整站页面的搭建与布局</li>
           </ol>
         </li>
       </ul>
@@ -73,8 +70,7 @@
 }
 .resume aside {
   width: 400px;
-  min-height: 200%;
-  overflow: auto;
+  height: 100%;
   position: fixed;
   padding-right: 2rem;
   padding-top: 5rem;
@@ -84,13 +80,15 @@
   background-size: cover;
   text-align: center;
 }
-.resume aside h1 span {
-  display: inline-block;
+@media screen and (max-width: 780px) {
+  .resume aside {
+    position: relative;
+  }
+}
+.resume aside h1 a {
   width: 150px;
   height: 150px;
-  border: 1px solid #555;
   border-radius: 50%;
-  padding: 1px;
 }
 .resume aside img {
   margin: 0;

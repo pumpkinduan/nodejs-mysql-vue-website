@@ -6,7 +6,6 @@ Vue.use(Vuex);
 const state = {
     isAuthenticated: false,
     userInfo: '',
-    timelineList: [],
     showPreview: false,
     previewData: ''
 }

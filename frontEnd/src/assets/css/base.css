@@ -19,7 +19,6 @@ div, header, main, footer, section, article, aside {
     color: #2b2b2b;
     box-sizing: border-box;
     letter-spacing: 1px;
-    user-select: none;
     font-family: inherit;
 }
 
@@ -35,17 +34,6 @@ body {
     cursor: url("../image/cursor.png"), auto;
 }
 
-address, cite, dfn, em, var {
-    font-style: normal;
-}
-
-/* 将斜体扶正 */
-
-code, kbd, pre, samp, tt {
-    font-family: "Courier New", Courier, monospace;
-}
-
-/* 统一等宽字体 */
 
 small {
     font-size: 12px;
@@ -73,11 +61,6 @@ a:hover {
     opacity: 0.75;
 }
 
-abbr[title], acronym[title] {
-    /* 注：1.ie6 不支持 abbr; 2.这里用了属性选择符，ie6 下无效果 */
-    border-bottom: 1px dotted;
-    cursor: help;
-}
 
 .ql-editor .ql-size-large {
     font-size: 1em;

@@ -1,7 +1,7 @@
 <template>
   <div class="blogs">
     <div class="wrapper">
-      <section v-for="(item, index) in articleLists" :key="index">
+      <article v-for="(item, index) in articleLists" :key="'o-'+index">
         <div class="post-date">
           <div class="post-month">{{item.date | getMonth}}</div>
           <div class="post-day">{{item.date | getDate}}</div>
@@ -23,22 +23,21 @@
             :to="{name: 'detail', params: {articleId: item.article_id}}"
             class="read-more"
           >
-            <em>阅读更多</em>
-            <i class="iconfont icon-gengduo" style="font-size: 1.5rem;"></i>
+            <b>阅读更多</b>
           </router-link>
         </div>
-      </section>
-      <div class="block-loading" v-if="articleLists.length <= 0"></div>
-      <section class="pagination-nav" v-else>
-        <Pagination
-          :totalData="totalArtiles"
-          :pageSize="pageSize"
-          @current-change="getCurrentPage"
-          @next-page="nextPage"
-          @prev-page="prevPage"
-        />
-      </section>
+      </article>
     </div>
+    <div class="block-loading" v-if="articleLists.length <= 0"></div>
+    <section class="pagination-nav" v-else>
+      <Pagination
+        :totalData="totalArtiles"
+        :pageSize="pageSize"
+        @current-change="getCurrentPage"
+        @next-page="nextPage"
+        @prev-page="prevPage"
+      />
+    </section>
   </div>
 </template>
 
@@ -86,11 +85,13 @@ export default {
         this.articleLists = this.cachedArtiles.get(page);
         document.getElementById("backToTop").click();
       } else {
+        this.NProgress.start();
         api.getArticleList(page).then(res => {
           if (res.data) {
             this.articleLists = res.data.data;
             this.cachedArtiles.set(page, this.articleLists); //缓存第一页数据
             document.getElementById("backToTop").click();
+            this.NProgress.done();
           }
         });
       }
@@ -113,7 +114,7 @@ export default {
   perspective: 800px;
   transform-style: preserve-3d;
 }
-.blogs .wrapper > section {
+.blogs .wrapper > article {
   background: #fff;
   position: relative;
   padding-top: 2rem;
@@ -123,14 +124,14 @@ export default {
   border-radius: 8px;
   transition: all 0.3s;
 }
-.blogs .wrapper > section:hover {
+.blogs .wrapper > article:hover {
   transform: translate3d(0, 0, 10px);
   box-shadow: 0 0 40px #dcdbff;
 }
-.blogs .wrapper > section .post-title {
+.blogs .wrapper > article .post-title {
   padding: 0 1rem;
 }
-.blogs .wrapper > section .post-title a {
+.blogs .wrapper > article .post-title a {
   font-size: 1.6rem;
   font-weight: bold;
   padding-bottom: 0.5rem;
@@ -140,11 +141,11 @@ export default {
   white-space: nowrap;
 }
 @media screen and (max-width: 780px) {
-  .blogs .wrapper > section .post-title a {
+  .blogs .wrapper > article .post-title a {
     width: 100%;
   }
 }
-.blogs .wrapper > section .post-title a::after {
+.blogs .wrapper > article .post-title a::after {
   content: "";
   display: inline-block;
   border-bottom: 2px solid orange;
@@ -155,15 +156,15 @@ export default {
   left: 0;
   transform: translateX(-100%);
 }
-.blogs .wrapper > section .post-title a:hover::after {
+.blogs .wrapper > article .post-title a:hover::after {
   transform: translateX(0);
 }
-.blogs .wrapper > section .post-meta {
+.blogs .wrapper > article .post-meta {
   display: flex;
   justify-content: center;
   margin-top: 1rem;
 }
-.blogs .wrapper > section .description {
+.blogs .wrapper > article .description {
   padding: 1rem 3rem;
   color: #333;
   font-size: 0.9rem;
@@ -171,34 +172,36 @@ export default {
   line-height: 1.5rem;
 }
 @media screen and (max-width: 780px) {
-  .blogs .wrapper > section .description {
+  .blogs .wrapper > article .description {
     padding: 0.6rem;
   }
 }
-.blogs .wrapper > section .bottom {
+.blogs .wrapper > article .bottom {
   margin-top: 3rem;
 }
-.blogs .wrapper > section .bottom .read-more {
-  font-size: 0.8rem;
+.blogs .wrapper > article .bottom .read-more {
+  font-size: 0.9rem;
   color: #fff;
   background-color: #97dffd;
-  padding: 5px;
+  padding: 8px 10px;
   border-radius: 4px;
   transition: background-color 0.3s;
 }
-.blogs .wrapper > section .bottom .read-more em {
+.blogs .wrapper > article .bottom .read-more b {
   margin-left: 2px;
+  font-weight: 500;
 }
-.blogs .wrapper > section .bottom .read-more:hover {
+.blogs .wrapper > article .bottom .read-more:hover {
   background-color: #666;
 }
-.blogs .wrapper > section .bottom .icon-gengduo {
+.blogs .wrapper > article .bottom .icon-gengduo {
   vertical-align: -5px;
 }
-.blogs .wrapper > section.pagination-nav {
+.blogs section.pagination-nav {
   display: flex;
   justify-content: center;
   margin-bottom: 0;
   padding: 1rem 0;
+  background: #fff;
 }
 </style>

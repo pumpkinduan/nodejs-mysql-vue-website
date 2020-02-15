@@ -160,7 +160,7 @@ export default {
   line-height: 1.5rem;
   padding-bottom: 2rem;
   border-bottom: 1px solid #eee;
-  font-size: 1.35em;
+  font-size: .9rem;
 }
 .preview-mask .inner .el-icon-circle-close {
   position: absolute;

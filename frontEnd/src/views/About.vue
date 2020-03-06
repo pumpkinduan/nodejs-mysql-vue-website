@@ -42,7 +42,7 @@ export default {
   padding-top: 5rem;
   min-width: 100%;
   min-height: 100vh;
-  background: url("https://s2.ax1x.com/2020/02/03/1aiaJe.jpg") 0 0 no-repeat;
+  background: url("../assets/image/bgc.jpg") 0 0 no-repeat;
   background-size: cover;
   text-align: center;
 }
@@ -57,7 +57,7 @@ export default {
   font-size: 1.8rem;
   font-weight: 500;
   padding: 10rem 0;
-  background: url("https://s2.ax1x.com/2020/02/03/1aiUiD.jpg") center center no-repeat;
+  background: url("../assets/image/cover.jpg") center center no-repeat;
   background-size: cover;
 }
 .about .inner .cover::after {

@@ -75,7 +75,7 @@ export default {
   width: 100%;
   height: 32rem;
   line-height: 33rem;
-  background: url("https://s2.ax1x.com/2020/02/03/1aiMRJ.png") center center
+  background: url("../assets/image/banner.png") center center
     no-repeat;
   background-size: cover;
   position: absolute;

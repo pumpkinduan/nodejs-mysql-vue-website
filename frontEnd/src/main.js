@@ -10,6 +10,7 @@ import { Carousel, CarouselItem, Dialog } from 'element-ui';
 import NProgress from 'nprogress'
 import 'nprogress/nprogress.css'
 import App from './App.vue';
+// 加载进度条插件的配置
 NProgress.configure({
   easing: 'ease',
   speed: 500,
@@ -25,6 +26,8 @@ router.beforeEach((to, from, next) => {
 router.afterEach(() => {
   NProgress.done();
 })
+
+// 轮播图插件的使用
 Vue.use(Carousel);
 Vue.use(CarouselItem);
 Vue.use(Dialog);

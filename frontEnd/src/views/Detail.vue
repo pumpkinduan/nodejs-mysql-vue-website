@@ -34,7 +34,7 @@
           <ul class="catalog-wrap">
             <h2>文章目录</h2>
             <transition-group appear mode="out-in">
-              <li v-for="(item, index) in catalogs" :key="item">
+              <li v-for="(item, index) in catalogs" :key="index">
                 <a
                   :class="[curIndex == index ? 'active': '']"
                   @click="handleClick(item.top, index)"

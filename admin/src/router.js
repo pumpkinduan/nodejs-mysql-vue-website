@@ -1,30 +1,38 @@
 import Vue from 'vue'
 import Router from 'vue-router'
-import Home from './views/Home.vue'
-import Error from './views/notFound.vue'
+const Home = () => import( /* webpackChunkName: "home_group" */ './views/Home')
+const Auth = () => import( /* webpackChunkName: "home_group" */ './views/admin/auth')
+const PublishArticle = () => import( /* webpackChunkName: "publishArticle" */ './views/article/publishArticle')
+const ArticleList = () => import( /* webpackChunkName: "articleList" */ './views/article/articleList')
+const EditArticle = () => import( /* webpackChunkName: "editArticle" */ './views/article/editArticle')
+const PhotoPublish = () => import( /* webpackChunkName: "photo" */ './views/photo/photoPublish')
+const PhotoList = () => import( /* webpackChunkName: "photo" */ './views/photo/photoList')
+const CommentList = () => import( /* webpackChunkName: "comment" */ './views/comment/commentList')
+const ReplyList = () => import( /* webpackChunkName: "reply" */ './views/reply/replyList')
+const Login = () => import( /* webpackChunkName: "login_group" */ './views/admin/login')
+// const Register =() => import(/* webpackChunkName: "login_group" */ './views/admin/register')
+const Error = () => import( /* webpackChunkName: "error" */ './views/notFound')
 Vue.use(Router)
 const router = new Router({
   mode: 'hash',
   base: process.env.BASE_URL,
-  routes: [
-    {
+  routes: [{
       path: '/',
       redirect: '/admin'
     },
     {
       path: '/admin',
-      name: 'home',//主页面
+      name: 'home', //主页面
       component: Home,
       redirect: '/admin/auth',
-      children: [
-        {
+      children: [{
           path: 'auth',
           name: 'Auth',
           meta: {
             title: '个人中心',
             breadcrumb: "首页"
           },
-          component: () => import("./views/admin/auth")
+          component: Auth
         },
         {
           path: 'publishArticle',
@@ -33,7 +41,7 @@ const router = new Router({
             title: '发布文章',
             breadcrumb: "文章管理"
           },
-          component: () => import("./views/article/publishArticle")
+          component: PublishArticle
         },
         {
           path: 'articleList',
@@ -42,7 +50,7 @@ const router = new Router({
             title: '文章列表',
             breadcrumb: "文章管理"
           },
-          component: () => import("./views/article/articleList")
+          component: ArticleList
         },
         {
           path: 'editArticle',
@@ -51,7 +59,7 @@ const router = new Router({
             title: '编辑文章',
             breadcrumb: "文章管理"
           },
-          component: () => import("./views/article/editArticle")
+          component: EditArticle
         },
         {
           path: 'photoPublish',
@@ -60,7 +68,7 @@ const router = new Router({
             title: '发布图片',
             breadcrumb: "相册墙"
           },
-          component: () => import("./views/photo/photoPublish")
+          component: PhotoPublish
         },
         {
           path: 'photoList',
@@ -69,7 +77,7 @@ const router = new Router({
             title: '相册数据',
             breadcrumb: "相册墙"
           },
-          component: () => import("./views/photo/photoList")
+          component: PhotoList
         },
         {
           path: 'commentList',
@@ -78,7 +86,7 @@ const router = new Router({
             title: '留言列表',
             breadcrumb: false
           },
-          component: () => import("./views/comment/commentList")
+          component: CommentList
         },
         {
           path: 'replyList',
@@ -87,21 +95,21 @@ const router = new Router({
             title: '回复列表',
             breadcrumb: false
           },
-          component: () => import("./views/reply/replyList")
+          component: ReplyList
         }
       ]
     },
     {
       path: '/login',
       name: 'login',
-      component: () => import('./views/admin/login')
+      component: Login
     },
     // {
     //   path: '/register',
-    //   name: 'register',
-    //   component: () => import('./views/admin/register')
+    //   name: 'Register',
+    //   component: Register
     // },
-    {//捕获404页面，该路由须放置在最后，当其他路由未匹配到时将捕获404
+    { //捕获404页面，该路由须放置在最后，当其他路由未匹配到时将捕获404
       path: '/*',
       name: 'error',
       component: Error
@@ -115,7 +123,9 @@ router.beforeEach((to, from, next) => {
   ) {
     next();
   } else {
-    localStorage.getItem('token') && localStorage.getItem('isAuthenticated') ? next() : next({ name: 'login' });
+    localStorage.getItem('token') && localStorage.getItem('isAuthenticated') ? next() : next({
+      name: 'login'
+    });
   }
 })
 export default router

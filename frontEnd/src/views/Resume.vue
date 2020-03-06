@@ -76,7 +76,7 @@
   padding-top: 5rem;
   top: 0;
   left: 0;
-  background: url("https://s2.ax1x.com/2020/02/03/1aiRJg.md.jpg") 0 0 no-repeat;
+  background: url("../assets/image/cv.jpg") 0 0 no-repeat;
   background-size: cover;
   text-align: center;
 }

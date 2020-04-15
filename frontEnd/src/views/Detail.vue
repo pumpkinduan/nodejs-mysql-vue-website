@@ -45,22 +45,19 @@
         </template>
       </AsideBar>
     </aside>
-    <el-dialog top="0" :show-close="false" :lock-scroll="false" :visible.sync="dialogVisible">
-      <img width="100%" :src="dialogImageUrl" alt />
-    </el-dialog>
   </div>
 </template>
 
 <script>
-import AsideBar from "@/components/AsideBar";
-import article from "@/api/article.js";
-import Comment from "@/components/Comment";
+import AsideBar from '@/components/AsideBar';
+import { getArticleDetail, updateBrowse } from '@/api/index.js';
+import Comment from '@/components/Comment';
 import {
   throttle,
   addEvent,
   removeEvent,
   getElementPosition
-} from "@/lib/tool.js";
+} from '@/lib/tool.js';
 export default {
   components: {
     AsideBar,
@@ -68,18 +65,18 @@ export default {
   },
   beforeRouteEnter(to, from, next) {
     //请求数据
-    article.getArticleDetail(to.params.articleId).then(res => {
-      if (res.data && res.data.data) {
-        next(vm => vm.setData(res.data.data));
+    getArticleDetail(to.params.articleId).then(res => {
+      if (res && res.data) {
+        next(vm => vm.setData(res.data));
       }
     });
   },
   data() {
     return {
-      dialogImageUrl: "",
+      dialogImageUrl: '',
       dialogVisible: false,
       curIndex: null,
-      catalogDoms: "",
+      catalogDoms: '',
       details: {},
       catalogs: [],
       stayTime: 0,
@@ -102,27 +99,28 @@ export default {
   },
   beforeRouteLeave(to, from, next) {
     if (this.second > this.readingTime) {
-      article.updateBrowse(this.$route.params.articleId, {
+      //更新访问量
+      updateBrowse(this.$route.params.articleId, {
         browse: this.browse
-      }); //更新访问量
+      });
     }
     next();
   },
   methods: {
     init() {
       this.catalogDoms = Array.from(
-        this.$refs.detail.getElementsByTagName("h3")
+        this.$refs.detail.getElementsByTagName('h3')
       );
       this.createCatalog(this.catalogDoms);
       this.handleScroll = throttle(this.onScroll, 45);
-      addEvent(window, "scroll", this.handleScroll);
+      addEvent(window, 'scroll', this.handleScroll);
     },
     createCatalog(arr) {
       //生成文章目录
       this.preLoadImgs(() => {
         arr.forEach(item => {
-          var text = item.innerText.trim();
-          item.id = text;
+          let text = item.innerText.trim();
+
           this.catalogs.push({
             text,
             top: getElementPosition(item).y
@@ -143,7 +141,7 @@ export default {
       }
     },
     preLoadImgs(fn) {
-      let imgs = Array.from(this.$refs.detail.getElementsByTagName("img"));
+      let imgs = Array.from(this.$refs.detail.getElementsByTagName('img'));
       //当文章内没有图片时，则执行回调函数=>生成目录
       if (imgs && imgs.length == 0) {
         fn();
@@ -154,10 +152,10 @@ export default {
       imgs.forEach(item => {
         this.preLoadImg(item, img => {
           // 放大图片事件
-          img.style.cursor = "zoom-in";
+          img.style.cursor = 'zoom-in';
           addEvent(
             img,
-            "click",
+            'click',
             () => {
               this.dialogVisible = true;
               this.dialogImageUrl = img.src;
@@ -229,32 +227,32 @@ export default {
       this.browse = data.browse;
     },
     destroyed() {
-      removeEvent(window, "scroll", this.handleScroll);
+      removeEvent(window, 'scroll', this.handleScroll);
     }
   }
 };
 </script>
 
-<style scoped>
+<style scoped lang="less">
 .detail {
   position: relative;
 }
 .detail img.heimao-gif {
   position: absolute;
   top: 120px;
-  right: -50px;
+  right: -32px;
   z-index: 1;
 }
 .detail-inner {
-  padding: 2rem 4rem;
-  width: 830px;
-  background-color: #fff;
+  padding: 20px 30px;
+  width: 70%;
+  background: rgba(255,255,255,.9);
   position: relative;
   box-shadow: 0 0 40px #dcdbff;
 }
 .detail-inner main h1 {
   width: 100%;
-  font-size: 1.5rem;
+  font-size: @font_super_large;
   text-align: center;
 }
 .detail .detail-inner .ql-snow img {
@@ -264,40 +262,38 @@ export default {
   min-width: 80%;
 }
 .detail-inner main .content {
-  margin: 3rem 0;
-  line-height: 1.5rem;
-  padding-bottom: 2rem;
+  margin: 30px 0;
+  line-height: 15px;
+  padding-bottom: 20px;
   border-bottom: 1px solid #eee;
-  font-size: .9rem;
+  font-size: @font_medium_s;
   overflow: hidden;
 }
 .detail-inner main .description {
   color: #3a3a3a;
-  font-size: 0.9rem;
   font-weight: 400;
-  line-height: 1.5rem;
+  line-height: 15px;
   word-break: break-all;
 }
 .right-catalog {
   position: sticky;
   top: 40px;
-  width: 320px;
+  width: 25%;
 }
 .right-catalog .catalog-wrap {
   text-align: left;
 }
 .right-catalog .catalog-wrap h2 {
+  font-size: @font_large;
   color: #555;
-  font-size: 1rem;
-  padding-bottom: 1.2rem;
-  padding-top: 0.5rem;
+  padding-bottom: 12px;
+  padding-top: 5px;
   text-align: center;
 }
 .right-catalog .catalog-wrap li {
-  padding: 0.4rem 0;
+  padding: 4px 0;
 }
 .right-catalog .catalog-wrap li a {
-  font-size: 0.9rem;
   width: 100%;
   transition: color 0.3s;
   text-overflow: ellipsis;
@@ -310,23 +306,23 @@ export default {
 .right-catalog .catalog-wrap li a:hover {
   color: #ff8a00;
 }
-.detail >>> .el-dialog__header,
-.detail >>> .el-dialog__body {
-  padding: 0;
-}
-.detail >>> .el-dialog {
-  width: 66%;
-}
-@media screen and (max-width: 780px) {
+// .detail >>> .el-dialog__header,
+// .detail >>> .el-dialog__body {
+//   padding: 0;
+// }
+// .detail >>> .el-dialog {
+//   width: 66%;
+// }
+@media screen and (max-width: 768px) {
   .detail-inner main h1 {
     width: 100%;
     margin-right: 0;
-    margin-bottom: 1rem;
+    margin-bottom: 10px;
     text-align: center;
   }
   .detail-inner {
     width: 100%;
-    padding: 2rem 0;
+    padding: 20px 0;
   }
   .detail img.heimao-gif {
     display: none;
@@ -334,14 +330,15 @@ export default {
   .detail-inner main .content,
   .detail-inner main .description,
   .wrap-comment {
-    padding: 0 1rem;
+    padding: 0 10px;
+    font-size: @font_small;
   }
   .right-catalog {
     display: none;
   }
 
-  .detail >>> .el-dialog {
-    width: 100%;
-  }
+  // .detail >>> .el-dialog {
+  //   width: 100%;
+  // }
 }
 </style>

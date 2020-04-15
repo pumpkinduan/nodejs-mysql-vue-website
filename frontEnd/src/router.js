@@ -14,7 +14,7 @@ const Resume = () => import(/* webpackChunkName: "about_group" */ './views/Resum
 const NotFound = () => import(/* webpackChunkName: "notFound_group" */ './views/NotFound.vue')
 Vue.use(Router)
 export default new Router({
-  mode: 'hash',
+  mode: 'history',
   routes: [
     {
       path: '/',

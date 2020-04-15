@@ -13,7 +13,7 @@ app.all('*', function (req, res, next) {
 });
 app.use(compression());//开启GZip
 app.use(express.static('../frontEnd/dist'));//前端页面
-// app.use('/pictures', express.static('pictures'));//前端页面
+app.use('/pictures', express.static('pictures'));//前端页面
 app.use(express.json()) // for parsing application/json 会将其解析后的json对象存到req.body中
 app.use(express.urlencoded({ extended: true })) // for parsing application/x-www-form-urlencoded
 app.use(passport.initialize());

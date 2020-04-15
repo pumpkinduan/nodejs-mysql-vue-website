@@ -1,54 +1,42 @@
-/* 清除内外边距 */
-
 body, h1, h2, h3, h4, h5, h6, hr, p, blockquote,
-/* structural elements 结构元素 */
-
 dl, dt, dd, ul, ol, li,
-/* list elements 列表元素 */
-
 pre,
-/* text formatting elements 文本格式元素 */
-
 button, input, textarea,
-/* form elements 表单元素 */
-
-div, header, main, footer, section, article, aside {
-    /* table elements 表格元素 */
+div, header, main, footer, section, article, aside, figure {
     margin: 0;
     padding: 0;
-    color: #2b2b2b;
     box-sizing: border-box;
     letter-spacing: 1px;
     font-family: inherit;
+    box-sizing: border-box;
 }
 
 html, body {
+    color: #2b2b2b;
     width: 100%;
+    font-size: @font_medium;
     height: 100%;
     font-family: cursive, 'Merriweather Sans', Helvetica, "Microsoft YaHei", sans-serif;
 }
-
+h1 {
+    font-size: @font_super_large1;
+}
+h2 {
+    font-size: @font_super_large;
+}
+h3 {
+    font-size: @font_large;
+}
+h4 {
+    font-size: @font_medium;
+}
 body {
     padding-right: 0 !important;
-    font-size: 62.5%;
     cursor: url("../image/cursor.png"), auto;
 }
-
-
-small {
-    font-size: 12px;
-}
-
-/* 小于 12px 的中文很难阅读，让 small 正常化 */
-
-/* 重置列表元素 */
-
 ul, ol, li {
     list-style: none;
 }
-
-/* 重置文本格式元素 */
-
 a {
     text-decoration: none;
     color: #666;
@@ -56,102 +44,46 @@ a {
     display: inline-block;
     transition: all .2s;
 }
-
 a:hover {
     opacity: 0.75;
 }
-
-
 .ql-editor .ql-size-large {
     font-size: 1em;
 }
-
-
-/* for ie6 */
-
-fieldset, img {
-    border: none;
-}
-
-/* img 搭车：让链接里的 img 无边框 */
-
-/* 注：optgroup 无法扶正 */
-
-button, input, select, textarea {
-    font-size: 100%;
-    /* 使得表单元素在 ie 下能继承字体大小 */
-}
-
 .clearfix::before, .clearfix::after {
     content: ' ';
     clear: both;
     display: block;
     font-size: 0;
 }
-
 .fl {
     float: left;
 }
-
 .fr {
     float: right;
 }
-
-.blue {
-    color: #2395ff;
-}
-
-.orange {
-    color: #ff8a00 !important;
-}
-
 img {
     display: block;
 }
-
-.relative {
-    position: relative;
-}
-
-.main-block {
-    padding: 8rem 4rem 5rem;
-    position: relative;
-}
-
 /* 滚动条宽度 */
-
 ::-webkit-scrollbar {
-    width: 10px;
-    height: 10px;
+    width: 5px;
+    height: 5px;
 }
 
 /* 滚动条的滑块 */
-
 ::-webkit-scrollbar-thumb {
     background-color: #a1a3a9;
-    border-radius: 4px;
+    border-radius: 2px;
 }
 
 /* 加载gif */
-
 .block-loading {
     width: 100%;
     padding-bottom: 3rem;
     background: url("../image/loading_big.gif") center center no-repeat;
 }
-
-/* 过渡动画 */
-
-.v-enter-active, .v-leave-active {
-    transition: opacity 0.5s;
-}
-
-.v-enter, .v-leave-to {
-    opacity: 0;
-}
-
 /* 自定义弹出窗口样式 */
-
 .el-dialog {
     max-height: 90%;
     margin: 0;
@@ -159,15 +91,20 @@ img {
     left: 50%;
     transform: translate(-50%, -50%);
 }
-
-@media screen and (max-width: 780px) {
+.mask {
+    background: rgba(0,0,0,.3);
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    z-index: 0;
+}
+@media screen and (max-width: 768px) {
     :root {
-        font-size: 14px;
+        font-size: 12px;
     }
     .main-block {
         padding: 8rem 0 2rem;
-    }
-    body,html {
-        font-family: 'Merriweather Sans', Tahoma, Arial, 'PingFang SC', 'Hiragino Sans GB', 'Microsoft Yahei', 'WenQuanYi Micro Hei', sans-serif;
     }
 }

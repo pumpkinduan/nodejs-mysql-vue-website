@@ -3,25 +3,78 @@
 
 <head>
   <meta charset="utf-8" />
-  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta http-equiv="x-dns-prefetch-control" content="on" />
   <meta name="renderer" content="webkit">
   <meta name="viewport" content="width=device-width,initial-scale=1.0,user-scalable=no" />
-  <meta name="keywords" content="南瓜，pumpkin，个人网站, 个人博客, Node搭建个人网站, 南瓜的个人博客, 有趣的博客网站" />
-  <meta name="description" content="世上还有很多的美好，等着你去发现" />
+  <meta name="keywords" content="南瓜，pumpkin，学习小站，个人网站, 个人博客, Node搭建个人网站, 南瓜的个人博客, 有趣的博客网站" />
+  <meta name="description" content="用写文章的方式，来记录学习的收获与快乐在好不过了" />
   <title><%= htmlWebpackPlugin.options.isProd ? 'Hey, Pumpkin' : 'my-website' %></title>
   <link rel="icon" href="<%= BASE_URL %>favicon.ico">
-   <!-- 阿里字体的样式表 -->
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/nprogress/0.2.0/nprogress.min.css">
-  <% if(htmlWebpackPlugin.options.isProd) {%>
   <!-- nprogress的样式表 -->
-  <link rel="stylesheet" type="text/css" href="https://at.alicdn.com/t/font_521912_976dad70h5r.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/nprogress/0.2.0/nprogress.min.css">
+   <!-- 阿里字体的样式表 -->
+  <link rel="stylesheet" type="text/css" href="https://at.alicdn.com/t/font_1752337_2bci1jdv2em.css">
+  <% if(htmlWebpackPlugin.options.isProd) {%>
   <!-- 采用cdn方式引入的js文件 -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/nprogress/0.2.0/nprogress.min.js"></script>
   <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
   <script src="https://cdn.bootcss.com/vue/2.6.11/vue.min.js"></script>
   <script src="https://cdn.bootcss.com/vue-router/3.1.3/vue-router.min.js"></script>
   <% } %>
-  
+  <style>
+    #pumpkin .loading {
+      width: 5rem;
+      height: 3.2rem;
+      margin: 3rem auto;
+      color: #555;
+      font-size: 1.2rem;
+    }
+
+    #pumpkin .loading span {
+      display: inline-block;
+      width: 8px;
+      height: 100%;
+      border-radius: 5px;
+      background-color: bisque;
+      animation: load 1s ease infinite;
+
+    }
+
+    @keyframes load {
+
+      0%,
+      100% {
+        height: 1.5rem;
+        background-color: bisque;
+      }
+
+      50% {
+        height: 3rem;
+        transform: translate3d(0, 16px, 0);
+        background-color: chocolate;
+      }
+    }
+
+    #pumpkin .loading span:first-child {
+      animation-delay: 0.2s;
+    }
+
+    #pumpkin .loading span:nth-child(2) {
+      animation-delay: 0.4s;
+    }
+
+    #pumpkin .loading span:nth-child(3) {
+      animation-delay: 0.6s;
+    }
+
+    #pumpkin .loading span:nth-child(4) {
+      animation-delay: 0.8s;
+    }
+
+    #pumpkin .loading span:last-child {
+      animation-delay: 1s;
+    }
+  </style>
 </head>
 
 <body>
@@ -29,8 +82,15 @@
     <strong>We're sorry but pumpkin-website doesn't work properly without JavaScript enabled. Please enable it to
       continue.</strong>
   </noscript>
-  <div id="app"></div>
-  <!-- built files will be auto injected -->
+  <div id="pumpkin">
+    <div class="loading">
+      <span></span>
+      <span></span>
+      <span></span>
+      <span></span>
+      <span></span>
+    </div>
+  </div>
 </body>
 
 </html>

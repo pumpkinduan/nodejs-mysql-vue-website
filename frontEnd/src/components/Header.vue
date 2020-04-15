@@ -1,31 +1,26 @@
 <template>
-  <header
-    id="nav_header"
-    class="clearfix site-header"
-    :style="{opacity: opacity, 'background-color': bgc}"
-  >
-    <h1 class="fl">
-      <router-link to="/">
-        <span class="fl site-logo orange">pumpkin</span>
-      </router-link>
+  <header ref="site_header" class="clearfix site-header" :style="{opacity, bgc}">
+    <h1 class="fl site-logo">
+      <router-link to="/">pumpkin</router-link>
     </h1>
-    <section class="site-nav fr">
+    <nav class="site-nav fr">
       <ul class="clearfix">
         <li v-for="(item, prop, index) in navLinks" :key="index">
           <router-link :to="{name: item.component, params: {showList: true}}">{{item.name}}</router-link>
         </li>
       </ul>
-    </section>
-    <nav id="nav_btn" class="fr" @click="show = true;">
+    </nav>
+    <div id="nav_btn" class="fr" @click="show = true;">
       <ul>
         <li>
           <a href="javascript:;"></a>
         </li>
       </ul>
-    </nav>
+    </div>
+
     <transition name="menu">
       <section class="menu" v-show="show">
-        <i class="iconfont icon-weibiaoti34 close" @click.stop="show = false"></i>
+        <i class="iconfont iconarrow-right close" @click.stop="show = false"></i>
         <ul>
           <li v-for="(item, prop, index) in navLinks" :key="index">
             <i :class="item.class"></i>
@@ -38,7 +33,7 @@
 </template>
   <script>
 export default {
-  name: "HeaderNav",
+  name: 'HeaderNav',
   props: {
     opacity: {
       type: Number,
@@ -46,104 +41,130 @@ export default {
     },
     bgc: {
       type: String,
-      default: "#000"
+      default: '#000'
     }
   },
   data() {
     return {
       navLinks: [
         {
-          class: "iconfont icon-shouye",
-          component: "articleList",
-          name: "首页"
+          class: 'iconfont iconshouye',
+          component: 'articleList',
+          name: '首页'
         },
         {
-          class: "iconfont icon-jilu",
-          component: "category",
-          name: "分类"
+          class: 'iconfont iconjilu',
+          component: 'category',
+          name: '分类'
         },
         {
-          class: "iconfont icon-biaoqian3",
-          component: "archive",
-          name: "归档"
+          class: 'iconfont iconfaxian',
+          component: 'archive',
+          name: '归档'
         },
         {
-          class: "iconfont icon-xingxing1",
-          component: "photoWall",
-          name: "相册墙"
+          class: 'iconfont iconxingxing1',
+          component: 'photoWall',
+          name: '相册墙'
         },
         {
-          class: "iconfont icon-guanyuwo",
-          component: "about",
-          name: "关于我"
+          class: 'iconfont iconguanyuwo',
+          component: 'about',
+          name: '关于我'
         },
         {
-          class: "iconfont el-icon-chat-line-square",
-          component: "resume",
-          name: "我的简历"
+          class: 'iconfont el-icon-chat-line-square',
+          component: 'resume',
+          name: '我的简历'
         }
       ],
       show: false
     };
   },
-  method: {
-    hideMenu() {}
+  methods: {
+    onScroll() {
+      if (document.documentElement.scrollTop > 1) {
+        this.$refs.site_header
+          ? (this.$refs.site_header.style = 'opacity: 1;background: #fff')
+          : '';
+      } else {
+        this.$refs.site_header
+          ? (this.$refs.site_header.style = `opacity:${this.opacity};background:${this.bgc}`)
+          : '';
+      }
+    }
+  },
+  mounted() {
+    this.$nextTick(() => {
+      window.addEventListener('scroll', this.onScroll, false);
+    });
+  },
+  destroyed() {
+    window.removeEventListener('scroll', this.onScroll, false);
   }
 };
 </script>
-<style scoped>
+<style lang='less' scoped>
 /* ----头部样式开始---- */
 .site-header {
-  width: 100%;
-  height: 5rem;
-  padding: 0rem 3rem;
+  width: calc(100% - 60px);
+  box-sizing: content-box;
+  height: 50px;
+  padding: 5px 30px;
+  margin-bottom: 20px;
   box-shadow: 0 1px 40px -8px rgba(0, 0, 0, 0.5);
-  position: absolute;
+  position: fixed;
   top: 0;
   left: 0;
-  z-index: 1;
+  background: #fff;
+  z-index: 4;
   transition: all 0.4s;
-}
-.site-header:hover {
-  background-color: #fff !important;
-  opacity: 0.9 !important;
-}
-.site-header .site-logo {
-  letter-spacing: 5px;
-  color: #ff450085;
-  font-size: 1.5rem;
-  display: inline-block;
-  line-height: 5rem;
-}
-
-.site-header .site-nav {
-  height: 100%;
-}
-.site-header .site-nav ul {
-  position: relative;
-  top: 0.8rem;
-}
-.site-header .site-nav ul li {
-  float: left;
-  transition: color 0.3s;
-}
-.site-header .site-nav ul li a {
-  padding: 1rem;
-}
-.site-header .site-nav ul li a:hover {
-  color: #ff8a00;
+  &:hover {
+    opacity: 1 !important;
+    background: #fff !important;
+  }
+  .site-logo {
+    height: 100%;
+    a {
+      line-height: 50px;
+      letter-spacing: 2px;
+      font-size: @font_super_large1;
+      color: @orange;
+    }
+  }
+  .site-nav {
+    height: 100%;
+    ul {
+      height: 100%;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      li {
+        transition: color 0.3s;
+        a {
+          padding: 10px;
+          &:hover {
+            color: @orange;
+          }
+        }
+      }
+    }
+  }
 }
 
 /* 适配移动端 */
-.site-header nav ul li a {
-  display: inline-block;
-  width: 5rem;
-  height: 5rem;
+.site-header #nav_btn {
   position: relative;
+  top: 50%;
+  transform: translateY(-50%);
 }
-.site-header nav ul li a:before,
-.site-header nav ul li a:after {
-  content: "";
+.site-header #nav_btn ul li a {
+  width: 40px;
+  height: 40px;
+}
+.site-header #nav_btn ul li a:before,
+.site-header #nav_btn ul li a:after {
+  content: '';
   display: block;
   width: 100%;
   height: 100%;
@@ -155,17 +176,17 @@ export default {
   background-repeat: no-repeat;
   transition: opacity 0.3s;
 }
-.site-header nav ul li a:before {
-  content: "";
+.site-header #nav_btn ul li a:before {
+  content: '';
   opacity: 1;
   background-image: url('data:image/svg+xml;utf8,<svg version="1.1" xmlns="http://www.w3.org/2000/svg" width="80" height="80" viewbox="0 0 80 80"><line x1="0" x2="80" y1="20" y2="20" stroke="gray" stroke-width="8" stroke-linecap="round"/><line x1="0" x2="80" y1="40" y2="40" stroke-linecap="round" stroke="gray" stroke-width="8"/><line x1="0" x2="80" y1="60" y2="60" stroke-linecap="round" stroke="gray" stroke-width="8"/></svg>');
 }
-.site-header nav ul li a:after {
-  content: "";
+.site-header #nav_btn ul li a:after {
+  content: '';
   opacity: 0;
   background-image: url('data:image/svg+xml;utf8,<svg version="1.1" xmlns="http://www.w3.org/2000/svg" width="80" height="80" viewbox="0 0 80 80"><line x1="0" x2="80" y1="20" y2="20" stroke="orange" stroke-width="8" stroke-linecap="round"/><line x1="0" x2="80" y1="40" y2="40"  stroke="orange" stroke-width="8"/><line x1="0" x2="80" y1="60" y2="60" stroke="orange" stroke-width="8"/></svg>');
 }
-.site-header nav ul li a:hover:after {
+.site-header #nav_btn ul li a:hover:after {
   opacity: 1;
 }
 /* ----右侧菜单栏开始---- */
@@ -193,7 +214,7 @@ export default {
   cursor: pointer;
 }
 .menu .close:hover {
-  color: pink;
+  color: rgb(248, 172, 185);
 }
 .menu ul li {
   border-top: 1px solid hsla(0, 7%, 15%, 0.17);
@@ -203,16 +224,17 @@ export default {
 .menu ul li:first-child {
   border: none;
 }
-.menu ul li:hover a,
-.menu ul li:hover i {
-  color: #ff8a00;
-}
-.menu i,
-.menu a {
+.menu ul li i,
+.menu ul li a {
   color: #ccc;
   transition: color 0.3s;
   margin-right: 5px;
 }
+.menu ul li:hover a,
+.menu ul li:hover i {
+  color: @orange;
+}
+
 /* 菜单栏的动画 */
 .menu-enter,
 .menu-leave-to {
@@ -228,7 +250,7 @@ export default {
   opacity: 1;
 }
 /* ----右侧菜单栏结束---- */
-@media screen and (min-width: 781px) {
+@media screen and (min-width: 769px) {
   #nav_btn {
     display: none;
   }
@@ -236,11 +258,12 @@ export default {
     display: block;
   }
 }
-@media screen and (max-width: 780px) {
+@media screen and (max-width: 768px) {
   .site-header {
     background: #fff !important;
     opacity: 1 !important;
-    padding: 0rem 1rem;
+    padding: 0 10px;
+    width: calc(100% - 20px);
   }
   #nav_btn {
     display: block;

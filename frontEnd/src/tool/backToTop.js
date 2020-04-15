@@ -31,11 +31,11 @@ import { throttle, addEvent } from "@/lib/tool.js";
         addEvent(document, 'scroll', throttle(function () {
             if (document.scrollingElement.scrollTop <= 0) {
                 animate(btn, {
-                    bottom: -80
+                    bottom: -120
                 })
             } else {
                 animate(btn, {
-                    bottom: 40
+                    bottom: 60
                 })
             }
         }, 150))
@@ -73,7 +73,7 @@ import { throttle, addEvent } from "@/lib/tool.js";
                                 bottom: -50px;
                                 right: 2%;
                                 cursor: pointer;
-                                z-index: 999999;
+                                z-index: 111;
                             }
                             polyline {
                                 transition: all .3s;

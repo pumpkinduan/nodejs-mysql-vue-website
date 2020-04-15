@@ -5,8 +5,8 @@
         <i class="iconfont icon-liuyan"></i>
         <span v-if="words.length > 0">
           一共有
-          <em style="font-size: 1rem;" class="orange">{{totalComments}}</em>条留言和
-          <em style="font-size: 1rem;" class="orange">{{totalReplies}}</em>条回复
+          <em style="font-size: 1rem;">{{totalComments}}</em>条留言和
+          <em style="font-size: 1rem;">{{totalReplies}}</em>条回复
         </span>
         <span v-else>目前还没有人留下ta的足迹噢,快来抢占一楼吧</span>
       </h3>
@@ -23,7 +23,7 @@
                 <span class="fl time">{{item.created_at}}</span>
                 <span class="fr time">{{ (index+1) }}楼</span>
                 <i
-                  class="iconfont icon-pinglun fr"
+                  class="iconfont iconpinglun fr"
                   @click="handleReply(item.name, item.id, index, item.content)"
                 ></i>
               </div>
@@ -113,36 +113,35 @@
   </div>
 </template>
 <script>
-import { format } from "@/lib/formatTime.js";
-import commenter from "@/api/comment.js";
-import replyer from "@/api/reply.js";
+import { format } from '@/lib/formatTime.js';
+import { createComment, createReply, getArticleComments } from '@/api/index.js';
 import {
   throttle,
   debounce,
   addEvent,
   removeEvent,
   getPageOffset
-} from "@/lib/tool.js";
+} from '@/lib/tool.js';
 export default {
-  props: ["article_title"],
+  props: ['article_title'],
   data() {
     return {
       canLoad: true,
       loading_gif: false,
       maxlength: 128,
       words: [],
-      name: "",
-      comment: "",
+      name: '',
+      comment: '',
       totalReplies: 0,
       comment_id: null, //当前被回复的留言的id
-      parent_name: "",
-      parent_comment: "",
+      parent_name: '',
+      parent_comment: '',
       totalComments: 0,
-      errMessage: "",
+      errMessage: '',
       isReply: false, //是否回复  默认 否
-      curIndex: "",
+      curIndex: '',
       page: 1,
-      prompt: "Hey,guys,come and say something",
+      prompt: 'Hey,guys,come and say something',
       scrollTop: 0 //记录用户点击回复时滚动条的位置
     };
   },
@@ -161,28 +160,26 @@ export default {
     }, 350);
   },
   mounted() {
-    addEvent(window, "scroll", this.handleThrottle);
+    addEvent(window, 'scroll', this.handleThrottle);
   },
   destroyed() {
-    removeEvent(window, "scroll", this.handleThrottle);
+    removeEvent(window, 'scroll', this.handleThrottle);
   },
   methods: {
     getData() {
-      commenter
-        .getArticleComments(this.$route.params.articleId, this.page)
+      getArticleComments(this.$route.params.articleId, this.page)
         .then(res => {
-          if (res.data) {
-            this.loading_gif = false;
-            let data = res.data.data;
-            for (let i in data) {
-              //重新整理数据格式，添加 active: false，用于排他
-              data[i]["active"] = false;
-            }
-            this.words.push(...data);
-            this.pageSize = parseInt(res.data.meta.pageSize);
-            this.totalComments = parseInt(res.data.meta.totalComments);
-            this.totalReplies = parseInt(res.data.meta.totalReplies);
+         
+          this.loading_gif = false;
+          let data = res.data;
+          for (let i in data) {
+            //重新整理数据格式，添加 active: false，用于排他
+            data[i]['active'] = false;
           }
+          this.words.push(...data);
+          this.pageSize = parseInt(res.meta.pageSize);
+          this.totalComments = parseInt(res.meta.totalComments);
+          this.totalReplies = parseInt(res.meta.totalReplies);
         })
         .catch(() => {
           //后台没有数据时会报错
@@ -193,13 +190,13 @@ export default {
       let self = this;
       this.debounceComment = debounce(newVal => {
         newVal && newVal.length >= 64
-          ? (self.errMessage = "留言的字符个数不能超过64噢")
-          : (self.errMessage = "");
+          ? (self.errMessage = '留言的字符个数不能超过64噢')
+          : (self.errMessage = '');
       });
       this.debounceName = debounce(newVal => {
         newVal && newVal.length > 7
-          ? (self.errMessage = "昵称的字符个数不能超过8噢")
-          : (self.errMessage = "");
+          ? (self.errMessage = '昵称的字符个数不能超过8噢')
+          : (self.errMessage = '');
       });
     },
     sendComment() {
@@ -209,14 +206,13 @@ export default {
         article_id: this.$route.params.articleId,
         article_title: this.article_title
       };
-      commenter
-        .createComment(data)
+      createComment(data)
         .then(res => {
-          if (!res.data.success) return;
+          if (!res.success) return;
           let newComment = Object.assign(data, {
             created_at: format(),
             replies: [],
-            id: res.data.comment_id
+            id: res.comment_id
           });
           this.words.push(newComment);
           this.totalComments++;
@@ -235,8 +231,8 @@ export default {
         parent_comment: this.parent_comment,
         parent_name: this.parent_name
       };
-      replyer.createReply(reply).then(res => {
-        if (!res.data.success) return;
+      createReply(reply).then(res => {
+        if (!res.success) return;
         this.words[this.curIndex].replies.push(
           Object.assign(reply, { created_at: format() })
         );
@@ -249,11 +245,11 @@ export default {
     check() {
       let flag = true;
       if (!this.comment) {
-        this.prompt = "留言不能为空噢";
+        this.prompt = '留言不能为空噢';
         flag = false;
       }
       if (!this.name) {
-        this.errMessage = "请留下阁下的大名吧";
+        this.errMessage = '请留下阁下的大名吧';
         flag = false;
       }
       this.$refs.focusTextarea.focus();
@@ -282,14 +278,14 @@ export default {
     resetComment() {
       //留言初始化
       this.isReply = false;
-      this.comment = "";
-      this.name = "";
-      this.prompt = "Hey,guys,come and say something";
+      this.comment = '';
+      this.name = '';
+      this.prompt = 'Hey,guys,come and say something';
     },
     loadData() {
       if (this.totalComments <= this.words.length) return;
       if (this.canLoad) {
-        const ele = document.getElementsByClassName("words")[0],
+        const ele = document.getElementsByClassName('words')[0],
           viewHeight =
             document.documentElement.clientHeight ||
             document.body.clientHeight ||
@@ -307,101 +303,105 @@ export default {
   }
 };
 </script>
-<style scoped>
-.comment .prompt p {
-  font-weight: 400;
-  color: #554c3d;
-  font-size: 0.8rem;
-}
-.comment .words,
-.form {
-  margin-bottom: 2rem;
-}
-.comment .words h3 {
-  padding: 1rem 0;
-  border-bottom: 1px dashed #eee;
-  letter-spacing: 2px;
-  font-weight: 400;
-  color: #666;
-}
-.comment .words h3 span {
-  vertical-align: 3px;
-  font-size: 0.8rem;
-}
-.comment .words ul li {
-  line-height: 1.5rem;
-  font-size: 0.8rem;
-  padding: 1.2rem 1rem;
-}
-.words ul li img {
-  display: inline-block;
-  border-radius: 50%;
-  margin-right: 6px;
-}
-.words ul li header {
-  max-width: 600px;
-  min-width: 300px;
-}
-.words ul li header > img {
-  width: 40px;
-  vertical-align: -12px;
-}
-.comment .words ul li section .time {
-  color: #777;
-  font-size: 0.9em;
-}
-.comment .words ul li section.wrapper {
-  margin-top: 0.6rem;
-  padding-left: 46px;
-  position: relative;
-  color: #555;
-  overflow: hidden;
-}
-.comment .words ul li section.wrapper .showMore {
-  display: inline-block;
-  cursor: pointer;
-}
-.comment .words ul li section.wrapper .showMore span {
-  display: inline-block;
-}
-.comment .words ul li section.wrapper .showMore:hover {
-  color: #ff9d00;
-}
-.comment .words ul li header .user-name {
-  font-size: 1rem;
-  font-weight: 500;
-}
-.comment .words ul li .content {
-  word-break: break-all;
-  color: #666;
-  font-weight: 400;
-}
-.comment .words ul li section .reply {
-  padding: 0.8rem;
-  background-color: rgba(241, 241, 241, 0.3);
-}
-.comment .words ul li section .reply:last-child {
-  border: none;
-}
-.comment .words ul li section .reply img {
-  width: 35px;
-  vertical-align: middle;
-}
-.comment .words ul li section .reply .content {
-  padding-left: 41px;
+<style lang="less" scoped>
+.comment {
+  .words {
+    margin-bottom: 2rem;
+    h3 {
+      padding: 1rem 0;
+      border-bottom: 1px dashed #eee;
+      letter-spacing: 2px;
+      font-weight: 400;
+      color: #666;
+      span {
+        vertical-align: 3px;
+        font-size: 0.8rem;
+        em {
+          color: @orange;
+        }
+      }
+    }
+    ul li {
+      line-height: 1.5rem;
+      font-size: 0.8rem;
+      padding: 1.2rem 1rem;
+      img {
+        display: inline-block;
+        border-radius: 50%;
+        margin-right: 6px;
+      }
+      header {
+        max-width: 600px;
+        min-width: 300px;
+        & > img {
+          width: 40px;
+          vertical-align: -12px;
+        }
+        .user-name {
+          font-size: 1rem;
+          font-weight: 500;
+        }
+      }
+      section .time {
+        color: #777;
+        font-size: 0.9em;
+      }
+      section.wrapper {
+        margin-top: 0.6rem;
+        padding-left: 46px;
+        position: relative;
+        color: #555;
+        overflow: hidden;
+        .showMore {
+          display: inline-block;
+          cursor: pointer;
+          &:hover {
+            color: #ff9d00;
+          }
+          span {
+            display: inline-block;
+          }
+        }
+      }
+      .content {
+        word-break: break-all;
+        color: #666;
+        font-weight: 400;
+      }
+      section .reply {
+        padding: 0.8rem;
+        background-color: rgba(241, 241, 241, 0.3);
+        &:last-child {
+          border: none;
+        }
+        img {
+          width: 35px;
+          vertical-align: middle;
+        }
+        .content {
+          padding-left: 41px;
+        }
+      }
+    }
+  }
+  .prompt p {
+    font-weight: 400;
+    color: #554c3d;
+    font-size: 0.8rem;
+  }
 }
 /* 字体图标样式开始 */
 .icon-liuyan {
   font-size: 1.2rem;
 }
-.icon-pinglun {
+.iconpinglun {
   font-size: 1rem;
   transition: all 0.3s;
   vertical-align: middle;
   font-weight: 400;
   margin-right: 10px;
 }
-.icon-pinglun:hover {
+.iconpinglun:hover {
   cursor: pointer;
   color: #ff9d00;
 }

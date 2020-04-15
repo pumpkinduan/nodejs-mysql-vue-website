@@ -1,7 +1,7 @@
 <template>
   <div class="photo-wall">
     <Header :opacity="1" bgc="#fff" />
-    <main class="clearfix main-block">
+    <div class="clearfix box">
       <Quotation ref="quotation" @sendGap="sendGap" />
       <div class="wrap">
         <Waterfall :cards="cards" ref="waterfall" @loadData="loadData" :gap="gap">
@@ -21,7 +21,7 @@
           </template>
         </Waterfall>
       </div>
-    </main>
+    </div>
     <el-dialog :lock-scroll="false" top="0" :visible.sync="dialogVisible" :show-close="false">
       <img width="100%" :src="dialogImageUrl" alt />
     </el-dialog>
@@ -31,11 +31,11 @@
 </template>
 
 <script>
-import Header from "@/components/Header.vue";
-import Quotation from "@/components/Quotation.vue";
+import Header from "@/components/Header";
+import Quotation from "@/components/Quotation";
 import config from "@/config.js";
 import Waterfall from "@/components/Waterfall";
-import api from "@/api/img.js";
+import {getAllImgs} from "@/api/index.js";
 export default {
   components: {
     Quotation,
@@ -64,10 +64,10 @@ export default {
     },
     getData(page) {
       this.loading_gif = true;
-      api.getAllImgs(page).then(result => {
-        if (result.data && result.data.imgs) {
-          this.totalPhotoes = result.data.imgs.count;
-          this.cards.push(...result.data.imgs.rows);
+      getAllImgs(page).then(data => {
+        if (data && data.imgs) {
+          this.totalPhotoes = data.imgs.count;
+          this.cards.push(...data.imgs.rows);
         }
       });
     },
@@ -94,6 +94,9 @@ main {
   background: #f5f7f9;
   padding-bottom: 0;
 }
+.box {
+  padding-top: 80px;
+}
 .el-image {
   width: 100%;
   display: inline-block;
@@ -111,7 +114,6 @@ main {
   top: 0;
   color: #fff;
   opacity: 0;
-  font-size: 20px;
   background-color: rgba(0, 0, 0, 0.5);
   transition: opacity 0.3s;
 }
@@ -123,16 +125,14 @@ main {
 }
 .prompt-text {
   position: relative;
-  top: -1.2rem;
+  top: -12px;
   text-align: center;
-  font-size: .8rem;
-  color: #9c9c87;
 }
 .photo-wall >>> .el-dialog__header,
 .photo-wall >>> .el-dialog__body {
   padding: 0;
 }
-@media screen and (max-width: 780px) {
+@media screen and (max-width: 768px) {
   .photo-wall >>> .el-dialog {
     width: 100%;
   }

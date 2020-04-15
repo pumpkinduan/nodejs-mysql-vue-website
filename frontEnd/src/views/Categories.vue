@@ -20,30 +20,29 @@ export default {
 };
 </script>
 
-<style scoped>
+<style scoped lang="less">
 .category {
-  padding: 2rem 1rem;
-  font-size: 1rem;
+  padding: 15px 10px;
   background-color: #fff;
   text-align: center;
   border-radius: 5px;
 }
 .category .category-header {
-  font-size: 1.5rem;
+  font-size: @font_super_large;
   font-weight: 600;
   color: #333;
 }
 .category .category-description {
   color: #666;
-  padding: 1rem 0;
+  padding: 10px 0;
 }
 .category .category-nav {
   text-align: left;
-  padding: 0 1rem;
+  padding: 0 10px;
 }
 .category .category-nav .category-nav-item {
   list-style-type: circle;
-  padding: 0.8rem 0;
+  padding: 8px 0;
 }
 .category .category-nav .category-nav-item .category-nav-item-name {
   color: rgb(153, 47, 9);

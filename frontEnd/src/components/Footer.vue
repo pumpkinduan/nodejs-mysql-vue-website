@@ -4,7 +4,7 @@
       <li class="about">
         <h3>Simple Word</h3>
         <p class="hitokoto">{{hitokoto}}</p>
-        <section class="copyright">
+        <div class="copyright">
           <span>@ 南瓜的时光机</span>
           <span class="line"></span>
           <span class="author">
@@ -12,13 +12,13 @@
             <a href="#">Pumpkin</a>
           </span>
           <p>湘ICP备20002688号-1</p>
-        </section>
+        </div>
       </li>
     </ul>
   </div>
 </template>
 <script>
-import api from '@/api/hitokoto.js';
+import {getHitokoto} from '@/api/index.js';
 export default {
   data() {
     return {
@@ -36,11 +36,10 @@ export default {
   methods: {
     getHitokoto() {
       //第三方获取
-      api
-        .getHitokoto()
+     getHitokoto()
         .then(res => {
-          if (res.data) {
-            this.hitokoto = res.data.hitokoto;
+          if (res) {
+            this.hitokoto = res.hitokoto;
           }
         })
         .catch(() => {
@@ -51,54 +50,57 @@ export default {
   }
 };
 </script>  
-<style scoped>
+<style scoped lang="less">
 .footer {
+  background: #eee;
+  position: relative;
   width: 100%;
-  background-color: rgba(0, 0, 0, 0.01);
-  padding: 1.5rem 2rem 1rem;
-  position: absolute;
-  bottom: 0;
-  left: 0;
+  padding: 2px 20px;
   text-align: center;
+  color: #555;
 }
 /* --底部关于开始-- */
 .footer .about h3 {
-  color: #333;
-  font-size: 1.3rem;
+  margin-top: 20px;
+  font-size: @font_super_large1;
   font-weight: 500;
 }
 .footer .about p {
-  color: #666;
-  font-size: 1rem;
-  margin: 1.5rem 0;
+  margin: 15px 0;
 }
 .footer .about .copyright {
-  color: #777;
-  font-size: 1rem;
-  margin-bottom: 1rem;
-  font-weight: 600;
+  margin-bottom: 10px;
 }
 .footer .about .copyright span {
   word-spacing: -2px;
 }
 .footer .about .copyright .line {
-  border-left: 1px solid #ccc;
-  padding: 1px 5px;
-  margin-left: 15px;
+  border-left: 1px solid #ddd;
+  padding: 1px 2px;
+  margin-left: 6px;
 }
 .footer .about .copyright .author a {
-  border-bottom: 1px dotted #666;
+  border-bottom: 1px dotted #f2f2f2;
   transition: color 0.4s;
   margin-left: 5px;
+  color: @blue1;
 }
 .footer .about .copyright .author a:hover {
-  color: #ff450085;
+  color: @orange;
+}
+.footer .about .copyright p {
+  color: #888;
 }
 .footer .about .hitokoto {
   transition: all 0.3s;
 }
 .footer .about .hitokoto:hover {
-  color: #ff450085;
+  color: @orange;
+}
+@media screen and (max-width: 768px){
+    .footer {
+      color: @baseFontColor;
+    }
 }
 /* --底部关于结束-- */
 </style>

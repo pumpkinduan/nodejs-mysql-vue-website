@@ -11,7 +11,7 @@
   </div>
 </template>
 <script>
-import api from "@/api/hitokoto.js";
+import {getHitokoto} from "@/api/index.js";
 export default {
   data() {
     return {
@@ -33,14 +33,13 @@ export default {
   methods: {
     getHitokoto() {
       //第三方获取
-      api
-        .getHitokoto()
-        .then(res => {
-          if (res.data) {
+     getHitokoto()
+        .then(data => {
+          if (data) {
             if (this.quotations.length > 2) {
               clearInterval(this.timer);
             } else {
-              this.quotations.push(res.data);
+              this.quotations.push(data);
             }
           }
         })
@@ -77,8 +76,7 @@ export default {
 .quotation {
   position: relative;
   width: 100%;
-  font-size: 1rem;
-  padding: 4rem 2rem 1rem 2rem;
+  padding: 40px 20px 10px 2px;
   background: url("https://cn-south-227-storage-hitokoto-19627663.oss.dogecdn.com/pic/qf3cu.jpg")
     center center no-repeat;
   background-size: cover;

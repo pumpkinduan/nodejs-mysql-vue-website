@@ -23,7 +23,7 @@
 </template>
 
 <script>
-import api from '@/api/article.js';
+import {getArticleListsByTag} from '@/api/index.js';
 export default {
   name: 'tag',
   data() {
@@ -40,13 +40,12 @@ export default {
   methods: {
     //根据标签获取对应的归档
     searchArticle(tag) {
-      api
-        .getArticleListsByTag(tag)
+        getArticleListsByTag(tag)
         .then(res => {
-          if (res.data) {
+          if (res) {
             this.tag = tag;
-            this.links = res.data.data;
-            this.tag_count = res.data.meta.count;
+            this.links = res.data;
+            this.tag_count = res.meta.count;
           }
         })
         .catch(() => {
@@ -57,6 +56,3 @@ export default {
 };
 </script>
 
-<style scoped>
-@import "~@/assets/css/archive.css";
-</style>

@@ -1,9 +1,8 @@
 <template>
-  <div class="pagination-wrap clearfix">
-    <span class="fr">共{{totalPage}}页</span>
-    <ul class="pagination fr">
+  <div class="pagination-wrap">
+    <ul class="pagination">
       <li :class="currentIndex == 1 ? 'disabled': ''" @click="prevPage">
-        <span class="iconfont icon-arrow-lift"></span>
+        <span class="iconfont iconarrow-lift"></span>
       </li>
       <li
         v-for="(item, index) in pageList"
@@ -14,7 +13,10 @@
         <span>{{item.txt}}</span>
       </li>
       <li :class="currentIndex == totalPage ? 'disabled': ''" @click="nextPage">
-        <span class="iconfont icon-arrow-right"></span>
+        <span class="iconfont iconarrow-right"></span>
+      </li>
+      <li class="total-count">
+        共{{totalPage}}页
       </li>
     </ul>
   </div>
@@ -152,40 +154,43 @@ export default {
 };
 </script>
 
-<style scoped>
+<style scoped lang="less">
 .pagination-wrap {
-  font-size: 1.5em;
-  color: #999;
-  line-height: 3em;
-  padding: 1.5rem 0;
-}
-.pagination-wrap .pagination li {
-  margin-right: 5px;
-  cursor: pointer;
-}
-.pagination-wrap .pagination li span {
-  transition: background-color 0.3s;
-  border-radius: 50%;
-  display: inline-block;
-  width: 30px;
-  height: 30px;
-  line-height: 30px;
-}
-.pagination-wrap .pagination li.disabled span {
-  cursor: not-allowed;
-  color: #ccc;
-}
-.pagination-wrap .pagination li:hover:not(.disabled) span {
-  background-color: pink;
-  color: #fff;
-}
-.pagination-wrap .pagination li.active span {
-  background-color: #ff9d00;
-  color: #fff;
-}
-.pagination-wrap .pagination li {
-  float: left;
+  width: 100%;
+  font-size: @font_medium;
+  padding: 10px 0;
   text-align: center;
-  color: #555;
+  ul.pagination {
+    display: inline-flex;
+    li {
+      margin-right: 5px;
+      cursor: pointer;
+      &.total-count {
+        font-size: @font_medium_s;
+        display: inline-flex;
+        align-items: center;
+      }
+      span {
+        transition: background-color 0.3s;
+        border-radius: 50%;
+        display: inline-block;
+        width: 20px;
+        height: 20px;
+        line-height: 20px;
+      }
+      &.disabled span {
+        cursor: not-allowed;
+        color: #ccc;
+      }
+      &:hover:not(.disabled) span {
+        background-color: rgb(245, 159, 173);
+        color: #fff;
+      }
+      &.active span {
+        background-color: #ff9d00;
+        color: #fff;
+      }
+    }
+  }
 }
 </style>

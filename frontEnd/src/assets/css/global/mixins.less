@@ -1,0 +1,76 @@
+// 不换行, 超出显示...
+// 必须给所在元素设置宽度
+.no-wrap() {
+    text-overflow: ellipsis;
+    overflow: hidden;
+    white-space: nowrap;
+}
+// 限制行数，多行文本溢出显示...
+.clamp(@row: 1) {
+    overflow: hidden;
+    // 将对象作为弹性盒子模型显示
+    text-overflow: ellipsis;
+    display: -webkit-box;
+    // 子元素的排列方式
+    -webkit-box-orient: vertical;
+    // 显示的行数
+    -webkit-line-clamp: @row;
+}
+// 主题背景颜色变化
+.bg_color_theme(@color: @theme_blue) {
+    background: @color;
+    [data-theme="night"] & {
+        background: data-uri(@theme_night) 0 0 repeat;
+    }
+    [data-theme="snow"] & {
+        background: data-uri(@theme_snow) 0 0 repeat;
+    }
+    [data-theme="blue"] & {
+        background: @theme_blue;
+    }
+    [data-theme="pink"] & {
+        background: @theme_pink;
+    }
+}
+// 头部背景图片
+.bg_image(@url){
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center center;
+    background-image: data-uri(@url);
+    [data-cover="cover1"] & {
+        background-image: data-uri(@cover1);
+        // @media screen and (max-width: 768px) {
+        //     background-image: data-uri(@cover1_s);  
+        // }
+    }
+    [data-cover="cover2"] & {
+        background-image: data-uri(@cover2);
+        // @media screen and (max-width: 768px) {
+        //     background-image: data-uri(@cover2_s);  
+        // }
+    }
+    [data-cover="cover3"] & {
+        background-image: data-uri(@cover3);
+        // @media screen and (max-width: 768px) {
+        //     background-image: data-uri(@cover4_s);  
+        // }
+    }
+    [data-cover="cover4"] & {
+        background-image: data-uri(@cover4);
+        // @media screen and (max-width: 768px) {
+        //     background-image: data-uri(@cover4_s);  
+        // }
+    }
+}
+//三角形
+.triangle(@width: 10px) {
+    content: "";
+    position: absolute;
+    bottom: -20px;
+    left: 50%;
+    margin-left: -@width / 2;
+    border-width: @width;
+    border-style: solid;
+    border-color: #fff transparent transparent;
+}

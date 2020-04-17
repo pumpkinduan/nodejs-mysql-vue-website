@@ -1,0 +1,2 @@
+/*! Pumpkin@南瓜童鞋---www.pumpkinduan.cn */
+(window["webpackJsonp"]=window["webpackJsonp"]||[]).push([["chunk-2d0da94d"],{"6be0":function(a,e,b){"use strict";b.r(e),e["default"]=b.p+"media/0e14bc59c192f401aaa330b75f95ebb7.m4a"}}]);

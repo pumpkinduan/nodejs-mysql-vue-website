@@ -167,6 +167,9 @@
   font-size: 13px;
 }
 @media screen and (max-width: 780px) {
+  .resume aside {
+    width: 100%;
+  }
   .resume main {
     display: none;
   }

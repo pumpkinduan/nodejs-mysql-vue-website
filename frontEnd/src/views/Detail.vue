@@ -306,13 +306,6 @@ export default {
 .right-catalog .catalog-wrap li a:hover {
   color: #ff8a00;
 }
-// .detail >>> .el-dialog__header,
-// .detail >>> .el-dialog__body {
-//   padding: 0;
-// }
-// .detail >>> .el-dialog {
-//   width: 66%;
-// }
 @media screen and (max-width: 768px) {
   .detail-inner main h1 {
     width: 100%;
@@ -336,9 +329,5 @@ export default {
   .right-catalog {
     display: none;
   }
-
-  // .detail >>> .el-dialog {
-  //   width: 100%;
-  // }
 }
 </style>

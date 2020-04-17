@@ -19,13 +19,13 @@ NProgress.configure({
   minimum: 0.3
 })
 Vue.NProgress = Vue.prototype.NProgress = NProgress;
-// router.beforeEach((to, from, next) => {
-//   NProgress.start();
-//   next();
-// })
-// router.afterEach(() => {
-//   NProgress.done();
-// })
+router.beforeEach((to, from, next) => {
+  NProgress.start();
+  next();
+})
+router.afterEach(() => {
+  NProgress.done();
+})
 
 // 轮播图插件的使用
 Vue.use(Carousel);

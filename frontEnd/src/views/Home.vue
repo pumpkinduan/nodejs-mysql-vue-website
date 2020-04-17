@@ -199,7 +199,7 @@ export default {
     }
     .right-aside {
       position: sticky;
-      top: 80px;
+      top: 130px;
       width: 27%;
       margin-right: 3%;
       border-radius: 5px;

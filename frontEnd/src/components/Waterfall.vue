@@ -189,10 +189,11 @@ export default {
 
 <style scoped>
 .waterfall-container {
+  width: 100%;
   position: relative;
 }
 .waterfall-item {
-  width: 25%;
+  width: 24.9%;
   position: absolute;
   left: 0;
   top: 0;

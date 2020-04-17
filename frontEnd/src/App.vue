@@ -3,15 +3,19 @@
     <transition appear mode="out-in">
       <router-view />
     </transition>
-    <div v-show="isShowTool" class="bottom-controls" @click="toggleTheme">
-      <div class="change-theme">
+    <div v-show="isShowTool" :class="{'bottom-controls': true, 't-hover': hover}">
+      <div class="change-theme" @click.stop="toggleTheme">
+        <i
+          @click.stop="showThemeTool"
+          :class="['iconfont', !hover ? 'iconarrow-lift':'iconarrow-right']"
+        ></i>
         <span>主题换肤 | THEME SETTING</span>
         <i class="iconfont iconchilun--"></i>
       </div>
       <transition name="fade">
         <div class="theme-menu" v-show="isShowMenu">
           <ul>
-            <li @click="changeTheme(index)" v-for="(icon, index) in themeItems" :key="index">
+            <li @click.stop="changeTheme(index)" v-for="(icon, index) in themeItems" :key="index">
               <i :class="['iconfont', icon]"></i>
             </li>
           </ul>
@@ -19,12 +23,16 @@
       </transition>
     </div>
     <canvas ref="night_theme" class="night-theme"></canvas>
+    <Player />
   </div>
 </template>
 <script>
+import Player from '@/components/Player'
 export default {
+  components: {Player},
   data() {
     return {
+      hover: false,
       isShowMenu: false,
       isShowTool: true,
       themeItems: ['iconiconset0454', 'iconicon', 'icontaiyang', 'iconsnow'],
@@ -32,6 +40,10 @@ export default {
     };
   },
   methods: {
+    showThemeTool() {
+      this.hover = !this.hover;
+      this.isShowMenu = false;
+    },
     changeTheme(index) {
       if (index === 0) {
         this.$refs.night_theme.style = 'visibility: visible;';
@@ -45,6 +57,7 @@ export default {
     },
     onScroll() {
       this.isShowMenu = false;
+      this.hover = false;
     }
   },
   watch: {
@@ -89,8 +102,14 @@ export default {
     position: fixed;
     z-index: 123;
     bottom: 0;
-    right: 5px;
+    right: 0;
+    transform: translateX(87%);
     height: 35px;
+    transition: transform 0.5s;
+    &.t-hover {
+      right: 5px;
+      transform: translateX(0%);
+    }
     .change-theme {
       height: 45px;
       cursor: pointer;
@@ -101,6 +120,12 @@ export default {
       border-top-left-radius: 10px;
       border-top-right-radius: 10px;
       background-color: #ddd;
+      i {
+        font-size: @font_super_large2;
+        &:hover {
+          color: @blue1;
+        }
+      }
       span {
         text-shadow: 2px 2px 6px @blue2;
         transition: color 0.2s;
@@ -121,8 +146,8 @@ export default {
       width: 100%;
       height: 50px;
       background: #fff;
-      color: #666;
-      border-radius: 10px;
+      border-top-left-radius: 10px;
+      border-top-right-radius: 10px;
       &::after {
         .triangle();
       }
@@ -133,7 +158,7 @@ export default {
         li {
           transition: all 0.3s;
           padding: 5px;
-          background: #ccc;
+          background: #ddd;
           border-radius: 50%;
           cursor: pointer;
           i {

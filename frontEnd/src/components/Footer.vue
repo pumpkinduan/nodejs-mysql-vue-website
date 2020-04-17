@@ -62,14 +62,16 @@ export default {
 /* --底部关于开始-- */
 .footer .about h3 {
   margin-top: 20px;
-  font-size: @font_super_large1;
+  font-size: 1.5rem;
   font-weight: 500;
 }
 .footer .about p {
   margin: 15px 0;
+  font-size: 1.1rem;
 }
 .footer .about .copyright {
   margin-bottom: 10px;
+  font-size: 1rem;
 }
 .footer .about .copyright span {
   word-spacing: -2px;

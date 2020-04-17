@@ -15,10 +15,13 @@
 <style scoped>
 .not-found {
   width: 100%;
+  height: 100vh;
+  display: flex;
+  align-items: center;
   text-align: center;
 }
 .not-found .container {
-  width: 1200px;
+  width: 66%;
   margin: 0 auto;
 }
 .not-found .container h1 {
@@ -27,6 +30,7 @@
 }
 .not-found .container img {
   display: inline-block;
+  width: 66%;
 }
 .not-found .container p {
   font-size: 1.3rem;

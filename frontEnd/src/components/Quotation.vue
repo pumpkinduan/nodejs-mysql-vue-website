@@ -71,12 +71,12 @@ export default {
 .wrapper {
   position: relative;
   width: 50%;
-  padding: 0 1rem;
+  padding: 0 10px;
 }
 .quotation {
   position: relative;
   width: 100%;
-  padding: 40px 20px 10px 2px;
+  padding: 40px 20px 10px 20px;
   background: url("https://cn-south-227-storage-hitokoto-19627663.oss.dogecdn.com/pic/qf3cu.jpg")
     center center no-repeat;
   background-size: cover;

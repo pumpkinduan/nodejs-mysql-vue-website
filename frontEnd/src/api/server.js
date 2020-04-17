@@ -1,7 +1,7 @@
 import axios from "axios";
 // import Vue from "vue";
 //进行全局的默认配置
-axios.defaults.baseURL = process.env.NODE_ENV === "production" ? "http://pumpkinduan.cn/api" : "http://localhost:8088/api";
+axios.defaults.baseURL = process.env.NODE_ENV === "production" ? "https://pumpkinduan.cn/api" : "http://localhost:8088/api";
 axios.defaults.timeout = 10000;
 // 添加请求拦截器
 axios.interceptors.request.use(

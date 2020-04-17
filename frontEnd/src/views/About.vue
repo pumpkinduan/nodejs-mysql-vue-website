@@ -39,7 +39,7 @@ export default {
 
 <style scoped>
 .about {
-  padding-top: 60px;
+  padding-top: 50px;
   min-width: 100%;
   min-height: 100vh;
   text-align: center;
@@ -74,19 +74,19 @@ export default {
   opacity: 0.8;
 }
 .about .inner .content p {
-  padding-top: 12px;
+  /* padding-top: 12px; */
+  line-height: 24px;
   transition: all 0.3s;
 }
-.about .inner .content p:last-child {
+/* .about .inner .content p:last-child {
   padding-bottom: 10px;
-}
+} */
 @media screen and (max-width: 768px) {
   .about .inner {
     width: 100%;
   }
   .about .inner .content {
     padding: 8px;
-    line-height: 12px;
   }
 }
 </style>

@@ -331,10 +331,9 @@ export default {
         margin-right: 6px;
       }
       header {
-        max-width: 600px;
-        min-width: 300px;
+        width: 100%;
         & > img {
-          width: 40px;
+          width: 30px;
           vertical-align: -12px;
         }
         .user-name {
@@ -471,7 +470,7 @@ button.cancle {
 button:hover {
   opacity: 0.8;
 }
-@media screen and (max-width: 780px) {
+@media screen and (max-width: 768px) {
   .comment .words ul li section .reply .time {
     display: none;
   }

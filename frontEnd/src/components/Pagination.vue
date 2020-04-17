@@ -165,6 +165,7 @@ export default {
     li {
       margin-right: 5px;
       cursor: pointer;
+      color: #999;
       &.total-count {
         font-size: @font_medium_s;
         display: inline-flex;

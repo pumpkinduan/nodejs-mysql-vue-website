@@ -48,7 +48,6 @@ export default {
   position: relative;
   border-radius: 5px;
   color: #333;
-  line-height: 10px;
   padding: 5px;
   width: 100%;
   text-align: center;

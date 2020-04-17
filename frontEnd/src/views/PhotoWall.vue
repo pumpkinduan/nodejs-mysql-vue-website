@@ -88,10 +88,9 @@ export default {
 </script>
 
 <style scoped>
-main {
+.photo-wall {
   width: 100%;
   position: relative;
-  background: #f5f7f9;
   padding-bottom: 0;
 }
 .box {
@@ -127,6 +126,7 @@ main {
   position: relative;
   top: -12px;
   text-align: center;
+  color: #888;
 }
 .photo-wall >>> .el-dialog__header,
 .photo-wall >>> .el-dialog__body {

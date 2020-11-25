@@ -28,7 +28,7 @@
     "babel-plugin-transform-remove-console": "^6.9.4",
     "eslint": "^5.16.0",
     "eslint-plugin-vue": "^5.0.0",
-    "highlight.js": "^9.18.1",
+    "highlight.js": "^10.1.2",
     "vue-template-compiler": "^2.6.10"
   },
   "eslintConfig": {
